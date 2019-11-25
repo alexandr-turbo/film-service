@@ -1,5 +1,3 @@
-# film-service
-
 ## Project setup
 ```
 npm install
