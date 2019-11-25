@@ -1,13 +1,11 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
     <FilmService msg="Welcome to Your Vue.js App"/>
   </div>
 </template>
 
 <script>
 import FilmService from './components/FilmService.vue'
-
 export default {
   name: 'app',
   components: {
