@@ -1,7 +1,7 @@
 <template>
   <div class="FilmService">
     <h1>{{ msg }}</h1>
-    <h6>{{ text }}</h6>
+    <img>{{ text }}<img>
   </div>
 </template>
 
@@ -12,14 +12,14 @@ export default {
     text: null
   }),
   created() {
-    axios.get('https://api.coindesk.com/v1/bpi/currentprice.json')
+    axios.get('https://api.themoviedb.org/3/movie/551?api_key=f943d3d10cc39fd734122d69efabbacb')
     .then(response => {
-      this.text = response.data.bpi
+      this.text = response.data
     })
   },
     name: 'FilmService',
     props: {
-      msg: String
+      msg: String 
     }
 }
 </script>
