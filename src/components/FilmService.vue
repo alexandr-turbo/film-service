@@ -1,15 +1,10 @@
 <template>
-  <div class="FilmService">
+  <div class="container">
     <!-- <img :src="`https://image.tmdb.org/t/p/w500${text.poster_path}`"> -->
 
-
-
-
         <img :src="`https://image.tmdb.org/t/p/w500${text.poster_path}`">
 
         <img :src="`https://image.tmdb.org/t/p/w500${text.poster_path}`">
-
-
 
   </div>
 </template>
