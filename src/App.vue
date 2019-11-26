@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <FilmService msg="Welcome to Your Vue.js App"/>
+    <FilmService />
   </div>
 </template>
 
