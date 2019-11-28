@@ -1,31 +1,42 @@
 <template>
-  <div class="container" v-if="upcoming != null && popular != null && now_playing != null && top_rated != null ">
+  <div class="container" v-if="upcoming != null && popular != null && now_playing != null && top_rated != null">
+    <!-- <slick class="slick" ref="slick"  :options="slickOptions" >
+      <div v-for="item in latest" v-bind:key="item.id">
+        <img :src="`https://image.tmdb.org/t/p/w92${item.poster_path}`">
+        <h6> {{ latest.original_title }}</h6>
+        <h6 > {{ get_genre(genres, item.genre_ids) }} </h6>
+      </div>
+    </slick> -->
+    <h3 class="uppercase left-text">upcoming</h3>
     <slick class="slick" ref="slick"  :options="slickOptions" >
       <div v-for="item in upcoming" v-bind:key="item.id">
         <img :src="`https://image.tmdb.org/t/p/w92${item.poster_path}`">
-        <h6> {{ item.original_title }}</h6>
-        <h6 > {{ get_genre(genres, item.genre_ids) }} </h6>
+        <h4> {{ item.original_title }}</h4>
+        <h5> {{ get_genre(genres, item.genre_ids) }} </h5>
       </div>
     </slick>
+    <h3 class="uppercase left-text">popular</h3>
     <slick class="slick" ref="slick"  :options="slickOptions" >
       <div v-for="item in popular" v-bind:key="item.id">
         <img :src="`https://image.tmdb.org/t/p/w92${item.poster_path}`">
-        <h6> {{ item.original_title }}</h6>
-        <h6 > {{ get_genre(genres, item.genre_ids) }} </h6>
+        <h4> {{ item.original_title }}</h4>
+        <h5> {{ get_genre(genres, item.genre_ids) }} </h5>
       </div>
     </slick>
+    <h3 class="uppercase left-text">now playing</h3>
     <slick class="slick" ref="slick"  :options="slickOptions" >
       <div v-for="item in now_playing" v-bind:key="item.id">
         <img :src="`https://image.tmdb.org/t/p/w92${item.poster_path}`">
-        <h6> {{ item.original_title }}</h6>
-        <h6 > {{ get_genre(genres, item.genre_ids) }} </h6>
+        <h4> {{ item.original_title }}</h4>
+        <h5> {{ get_genre(genres, item.genre_ids) }} </h5>
       </div>
     </slick>
+    <h3 class="uppercase left-text">top rated</h3>
     <slick class="slick" ref="slick"  :options="slickOptions" >
       <div v-for="item in top_rated" v-bind:key="item.id">
         <img :src="`https://image.tmdb.org/t/p/w92${item.poster_path}`">
-        <h6> {{ item.original_title }}</h6>
-        <h6 > {{ get_genre(genres, item.genre_ids) }} </h6>
+        <h4> {{ item.original_title }}</h4>
+        <h5> {{ get_genre(genres, item.genre_ids) }} </h5>
       </div>
     </slick>
   </div>
@@ -37,6 +48,7 @@ import Slick from 'vue-slick';
 export default {
   data() {
     return {
+      latest: null,
       upcoming: null,
       popular: null,
       now_playing: null,
@@ -53,6 +65,10 @@ export default {
     }
   },
   created() {
+    axios.get('https://api.themoviedb.org/3/movie/latest?api_key=f943d3d10cc39fd734122d69efabbacb')
+    .then(response => {
+      this.latest = response.data
+    }),
     axios.get('https://api.themoviedb.org/3/movie/upcoming?api_key=f943d3d10cc39fd734122d69efabbacb')
     .then(response => {
       this.upcoming = response.data.results
@@ -109,19 +125,28 @@ export default {
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
   .container {
-    width: 1500px;
-    margin-left: auto;
-    margin-right: auto;
+    padding: 2rem 4rem;
+    margin: 0 auto;
+    max-width: 80%;
 
   }
   img {
-    width: 92px !important;
+    border-radius: 5px;
+    height: 190px;
+    width: auto;
     margin-left: auto;
     margin-right: auto;
   }
   h6 {
-
+    margin: 0;
+    padding: 0;
   }
-  
+  .uppercase { 
+    text-transform: uppercase;
+  }
+  .left-text {
+    text-align: left;
+  }
 </style>

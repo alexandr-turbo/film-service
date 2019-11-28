@@ -1,15 +1,15 @@
 <template>
   <div id="app">
-    <FilmService />
+    <TVShows />
   </div>
 </template>
 
 <script>
-import FilmService from './components/FilmService.vue'
+import TVShows from './components/TVShows.vue'
 export default {
   name: 'app',
   components: {
-    FilmService
+    TVShows
   }
 }
 </script>
