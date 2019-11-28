@@ -4,37 +4,28 @@
       <div v-for="item in upcoming" v-bind:key="item.id">
         <img :src="`https://image.tmdb.org/t/p/w92${item.poster_path}`">
         <h6> {{ item.original_title }}</h6>
-        <h6> {{ item.genre_ids }}</h6>
+        <h6 > {{ get_genre(genres, item.genre_ids) }} </h6>
       </div>
     </slick>
     <slick class="slick" ref="slick"  :options="slickOptions" >
       <div v-for="item in popular" v-bind:key="item.id">
         <img :src="`https://image.tmdb.org/t/p/w92${item.poster_path}`">
         <h6> {{ item.original_title }}</h6>
-        <h6> {{ item.genre_ids }}</h6>
+        <h6 > {{ get_genre(genres, item.genre_ids) }} </h6>
       </div>
     </slick>
     <slick class="slick" ref="slick"  :options="slickOptions" >
       <div v-for="item in now_playing" v-bind:key="item.id">
         <img :src="`https://image.tmdb.org/t/p/w92${item.poster_path}`">
         <h6> {{ item.original_title }}</h6>
-        <h6> {{ item.genre_ids }}</h6>
+        <h6 > {{ get_genre(genres, item.genre_ids) }} </h6>
       </div>
     </slick>
     <slick class="slick" ref="slick"  :options="slickOptions" >
       <div v-for="item in top_rated" v-bind:key="item.id">
         <img :src="`https://image.tmdb.org/t/p/w92${item.poster_path}`">
         <h6> {{ item.original_title }}</h6>
-        <h6> {{ item.genre_ids }}</h6>
-        <!-- <div v-for="item2 in genre_ids" v-bind:key="item2.id"><div v-for="item3 in genres" v-bind:key="item3.id"><div v-if="item2.id == item3.id"> {{ item2.name }} </div></div></div> -->
-        <!-- <div v-for="item2 in genre_ids" v-bind:key="item2.id"> {{ item2 }} </div> -->
-      </div>
-    </slick>
-
-
-    <slick class="slick" ref="slick"  :options="slickOptions" >
-      <div v-for="item in genres" v-bind:key="item.id">
-        <h6> {{ item }}</h6>
+        <h6 > {{ get_genre(genres, item.genre_ids) }} </h6>
       </div>
     </slick>
   </div>
@@ -51,6 +42,7 @@ export default {
       now_playing: null,
       top_rated: null,
       genres: null,
+
       // genre_ids: null,
       slickOptions: {
         //options can be used from the plugin documentation
@@ -87,6 +79,21 @@ export default {
   },
   // All slick methods can be used too, example here
   methods: {
+    get_genre(genres, genre_ids) {
+      var genre_container = [];
+      for (var i = 0; i < genre_ids.length; i++) {
+        for (var j = 0; j < genres.length; j++) {
+          if (genre_ids[i] == genres[j].id) {
+            genre_container[i] = genres[j].name;
+          }
+        }
+      }
+      if (genre_container.length === 1) {
+        return genre_container[0];
+      } else if (genre_container.length > 1) {
+        return genre_container[0] + "/" + genre_container[1];
+      }
+    },
     next() {
       this.$refs.slick.next()
     },
