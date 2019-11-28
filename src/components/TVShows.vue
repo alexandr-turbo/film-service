@@ -1,5 +1,5 @@
 <template>
-  <div class="container" v-if="airing_today != null && popular != null && on_the_air != null && top_rated != null">
+  <div class="container" v-if="airing_today != null && popular != null && on_the_air != null && top_rated != null && genres != null">
     <!-- <slick class="slick" ref="slick"  :options="slickOptions" >
       <div v-for="item in latest" v-bind:key="item.id">
         <img :src="`https://image.tmdb.org/t/p/w92${item.poster_path}`">
@@ -23,7 +23,7 @@
         <h5> {{ get_genre(genres, item.genre_ids) }} </h5>
       </div>
     </slick>
-    <h3 class="uppercase left-text">now playing</h3>
+    <h3 class="uppercase left-text">on the air</h3>
     <slick class="slick" ref="slick"  :options="slickOptions" >
       <div v-for="item in on_the_air" v-bind:key="item.id">
         <img :src="`https://image.tmdb.org/t/p/w92${item.poster_path}`">
@@ -60,15 +60,16 @@ export default {
         //options can be used from the plugin documentation
         slidesToShow: 7,
         infinite: true,
-        autoplay: true
+        autoplay: true,
+        autoplaySpeed: 500
       }
     }
   },
   created() {
-    axios.get('https://api.themoviedb.org/3/tv/latest?api_key=f943d3d10cc39fd734122d69efabbacb')
-    .then(response => {
-      this.latest = response.data
-    }),
+    // axios.get('https://api.themoviedb.org/3/tv/latest?api_key=f943d3d10cc39fd734122d69efabbacb')
+    // .then(response => {
+    //   this.latest = response.data
+    // }),
     axios.get('https://api.themoviedb.org/3/tv/airing_today?api_key=f943d3d10cc39fd734122d69efabbacb')
     .then(response => {
       this.airing_today = response.data.results
@@ -97,14 +98,17 @@ export default {
   methods: {
     get_genre(genres, genre_ids) {
       var genre_container = [];
+      var k = 0;
       for (var i = 0; i < genre_ids.length; i++) {
         for (var j = 0; j < genres.length; j++) {
-          if (genre_ids[i] == genres[j].id) {
-            genre_container[i] = genres[j].name;
+          if (genre_ids[i] === genres[j].id) {
+            genre_container[k] = genres[j].name;
           }
         }
       }
-      if (genre_container.length === 1) {
+      if (genre_container.length === 0) {
+        return;
+      } else if (genre_container.length === 1) {
         return genre_container[0];
       } else if (genre_container.length > 1) {
         return genre_container[0] + "/" + genre_container[1];

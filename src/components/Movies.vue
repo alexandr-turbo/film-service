@@ -65,10 +65,10 @@ export default {
     }
   },
   created() {
-    axios.get('https://api.themoviedb.org/3/movie/latest?api_key=f943d3d10cc39fd734122d69efabbacb')
-    .then(response => {
-      this.latest = response.data
-    }),
+    // axios.get('https://api.themoviedb.org/3/movie/latest?api_key=f943d3d10cc39fd734122d69efabbacb')
+    // .then(response => {
+    //   this.latest = response.data
+    // }),
     axios.get('https://api.themoviedb.org/3/movie/upcoming?api_key=f943d3d10cc39fd734122d69efabbacb')
     .then(response => {
       this.upcoming = response.data.results
