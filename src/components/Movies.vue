@@ -1,5 +1,5 @@
 <template>
-  <div class="container" v-if="upcoming != null && popular != null && now_playing != null && top_rated != null">
+  <div class="container" v-if="upcoming != null && popular != null && now_playing != null && top_rated != null && genres != null">
     <!-- <slick class="slick" ref="slick"  :options="slickOptions" >
       <div v-for="item in latest" v-bind:key="item.id">
         <img :src="`https://image.tmdb.org/t/p/w92${item.poster_path}`">
@@ -60,7 +60,8 @@ export default {
         //options can be used from the plugin documentation
         slidesToShow: 7,
         infinite: true,
-        autoplay: true
+        autoplay: true,
+        autoplaySpeed: 500
       }
     }
   },
@@ -97,14 +98,17 @@ export default {
   methods: {
     get_genre(genres, genre_ids) {
       var genre_container = [];
+      var k = 0;
       for (var i = 0; i < genre_ids.length; i++) {
         for (var j = 0; j < genres.length; j++) {
-          if (genre_ids[i] == genres[j].id) {
-            genre_container[i] = genres[j].name;
+          if (genre_ids[i] === genres[j].id) {
+            genre_container[k] = genres[j].name;
           }
         }
       }
-      if (genre_container.length === 1) {
+      if (genre_container.length === 0) {
+        return;
+      } else if (genre_container.length === 1) {
         return genre_container[0];
       } else if (genre_container.length > 1) {
         return genre_container[0] + "/" + genre_container[1];
