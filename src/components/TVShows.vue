@@ -1,44 +1,56 @@
 <template>
-  <div class="container" v-if="airing_today != null && popular != null && on_the_air != null && top_rated != null && genres != null">
-    <!-- <slick class="slick" ref="slick"  :options="slickOptions" >
-      <div v-for="item in latest" v-bind:key="item.id">
-        <img :src="`https://image.tmdb.org/t/p/w92${item.poster_path}`">
-        <h6> {{ latest.original_title }}</h6>
-        <h6 > {{ get_genre(genres, item.genre_ids) }} </h6>
-      </div>
-    </slick> -->
-    <h3 class="uppercase left-text">airing today</h3>
-    <slick class="slick" ref="slick"  :options="slickOptions" >
-      <div v-for="item in airing_today" v-bind:key="item.id">
-        <img :src="`https://image.tmdb.org/t/p/w92${item.poster_path}`">
-        <h4> {{ item.original_name }}</h4>
-        <h5> {{ get_genre(genres, item.genre_ids) }} </h5>
-      </div>
-    </slick>
-    <h3 class="uppercase left-text">popular</h3>
-    <slick class="slick" ref="slick"  :options="slickOptions" >
-      <div v-for="item in popular" v-bind:key="item.id">
-        <img :src="`https://image.tmdb.org/t/p/w92${item.poster_path}`">
-        <h4> {{ item.original_name }}</h4>
-        <h5> {{ get_genre(genres, item.genre_ids) }} </h5>
-      </div>
-    </slick>
-    <h3 class="uppercase left-text">on the air</h3>
-    <slick class="slick" ref="slick"  :options="slickOptions" >
-      <div v-for="item in on_the_air" v-bind:key="item.id">
-        <img :src="`https://image.tmdb.org/t/p/w92${item.poster_path}`">
-        <h4> {{ item.original_name }}</h4>
-        <h5> {{ get_genre(genres, item.genre_ids) }} </h5>
-      </div>
-    </slick>
-    <h3 class="uppercase left-text">top rated</h3>
-    <slick class="slick" ref="slick"  :options="slickOptions" >
-      <div v-for="item in top_rated" v-bind:key="item.id">
-        <img :src="`https://image.tmdb.org/t/p/w92${item.poster_path}`">
-        <h4> {{ item.original_name }}</h4>
-        <h5> {{ get_genre(genres, item.genre_ids) }} </h5>
-      </div>
-    </slick>
+  <div class="main-container">
+    <div class="upper-slick" v-if="popular != null && genres != null">
+      <slick class="slick" ref="slick"  :options="slickOptionsUpper" >
+        <div v-for="item in popular" v-bind:key="item.id">
+          <img class="upper-imgs" :src="`https://image.tmdb.org/t/p/w1280${item.backdrop_path}`">
+          <div class="upper-text white-text">
+            <h3 class="uppercase">popular</h3>
+            <h4> {{ item.original_name }}</h4>
+            <h5> {{ get_genre(genres, item.genre_ids) }} </h5>
+          </div>
+        </div>
+      </slick>
+    </div>
+    <!-- <button v-for="tab in tabs" :key="tab" @click="selected = tab">
+      {{ tab }}
+    </button>
+
+    <component :is="selected"></component> -->
+    <div class="container" v-if="airing_today != null && popular != null && on_the_air != null && top_rated != null && genres != null">
+      <h3 class="uppercase left-text">airing today</h3>
+      <slick class="slick" ref="slick"  :options="slickOptions" >
+        <div v-for="item in airing_today" v-bind:key="item.id">
+          <img class="main-imgs" :src="`https://image.tmdb.org/t/p/w92${item.poster_path}`">
+          <h4> {{ item.original_name }}</h4>
+          <h5> {{ get_genre(genres, item.genre_ids) }} </h5>
+        </div>
+      </slick>
+      <h3 class="uppercase left-text">popular</h3>
+      <slick class="slick" ref="slick"  :options="slickOptions" >
+        <div v-for="item in popular" v-bind:key="item.id">
+          <img class="main-imgs" :src="`https://image.tmdb.org/t/p/w92${item.poster_path}`">
+          <h4> {{ item.original_name }}</h4>
+          <h5> {{ get_genre(genres, item.genre_ids) }} </h5>
+        </div>
+      </slick>
+      <h3 class="uppercase left-text">on the air</h3>
+      <slick class="slick" ref="slick"  :options="slickOptions" >
+        <div v-for="item in on_the_air" v-bind:key="item.id">
+          <img class="main-imgs" :src="`https://image.tmdb.org/t/p/w92${item.poster_path}`">
+          <h4> {{ item.original_name }}</h4>
+          <h5> {{ get_genre(genres, item.genre_ids) }} </h5>
+        </div>
+      </slick>
+      <h3 class="uppercase left-text">top rated</h3>
+      <slick class="slick" ref="slick"  :options="slickOptions" >
+        <div v-for="item in top_rated" v-bind:key="item.id">
+          <img class="main-imgs" :src="`https://image.tmdb.org/t/p/w92${item.poster_path}`">
+          <h4> {{ item.original_name }}</h4>
+          <h5> {{ get_genre(genres, item.genre_ids) }} </h5>
+        </div>
+      </slick>
+    </div>
   </div>
 </template>
 
@@ -57,19 +69,20 @@ export default {
 
       // genre_ids: null,
       slickOptions: {
-        //options can be used from the plugin documentation
         slidesToShow: 7,
         infinite: true,
         autoplay: true,
         autoplaySpeed: 500
+      },
+      slickOptionsUpper: {
+        slidesToShow: 1,
+        infinite: true,
+        autoplay: true,
+        autoplaySpeed: 3000
       }
     }
   },
   created() {
-    // axios.get('https://api.themoviedb.org/3/tv/latest?api_key=f943d3d10cc39fd734122d69efabbacb')
-    // .then(response => {
-    //   this.latest = response.data
-    // }),
     axios.get('https://api.themoviedb.org/3/tv/airing_today?api_key=f943d3d10cc39fd734122d69efabbacb')
     .then(response => {
       this.airing_today = response.data.results
@@ -94,7 +107,6 @@ export default {
   components: {
     Slick
   },
-  // All slick methods can be used too, example here
   methods: {
     get_genre(genres, genre_ids) {
       var genre_container = [];
@@ -103,6 +115,7 @@ export default {
         for (var j = 0; j < genres.length; j++) {
           if (genre_ids[i] === genres[j].id) {
             genre_container[k] = genres[j].name;
+            k++;
           }
         }
       }
@@ -129,14 +142,21 @@ export default {
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
+  /* .main-container {
+    width: 100%;
+  } */
   .container {
     padding: 2rem 4rem;
     margin: 0 auto;
     max-width: 80%;
-
   }
-  img {
+  img.upper-imgs {
+    margin: 0;
+    padding: 0;
+    height: auto;
+    width: 100vw;
+  }
+  img.main-imgs  {
     border-radius: 5px;
     height: 190px;
     width: auto;
@@ -152,5 +172,14 @@ export default {
   }
   .left-text {
     text-align: left;
+  }
+  .upper-text {
+    text-align: left;
+    margin-left: 100px;
+    margin-top: -350px;
+    padding-bottom: 50px;
+  }
+  .white-text {
+    color: white;
   }
 </style>
