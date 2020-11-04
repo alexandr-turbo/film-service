@@ -43,9 +43,16 @@
             <div :class="index % 2 === 0 ? 'lightgray' : 'lightblue'">
               <div :class="index % 2 === 0 ? 'main2' : 'main3'">
                 <img
+                  v-if="role.poster_path && role.poster_path !== ''"
                   class="movie-image"
                   :class="index % 2 === 0 ? 'left-image' : 'right-image'"
                   :src="`https://image.tmdb.org/t/p/w1280${role.poster_path}`"
+                />
+                <img
+                  v-else
+                  class="movie-image"
+                  :class="index % 2 === 0 ? 'left-image' : 'right-image'"
+                  src="../../public/no-image.png"
                 />
                 <div class="actor-description">
                   <div>Title: {{ role.title }}</div>

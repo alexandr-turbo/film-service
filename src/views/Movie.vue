@@ -20,8 +20,14 @@
           <div v-for="item in cast" :key="item.id">
             <router-link :to="{ name: 'actor', params: { actorID: item.id } }">
               <img
+                v-if="item.profile_path && item.profile_path !== ''"
                 class="actor-image"
                 :src="`https://image.tmdb.org/t/p/w92${item.profile_path}`"
+              />
+              <img
+                v-else
+                class="actor-image"
+                src="../../public/no-image.png"
               />
             </router-link>
             <h4 class="actor-name">{{ item.name }}</h4>
