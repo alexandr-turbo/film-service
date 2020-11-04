@@ -1,4 +1,4 @@
-# film-service
+# movie-service
 
 ## Project setup
 ```

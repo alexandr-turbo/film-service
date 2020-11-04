@@ -1,21 +1,28 @@
-<template  id="tvshows-upper-slick-template">
-    <div class="upper-slick" v-if="popular != null && genres != null">
-      <slick class="slick" ref="slick"  :options="slickOptionsUpper" >
-        <div v-for="item in popular" v-bind:key="item.id">
-          <img class="upper-imgs" :src="`https://image.tmdb.org/t/p/w1280${item.backdrop_path}`">
-          <div class="upper-text white-text">
-            <h3 class="uppercase">popular</h3>
-            <h4> {{ item.original_name }}</h4>
-            <h5> {{ get_genre(genres, item.genre_ids) }} </h5>
-          </div>
+<template id="tvshows-upper-slick-template">
+  <div class="upper-slick" v-if="popular != null && genres != null">
+    <slick class="slick" ref="slick" :options="slickOptionsUpper">
+      <div v-for="item in popular" v-bind:key="item.id">
+        <router-link
+          :to="{ name: 'movie', params: { movieID: item.id, movieType: 'tv' } }"
+        >
+          <img
+            class="upper-imgs"
+            :src="`https://image.tmdb.org/t/p/w1280${item.backdrop_path}`"
+          />
+        </router-link>
+        <div class="upper-text white-text">
+          <h3 class="uppercase">popular</h3>
+          <h4>{{ item.original_name }}</h4>
+          <h5>{{ get_genre(genres, item.genre_ids) }}</h5>
         </div>
-      </slick>
-    </div>
+      </div>
+    </slick>
+  </div>
 </template>
 
 <script>
-import axios from 'axios';
-import Slick from 'vue-slick';
+import axios from "axios";
+import Slick from "vue-slick";
 export default {
   data() {
     return {
@@ -25,22 +32,30 @@ export default {
         slidesToShow: 1,
         infinite: true,
         autoplay: true,
-        autoplaySpeed: 3000
-      }
-    }
+        autoplaySpeed: 3000,
+        arrows: true,
+        draggable: false,
+      },
+    };
   },
   created() {
-    axios.get('https://api.themoviedb.org/3/tv/popular?api_key=f943d3d10cc39fd734122d69efabbacb')
-    .then(response => {
-      this.popular = response.data.results
-    }),
-    axios.get('https://api.themoviedb.org/3/genre/tv/list?api_key=f943d3d10cc39fd734122d69efabbacb')
-    .then(response => {
-      this.genres = response.data.genres
-    })
+    axios
+      .get(
+        "https://api.themoviedb.org/3/tv/popular?api_key=f943d3d10cc39fd734122d69efabbacb"
+      )
+      .then((response) => {
+        this.popular = response.data.results;
+      }),
+      axios
+        .get(
+          "https://api.themoviedb.org/3/genre/tv/list?api_key=f943d3d10cc39fd734122d69efabbacb"
+        )
+        .then((response) => {
+          this.genres = response.data.genres;
+        });
   },
   components: {
-    Slick
+    Slick,
   },
   methods: {
     get_genre(genres, genre_ids) {
@@ -63,39 +78,39 @@ export default {
       }
     },
     next() {
-      this.$refs.slick.next()
+      this.$refs.slick.next();
     },
     prev() {
-      this.$refs.slick.prev()
+      this.$refs.slick.prev();
     },
     reInit() {
       // Helpful if you have to deal with v-for to update dynamic lists
-      this.$refs.slick.reSlick()
-    }
-  }
-}
+      this.$refs.slick.reSlick();
+    },
+  },
+};
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  img.upper-imgs {
-    margin: 0;
-    padding: 0;
-    height: auto;
-    width: 100vw;
-  }
-  .uppercase { 
-    text-transform: uppercase;
-  }
-  .left-text {
-    text-align: left;
-  }
-  .upper-text {
-    text-align: left;
-    margin-left: 100px;
-    margin-top: -350px;
-    padding-bottom: 50px;
-  }
-  .white-text {
-    color: white;
-  }
+img.upper-imgs {
+  margin: 0;
+  padding: 0;
+  height: auto;
+  width: 100vw;
+}
+.uppercase {
+  text-transform: uppercase;
+}
+.left-text {
+  text-align: left;
+}
+.upper-text {
+  text-align: left;
+  margin-left: 100px;
+  margin-top: -350px;
+  padding-bottom: 50px;
+}
+.white-text {
+  color: white;
+}
 </style>
