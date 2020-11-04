@@ -8,8 +8,14 @@
         >
           <div class="main">
             <img
+              v-if="actor.profile_path && actor.profile_path !== ''"
               class="actor-photo"
               :src="`https://image.tmdb.org/t/p/w92${actor.profile_path}`"
+            />
+            <img
+              v-else
+              class="actor-photo"
+              src="../../public/no-image.png"
             />
             <div class="actor-description">
               <div>{{ actor.name }}</div>
@@ -79,7 +85,7 @@
               name: 'movie',
               params: { movieID: crew.id, movieType: crew.media_type },
             }"
-            >>
+            >
             <div :class="index % 2 === 0 ? 'lightgray' : 'lightblue'">
               <div :class="index % 2 === 0 ? 'main2' : 'main3'">
                 <img
@@ -260,7 +266,8 @@ export default {
   text-align: justify;
 }
 .actor-photo {
-  height: auto;
+  border-radius: 5px;
+  height: 240px;
   width: auto;
   margin-right: 16px;
 }
