@@ -51,9 +51,11 @@ img.main-imgs {
   border-radius: 5px;
   height: 190px;
   width: auto;
+  filter: brightness(0.5);
 }
 img.main-imgs:hover {
-  transform: scale(1.1)
+  transform: scale(1.1);
+  filter: brightness(1);
 }
 .uppercase {
   text-transform: uppercase;
