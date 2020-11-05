@@ -200,11 +200,6 @@ export default {
 </script>
 
 <style scoped>
-.container {
-  padding: 2rem 4rem;
-  margin: 0 auto;
-  max-width: 80%;
-}
 .actor-image {
   border-radius: 5px;
   height: 190px;

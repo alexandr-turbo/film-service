@@ -21,12 +21,12 @@
             :src="`https://image.tmdb.org/t/p/w92${item.poster_path}`"
           />
         </router-link>
-        <h4>
+        <div>
           {{ item.original_title }}
-        </h4>
-        <h5>
+        </div>
+        <div>
           {{ getMovieGenres(genres, item.genre_ids) }}
-        </h5>
+        </div>
       </div>
     </slick>
   </div>
@@ -86,22 +86,4 @@ export default {
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.container {
-  padding: 2rem 4rem;
-  margin: 0 auto;
-  max-width: 80%;
-}
-img.main-imgs {
-  border-radius: 5px;
-  height: 190px;
-  width: auto;
-  margin-left: auto;
-  margin-right: auto;
-}
-.uppercase {
-  text-transform: uppercase;
-}
-.left-text {
-  text-align: left;
-}
 </style>

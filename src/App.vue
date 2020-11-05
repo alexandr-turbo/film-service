@@ -30,6 +30,7 @@ button.button {
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   box-shadow: none;
+  margin: 10px auto;
 }
 button.pretty {
   padding: 10px 20px;
@@ -40,5 +41,24 @@ button.pretty {
   position: fixed;
   z-index: 100500;
   /* margin: auto; */
+}
+.container {
+  padding: 2rem 4rem;
+  margin: 0 auto;
+  max-width: 80%;
+}
+img.main-imgs {
+  border-radius: 5px;
+  height: 190px;
+  width: auto;
+}
+img.main-imgs:hover {
+  transform: scale(1.1)
+}
+.uppercase {
+  text-transform: uppercase;
+}
+.left-text {
+  text-align: left;
 }
 </style>
