@@ -20,10 +20,10 @@
 body {
     margin: 0 !important;
 }
-.router-link-exact-active.router-link-active {
+/* .router-link-exact-active.router-link-active {
   z-index: 100500;
   position: absolute;
   text-align: left !important;
   top: 5%;
   left: 10%;
-}
+} */

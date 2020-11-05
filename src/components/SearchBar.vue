@@ -1,6 +1,12 @@
 <template>
   <!-- <div class="container"> -->
   <div class="centered">
+    <router-link to="/">
+      <img
+        class="home-btn"
+        src="../../public/home.svg"
+      />
+    </router-link>
     <input class="input" v-model="query" @keyup.enter="send(query)">
   </div>
   <!-- </div> -->
@@ -12,16 +18,18 @@ export default {
       query: '',
     }
   },
-  watch: {
-    query () {
-      /*eslint-disable*/
-      console.log(this.query)
-      /*eslint-enable*/
-    }
-  },
+  // watch: {
+  //   query () {
+  //     /*eslint-disable*/
+  //     console.log(this.query)
+  //     /*eslint-enable*/
+  //   }
+  // },
   methods: {
     send(query) {
-      this.$router.push(`../../../../../search?${query}`)
+      this.$router.push(`../../../../../search?${query}&page=1`);
+      this.query = ''
+      // this.$emit('query', query)
     }
   }
 }
@@ -37,8 +45,20 @@ export default {
   justify-content: center;
   align-items: center;
   height: 100px;
+  background: black;
+  position: relative;
 }
 .input {
   height: 24px;
+  outline: none;
+}
+.relat {
+  position: relative;
+}
+.home-btn {
+  position: absolute;
+  height: 36px;
+  left: 10%;
+  top: calc(50% - (36px / 2));
 }
 </style>

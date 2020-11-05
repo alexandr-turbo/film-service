@@ -1,15 +1,22 @@
 <template>
   <div id="app">
+    <!-- <SearchBar @query="appQuery = $event" /> -->
     <SearchBar />
+    <!-- <router-view :query="appQuery" /> -->
     <router-view />
   </div>
 </template>
 <script>
 import SearchBar from "./components/SearchBar.vue";
 export default {
+  data() {
+    return {
+      appQuery: '',
+    }
+  },
   components: {
     SearchBar
-  }
+  },
 }
 </script>
 <style>

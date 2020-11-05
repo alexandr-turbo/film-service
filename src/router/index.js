@@ -10,11 +10,6 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/Home.vue'),
     // children: [
     //   {
-    //     path: '/about',
-    //     name: 'about',
-    //     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-    //   },
-    //   {
     //     path: '/details/:movieType/:movieID',
     //     name: 'movie',
     //     component: () => import(/* webpackChunkName: "about" */ '../views/Movie.vue'),
@@ -33,11 +28,6 @@ const routes = [
     // ]
   },
   {
-    path: '/about',
-    name: 'about',
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  },
-  {
     path: '/details/:movieType/:movieID',
     name: 'movie',
     component: () => import(/* webpackChunkName: "about" */ '../views/Movie.vue'),
@@ -52,6 +42,7 @@ const routes = [
     path: '/search',
     name: 'search',
     component: () => import(/* webpackChunkName: "about" */ '../views/Search.vue'),
+    props: true
   },
   {
     path: '/search/:query',

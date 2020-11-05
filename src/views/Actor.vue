@@ -64,7 +64,7 @@
                   <div>Title: {{ role.title }}</div>
                   <div>Original title: {{ role.original_title }}</div>
                   <div>Character: {{ role.character }}</div>
-                  <div>Genres: {{ get_genre(genres, role.genre_ids) }}</div>
+                  <div>Genres: {{ getMovieGenres(genres, role.genre_ids) }}</div>
                   <div>Media type: {{ role.media_type }}</div>
                   <div>Release date: {{ role.release_date }}</div>
                   <div>Rating: {{ role.vote_average }}</div>
@@ -96,7 +96,7 @@
                   <div>Title: {{ crew.title }}</div>
                   <div>Original title: {{ crew.original_title }}</div>
                   <div>Job: {{ crew.job }}</div>
-                  <div>Genres: {{ get_genre(genres, crew.genre_ids) }}</div>
+                  <div>Genres: {{ getMovieGenres(genres, crew.genre_ids) }}</div>
                   <div>Department: {{ crew.department }}</div>
                   <div>Media type: {{ crew.media_type }}</div>
                   <div>Release date: {{ crew.release_date }}</div>
@@ -109,17 +109,13 @@
         </template>
       </div>
     </div>
-    <router-link to="/">
-      <img
-        class="router-link-exact-active router-link-active"
-        src="../../public/home.svg"
-      />
-    </router-link>
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import movieGenresMixin from '@/mixins/movieGenresMixin';
+
 export default {
   data() {
     return {
@@ -130,6 +126,7 @@ export default {
     };
   },
   // props: ['actorID', 'person'],
+  mixins: [movieGenresMixin],
   created() {
     // axios.get(`https://api.themoviedb.org/3/person${this.actorID}?api_key=f943d3d10cc39fd734122d69efabbacb`)
     axios
@@ -160,25 +157,6 @@ export default {
         });
   },
   methods: {
-    get_genre(genres, genre_ids) {
-      var genre_container = [];
-      var k = 0;
-      for (var i = 0; i < genre_ids.length; i++) {
-        for (var j = 0; j < genres.length; j++) {
-          if (genre_ids[i] === genres[j].id) {
-            genre_container[k] = genres[j].name;
-            k++;
-          }
-        }
-      }
-      if (genre_container.length === 0) {
-        return;
-      } else if (genre_container.length === 1) {
-        return genre_container[0];
-      } else if (genre_container.length > 1) {
-        return genre_container[0] + "/" + genre_container[1];
-      }
-    },
     getGender(gender) {
       return gender === 1 ? "Female" : "Male";
     },

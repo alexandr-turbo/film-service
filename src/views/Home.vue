@@ -57,7 +57,6 @@ export default {
   name: "app",
   data () {
     return {
-      // search: '',
       currentView: "MoviesUpperSlick",
       currentView2: "MoviesUpcoming",
       currentView3: "MoviesPopular",
@@ -77,22 +76,7 @@ export default {
     TVShowsOnTheAir,
     TVShowsTopRated,
   },
-  // watch: {
-  //   search () {
-  //     /*eslint-disable*/
-  //     console.log(this.search);
-  //     /*eslint-enable*/
-  //   }
-  // },
   methods: {
-    // enter(search) {
-    //   this.$router.push({
-    //       name: 'search',
-    //       params: {
-    //         searchPhrase: search,
-    //       },
-    //     })
-    // },
     switchView(view, view2, view3, view4, view5) {
       if (view) {
         this.currentView = view;

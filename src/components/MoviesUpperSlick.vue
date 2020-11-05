@@ -16,7 +16,7 @@
         <div class="upper-text white-text">
           <h3 class="uppercase">popular</h3>
           <h4>{{ item.original_title }}</h4>
-          <h5>{{ get_genre(genres, item.genre_ids) }}</h5>
+          <h5>{{ getMovieGenres(genres, item.genre_ids) }}</h5>
         </div>
       </div>
     </slick>
@@ -26,6 +26,8 @@
 <script>
 import axios from "axios";
 import Slick from "vue-slick";
+import movieGenresMixin from '@/mixins/movieGenresMixin';
+
 export default {
   data() {
     return {
@@ -41,6 +43,7 @@ export default {
       },
     };
   },
+  mixins: [movieGenresMixin],
   created() {
     axios
       .get(
@@ -61,25 +64,6 @@ export default {
     Slick,
   },
   methods: {
-    get_genre(genres, genre_ids) {
-      var genre_container = [];
-      var k = 0;
-      for (var i = 0; i < genre_ids.length; i++) {
-        for (var j = 0; j < genres.length; j++) {
-          if (genre_ids[i] === genres[j].id) {
-            genre_container[k] = genres[j].name;
-            k++;
-          }
-        }
-      }
-      if (genre_container.length === 0) {
-        return;
-      } else if (genre_container.length === 1) {
-        return genre_container[0];
-      } else if (genre_container.length > 1) {
-        return genre_container[0] + "/" + genre_container[1];
-      }
-    },
     next() {
       this.$refs.slick.next();
     },
