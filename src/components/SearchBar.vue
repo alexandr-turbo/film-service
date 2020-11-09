@@ -1,45 +1,27 @@
 <template>
-  <!-- <div class="container"> -->
   <div class="centered">
     <router-link to="/">
-      <img
-        class="home-btn"
-        src="../../public/home.svg"
-      />
+      <img class="home-btn" src="../../public/home.svg" />
     </router-link>
-    <input class="input" v-model="query" @keyup.enter="send(query)">
+    <input class="input" v-model="query" @keyup.enter="send(query)" />
   </div>
-  <!-- </div> -->
 </template>
 <script>
 export default {
   data() {
     return {
-      query: '',
-    }
+      query: "",
+    };
   },
-  // watch: {
-  //   query () {
-  //     /*eslint-disable*/
-  //     console.log(this.query)
-  //     /*eslint-enable*/
-  //   }
-  // },
   methods: {
     send(query) {
       this.$router.push(`../../../../../search?${query}&page=1`);
-      this.query = ''
-      // this.$emit('query', query)
-    }
-  }
-}
+      this.query = "";
+    },
+  },
+};
 </script>
 <style scoped>
-/* .container {
-  padding: 2rem 4rem;
-  margin: 0 auto;
-  max-width: 80%;
-} */
 .centered {
   display: flex;
   justify-content: center;

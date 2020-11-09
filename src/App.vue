@@ -1,8 +1,6 @@
 <template>
   <div id="app">
-    <!-- <SearchBar @query="appQuery = $event" /> -->
     <SearchBar />
-    <!-- <router-view :query="appQuery" /> -->
     <router-view />
   </div>
 </template>
@@ -11,13 +9,13 @@ import SearchBar from "./components/SearchBar.vue";
 export default {
   data() {
     return {
-      appQuery: '',
-    }
+      appQuery: "",
+    };
   },
   components: {
-    SearchBar
+    SearchBar,
   },
-}
+};
 </script>
 <style>
 #app {
@@ -51,7 +49,7 @@ img.main-imgs {
   border-radius: 5px;
   height: 190px;
   width: auto;
-  filter: brightness(0.5);
+  filter: brightness(0.8);
 }
 img.main-imgs:hover {
   transform: scale(1.1);

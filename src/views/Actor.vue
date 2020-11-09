@@ -12,11 +12,7 @@
               class="actor-photo"
               :src="`https://image.tmdb.org/t/p/w92${actor.profile_path}`"
             />
-            <img
-              v-else
-              class="actor-photo"
-              src="../../public/no-image.png"
-            />
+            <img v-else class="actor-photo" src="../../public/no-image.png" />
             <div class="actor-description">
               <div>{{ actor.name }}</div>
               <div v-if="actor.birthday">
@@ -25,7 +21,9 @@
                 }}
                 y/o),
               </div>
-              <div v-if="actor.place_of_birth">in {{ actor.place_of_birth }}</div>
+              <div v-if="actor.place_of_birth">
+                in {{ actor.place_of_birth }}
+              </div>
               <div>
                 {{ getGender(actor.gender) }} | {{ actor.known_for_department }}
               </div>
@@ -64,7 +62,9 @@
                   <div>Title: {{ role.title }}</div>
                   <div>Original title: {{ role.original_title }}</div>
                   <div>Character: {{ role.character }}</div>
-                  <div>Genres: {{ getMovieGenres(genres, role.genre_ids) }}</div>
+                  <div>
+                    Genres: {{ getMovieGenres(genres, role.genre_ids) }}
+                  </div>
                   <div>Media type: {{ role.media_type }}</div>
                   <div>Release date: {{ role.release_date }}</div>
                   <div>Rating: {{ role.vote_average }}</div>
@@ -85,7 +85,7 @@
               name: 'movie',
               params: { movieID: crew.id, movieType: crew.media_type },
             }"
-            >
+          >
             <div :class="index % 2 === 0 ? 'lightgray' : 'lightblue'">
               <div :class="index % 2 === 0 ? 'main2' : 'main3'">
                 <img
@@ -96,7 +96,9 @@
                   <div>Title: {{ crew.title }}</div>
                   <div>Original title: {{ crew.original_title }}</div>
                   <div>Job: {{ crew.job }}</div>
-                  <div>Genres: {{ getMovieGenres(genres, crew.genre_ids) }}</div>
+                  <div>
+                    Genres: {{ getMovieGenres(genres, crew.genre_ids) }}
+                  </div>
                   <div>Department: {{ crew.department }}</div>
                   <div>Media type: {{ crew.media_type }}</div>
                   <div>Release date: {{ crew.release_date }}</div>
@@ -114,7 +116,7 @@
 
 <script>
 import axios from "axios";
-import movieGenresMixin from '@/mixins/movieGenresMixin';
+import movieGenresMixin from "@/mixins/movieGenresMixin";
 
 export default {
   data() {

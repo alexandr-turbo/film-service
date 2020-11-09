@@ -26,7 +26,7 @@
 <script>
 import axios from "axios";
 import Slick from "vue-slick";
-import movieGenresMixin from '@/mixins/movieGenresMixin';
+import movieGenresMixin from "@/mixins/movieGenresMixin";
 
 export default {
   data() {

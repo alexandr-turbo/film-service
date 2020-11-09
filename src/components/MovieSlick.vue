@@ -1,10 +1,10 @@
-<template id="movies-upcoming-template">
-  <div class="container" v-if="upcoming != null && genres != null">
+<template id="movie-slick-template">
+  <div class="container" v-if="type1 != null && genres != null">
     <h3 class="uppercase left-text">
-      upcoming
+      {{ type }}
     </h3>
     <slick class="slick" ref="slick" :options="slickOptions">
-      <div v-for="item in upcoming" :key="item.id">
+      <div class="cs" v-for="item in type1" :key="item.id">
         <router-link
           tag="button"
           class="button"
@@ -17,14 +17,15 @@
           }"
         >
           <img
+            :title="item.overview"
             class="main-imgs"
             :src="`https://image.tmdb.org/t/p/w92${item.poster_path}`"
           />
         </router-link>
-        <div>
+        <div class="text-justify">
           {{ item.original_title }}
         </div>
-        <div>
+        <div class="text-justify">
           {{ getMovieGenres(genres, item.genre_ids) }}
         </div>
       </div>
@@ -35,29 +36,71 @@
 <script>
 import axios from "axios";
 import Slick from "vue-slick";
-import movieGenresMixin from '@/mixins/movieGenresMixin';
+import movieGenresMixin from "@/mixins/movieGenresMixin";
 
 export default {
   data() {
     return {
-      upcoming: null,
       genres: null,
       slickOptions: {
         slidesToShow: 7,
         infinite: true,
         // autoplay: true,
         // autoplaySpeed: 500,
+        responsive: [
+          {
+            breakpoint: 1280,
+            settings: {
+              slidesToShow: 6,
+            }
+          },
+          {
+            breakpoint: 1024,
+            settings: {
+              slidesToShow: 5,
+            }
+          },
+          {
+            breakpoint: 850,
+            settings: {
+              slidesToShow: 4,
+            }
+          },
+          {
+            breakpoint: 684,
+            settings: {
+              slidesToShow: 3,
+            }
+          },
+          {
+            breakpoint: 540,
+            settings: {
+              slidesToShow: 2,
+            }
+          },
+          {
+            breakpoint: 400,
+            settings: {
+              slidesToShow: 1,
+            }
+          }
+          // You can unslick at a given breakpoint now by adding:
+          // settings: "unslick"
+          // instead of a settings object
+        ]
       },
+      type1: null,
     };
   },
+  props: ["type"],
   mixins: [movieGenresMixin],
   created() {
     axios
       .get(
-        "https://api.themoviedb.org/3/movie/upcoming?api_key=f943d3d10cc39fd734122d69efabbacb"
+        `https://api.themoviedb.org/3/movie/${this.type}?api_key=f943d3d10cc39fd734122d69efabbacb`
       )
       .then((response) => {
-        this.upcoming = response.data.results;
+        this.type1 = response.data.results;
       }),
       axios
         .get(
@@ -86,4 +129,12 @@ export default {
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  .cs {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+  }
+  .text-justify {
+    text-align: center;
+  }
 </style>

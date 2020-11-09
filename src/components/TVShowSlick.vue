@@ -1,10 +1,10 @@
-<template id="movies-popular-template">
-  <div class="container" v-if="popular != null && genres != null">
+<template id="tvshow-slick-template">
+  <div class="container" v-if="type1 != null && genres != null">
     <h3 class="uppercase left-text">
-      popular
+      {{ type }}
     </h3>
     <slick class="slick" ref="slick" :options="slickOptions">
-      <div v-for="item in popular" :key="item.id">
+      <div v-for="item in type1" :key="item.id">
         <router-link
           tag="button"
           class="button"
@@ -12,17 +12,18 @@
             name: 'movie',
             params: {
               movieID: item.id,
-              movieType: 'movie',
+              movieType: 'tv',
             },
           }"
         >
           <img
+            :title="item.overview"
             class="main-imgs"
             :src="`https://image.tmdb.org/t/p/w92${item.poster_path}`"
           />
         </router-link>
         <div>
-          {{ item.original_title }}
+          {{ item.original_name }}
         </div>
         <div>
           {{ getMovieGenres(genres, item.genre_ids) }}
@@ -35,12 +36,12 @@
 <script>
 import axios from "axios";
 import Slick from "vue-slick";
-import movieGenresMixin from '@/mixins/movieGenresMixin';
+import movieGenresMixin from "@/mixins/movieGenresMixin";
 
 export default {
   data() {
     return {
-      popular: null,
+      // airing_today: null,
       genres: null,
       slickOptions: {
         slidesToShow: 7,
@@ -48,20 +49,22 @@ export default {
         autoplay: true,
         autoplaySpeed: 500,
       },
+      type1: null,
     };
   },
+  props: ["type"],
   mixins: [movieGenresMixin],
   created() {
     axios
       .get(
-        "https://api.themoviedb.org/3/movie/popular?api_key=f943d3d10cc39fd734122d69efabbacb"
+        `https://api.themoviedb.org/3/tv/${this.type}?api_key=f943d3d10cc39fd734122d69efabbacb`
       )
       .then((response) => {
-        this.popular = response.data.results;
+        this.type1 = response.data.results;
       }),
       axios
         .get(
-          "https://api.themoviedb.org/3/genre/movie/list?api_key=f943d3d10cc39fd734122d69efabbacb"
+          "https://api.themoviedb.org/3/genre/tv/list?api_key=f943d3d10cc39fd734122d69efabbacb"
         )
         .then((response) => {
           this.genres = response.data.genres;
@@ -85,5 +88,4 @@ export default {
 };
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-</style>
+<style scoped></style>

@@ -2,49 +2,52 @@
   <div class="movie">
     <div
       v-if="
-        currentmovie != null &&
-          genres != null &&
-          cast != null &&
-          trailers != null
+        currentmovie &&
+          genres &&
+          cast &&
+          trailers
       "
     >
       <img
+        v-if="currentmovie.backdrop_path"
         class="upper-imgs"
         :src="`https://image.tmdb.org/t/p/w1280${currentmovie.backdrop_path}`"
       />
       <div class="container">
-        <div class="uppercase left-text">summary</div>
-        <div>{{ currentmovie.overview }}</div>
-        <div class="uppercase left-text">cast</div>
-        <slick class="slick" ref="slick" :options="slickOptions_cast">
-          <div v-for="item in cast" :key="item.id">
-            <router-link :to="{ name: 'actor', params: { actorID: item.id } }">
-              <img
-                v-if="item.profile_path && item.profile_path !== ''"
-                class="actor-image"
-                :src="`https://image.tmdb.org/t/p/w92${item.profile_path}`"
-              />
-              <img
-                v-else
-                class="actor-image"
-                src="../../public/no-image.png"
-              />
-            </router-link>
-            <h4 class="actor-name">{{ item.name }}</h4>
-          </div>
-        </slick>
-        <div class="uppercase left-text">trailers</div>
-        <slick class="slick" ref="slick" :options="slickOptions_trailers">
-          <div v-for="item in trailers" v-bind:key="item.id">
-            <div class="iframe">
-              <iframe
-                class="trailer"
-                :src="`https://www.youtube.com/embed/${item.key}`"
-              ></iframe>
+        <div v-if="currentmovie.overview">
+          <div class="uppercase left-text">summary</div>
+          <div>{{ currentmovie.overview }}</div>
+        </div>
+        <div v-if="cast.length">
+          <div class="uppercase left-text">cast</div>
+          <slick class="slick" ref="slick" :options="slickOptions_cast">
+            <div v-for="item in cast" :key="item.id">
+              <router-link :to="{ name: 'actor', params: { actorID: item.id } }">
+                <img
+                  v-if="item.profile_path && item.profile_path !== ''"
+                  class="actor-image"
+                  :src="`https://image.tmdb.org/t/p/w92${item.profile_path}`"
+                />
+                <img v-else class="actor-image" src="../../public/no-image.png" />
+              </router-link>
+              <h4 class="actor-name">{{ item.name }}</h4>
             </div>
-            <h4 class="trailer-name">{{ item.name }}</h4>
-          </div>
-        </slick>
+          </slick>
+        </div>
+        <div v-if="trailers.length">
+          <div class="uppercase left-text">trailers</div>
+          <slick class="slick" ref="slick" :options="slickOptions_trailers">
+            <div v-for="item in trailers" v-bind:key="item.id">
+              <div class="iframe">
+                <iframe
+                  class="trailer"
+                  :src="`https://www.youtube.com/embed/${item.key}`"
+                ></iframe>
+              </div>
+              <h4 class="trailer-name">{{ item.name }}</h4>
+            </div>
+          </slick>
+        </div>
       </div>
     </div>
   </div>
