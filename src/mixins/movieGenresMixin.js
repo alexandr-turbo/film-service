@@ -1,6 +1,8 @@
+import axios from "axios";
+
 export default {
   methods: {
-    getMovieGenres(genres, genre_ids) {
+    getCurrentMediaTypeGenresNames(genres, genre_ids) {
       if (genre_ids) {
         var genre_container = [];
         var k = 0;
@@ -21,5 +23,16 @@ export default {
         }
       }
     },
+    async getCurrentMediaTypeGenres(media_type) {
+      let genres1 = []
+      await axios
+      .get(
+        `https://api.themoviedb.org/3/genre/${media_type}/list?api_key=f943d3d10cc39fd734122d69efabbacb`
+      )
+      .then((response) => {
+        genres1 = response.data.genres;
+      });
+      return genres1
+    }
   }
 }

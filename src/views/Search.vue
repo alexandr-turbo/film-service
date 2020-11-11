@@ -33,7 +33,11 @@
           v-if="movie.genre_ids && movie.genre_ids !== ''"
           class="movie-title"
         >
-          {{ getMovieGenres(genres, movie.genre_ids) }}
+          {{
+            movie.media_type === "movie"
+              ? getCurrentMediaTypeGenresNames(movieGenres, movie.genre_ids)
+              : getCurrentMediaTypeGenresNames(tvshowGenres, movie.genre_ids)
+          }}
         </div>
         <div v-else class="movie-title">Genres are not provided</div>
       </router-link>
@@ -68,15 +72,11 @@ export default {
     return {
       searchResultPage: {},
       filteredSearchResults: {},
-      genres: null,
+      movieGenres: null,
+      tvshowGenres: null,
     };
   },
   mixins: [movieGenresMixin],
-  // updated() {
-  //   let newRoute = this.$route.fullPath.split('?')[1].split('&')[0];
-  //   let newPage = this.$route.fullPath.split('=')[1];
-  //   this.getFirstPageSearchResults(newRoute, newPage)
-  // },
   watch: {
     $route() {
       let newRoute = this.$route.fullPath.split("?")[1].split("&")[0];
@@ -84,17 +84,16 @@ export default {
       this.getFirstPageSearchResults(newRoute, newPage);
     },
   },
-  created() {
-    axios
-      .get(
-        "https://api.themoviedb.org/3/genre/movie/list?api_key=f943d3d10cc39fd734122d69efabbacb"
-      )
-      .then((response) => {
-        this.genres = response.data.genres;
-      });
+  async created() {
     let newRoute = this.$route.fullPath.split("?")[1].split("&")[0];
     let newPage = this.$route.fullPath.split("=")[1];
     this.getFirstPageSearchResults(newRoute, newPage);
+    // this.movieGenres = await this.getCurrentMediaTypeGenres("movie");
+    // console.log(this.movieGenres)
+    // this.tvshowGenres = await this.getCurrentMediaTypeGenres("tv");
+    // console.log(this.tvshowGenres)
+    this.movieGenres = this.$store.state.MovieGenres
+    this.tvshowGenres = this.$store.state.TVShowGenres
   },
   methods: {
     getFirstPageSearchResults(query, page) {

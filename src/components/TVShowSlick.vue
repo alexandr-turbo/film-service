@@ -1,33 +1,11 @@
 <template id="tvshow-slick-template">
-  <div class="container" v-if="type1 != null && genres != null">
+  <div class="container" v-if="type1 != null">
     <h3 class="uppercase left-text">
       {{ type }}
     </h3>
     <slick class="slick" ref="slick" :options="slickOptions">
       <div v-for="item in type1" :key="item.id">
-        <router-link
-          tag="button"
-          class="button"
-          :to="{
-            name: 'movie',
-            params: {
-              movieID: item.id,
-              movieType: 'tv',
-            },
-          }"
-        >
-          <img
-            :title="item.overview"
-            class="main-imgs"
-            :src="`https://image.tmdb.org/t/p/w92${item.poster_path}`"
-          />
-        </router-link>
-        <div>
-          {{ item.original_name }}
-        </div>
-        <div>
-          {{ getMovieGenres(genres, item.genre_ids) }}
-        </div>
+        <TVShowCover :item="item" :genres="tvshowGenres" />
       </div>
     </slick>
   </div>
@@ -37,24 +15,68 @@
 import axios from "axios";
 import Slick from "vue-slick";
 import movieGenresMixin from "@/mixins/movieGenresMixin";
+import TVShowCover from "../components/TVShowCover.vue";
 
 export default {
   data() {
     return {
-      // airing_today: null,
-      genres: null,
+      tvshowGenres: null,
       slickOptions: {
         slidesToShow: 7,
         infinite: true,
-        autoplay: true,
-        autoplaySpeed: 500,
+        // autoplay: true,
+        // autoplaySpeed: 500,
+        responsive: [
+          {
+            breakpoint: 1280,
+            settings: {
+              slidesToShow: 6,
+            }
+          },
+          {
+            breakpoint: 1024,
+            settings: {
+              slidesToShow: 5,
+            }
+          },
+          {
+            breakpoint: 850,
+            settings: {
+              slidesToShow: 4,
+            }
+          },
+          {
+            breakpoint: 684,
+            settings: {
+              slidesToShow: 3,
+            }
+          },
+          {
+            breakpoint: 540,
+            settings: {
+              slidesToShow: 2,
+            }
+          },
+          {
+            breakpoint: 400,
+            settings: {
+              slidesToShow: 1,
+            }
+          }
+          // You can unslick at a given breakpoint now by adding:
+          // settings: "unslick"
+          // instead of a settings object
+        ]
       },
       type1: null,
     };
   },
+  components: {
+    TVShowCover, Slick,
+  },
   props: ["type"],
   mixins: [movieGenresMixin],
-  created() {
+  async created() {
     axios
       .get(
         `https://api.themoviedb.org/3/tv/${this.type}?api_key=f943d3d10cc39fd734122d69efabbacb`
@@ -62,16 +84,8 @@ export default {
       .then((response) => {
         this.type1 = response.data.results;
       }),
-      axios
-        .get(
-          "https://api.themoviedb.org/3/genre/tv/list?api_key=f943d3d10cc39fd734122d69efabbacb"
-        )
-        .then((response) => {
-          this.genres = response.data.genres;
-        });
-  },
-  components: {
-    Slick,
+    // this.tvshowGenres = await this.getCurrentMediaTypeGenres("tv");
+    this.tvshowGenres = this.$store.state.TVShowGenres
   },
   methods: {
     next() {

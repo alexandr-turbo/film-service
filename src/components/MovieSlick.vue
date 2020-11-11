@@ -1,33 +1,11 @@
 <template id="movie-slick-template">
-  <div class="container" v-if="type1 != null && genres != null">
+  <div class="container" v-if="type1 != null">
     <h3 class="uppercase left-text">
       {{ type }}
     </h3>
     <slick class="slick" ref="slick" :options="slickOptions">
       <div class="cs" v-for="item in type1" :key="item.id">
-        <router-link
-          tag="button"
-          class="button"
-          :to="{
-            name: 'movie',
-            params: {
-              movieID: item.id,
-              movieType: 'movie',
-            },
-          }"
-        >
-          <img
-            :title="item.overview"
-            class="main-imgs"
-            :src="`https://image.tmdb.org/t/p/w92${item.poster_path}`"
-          />
-        </router-link>
-        <div class="text-justify">
-          {{ item.original_title }}
-        </div>
-        <div class="text-justify">
-          {{ getMovieGenres(genres, item.genre_ids) }}
-        </div>
+        <MovieCover :item="item" :genres="movieGenres" />
       </div>
     </slick>
   </div>
@@ -37,11 +15,12 @@
 import axios from "axios";
 import Slick from "vue-slick";
 import movieGenresMixin from "@/mixins/movieGenresMixin";
+import MovieCover from "../components/MovieCover.vue";
 
 export default {
   data() {
     return {
-      genres: null,
+      movieGenres: null,
       slickOptions: {
         slidesToShow: 7,
         infinite: true,
@@ -92,26 +71,21 @@ export default {
       type1: null,
     };
   },
+  components: {
+   MovieCover, Slick, 
+  },
   props: ["type"],
   mixins: [movieGenresMixin],
-  created() {
+  async created() {
     axios
       .get(
         `https://api.themoviedb.org/3/movie/${this.type}?api_key=f943d3d10cc39fd734122d69efabbacb`
       )
       .then((response) => {
         this.type1 = response.data.results;
-      }),
-      axios
-        .get(
-          "https://api.themoviedb.org/3/genre/movie/list?api_key=f943d3d10cc39fd734122d69efabbacb"
-        )
-        .then((response) => {
-          this.genres = response.data.genres;
-        });
-  },
-  components: {
-    Slick,
+      })
+    // this.movieGenres = await this.getCurrentMediaTypeGenres("movie");
+    this.movieGenres = this.$store.state.MovieGenres
   },
   methods: {
     next() {

@@ -63,7 +63,18 @@
                   <div>Original title: {{ role.original_title }}</div>
                   <div>Character: {{ role.character }}</div>
                   <div>
-                    Genres: {{ getMovieGenres(genres, role.genre_ids) }}
+                    Genres:
+                    {{
+                      role.media_type === "movie"
+                        ? getCurrentMediaTypeGenresNames(
+                            movieGenres,
+                            role.genre_ids
+                          )
+                        : getCurrentMediaTypeGenresNames(
+                            tvshowGenres,
+                            role.genre_ids
+                          )
+                    }}
                   </div>
                   <div>Media type: {{ role.media_type }}</div>
                   <div>Release date: {{ role.release_date }}</div>
@@ -89,15 +100,34 @@
             <div :class="index % 2 === 0 ? 'lightgray' : 'lightblue'">
               <div :class="index % 2 === 0 ? 'main2' : 'main3'">
                 <img
+                  v-if="crew.poster_path && crew.poster_path !== ''"
                   class="movie-image"
+                  :class="index % 2 === 0 ? 'left-image' : 'right-image'"
                   :src="`https://image.tmdb.org/t/p/w1280${crew.poster_path}`"
+                />
+                <img
+                  v-else
+                  class="movie-image"
+                  :class="index % 2 === 0 ? 'left-image' : 'right-image'"
+                  src="../../public/no-image.png"
                 />
                 <div class="actor-description">
                   <div>Title: {{ crew.title }}</div>
                   <div>Original title: {{ crew.original_title }}</div>
                   <div>Job: {{ crew.job }}</div>
                   <div>
-                    Genres: {{ getMovieGenres(genres, crew.genre_ids) }}
+                    Genres:
+                    {{
+                      crew.media_type === "movie"
+                        ? getCurrentMediaTypeGenresNames(
+                            movieGenres,
+                            crew.genre_ids
+                          )
+                        : getCurrentMediaTypeGenresNames(
+                            tvshowGenres,
+                            crew.genre_ids
+                          )
+                    }}
                   </div>
                   <div>Department: {{ crew.department }}</div>
                   <div>Media type: {{ crew.media_type }}</div>
@@ -122,14 +152,15 @@ export default {
   data() {
     return {
       actor: null,
-      genres: null,
+      movieGenres: null,
+      tvshowGenres: null,
       roles: [],
       crew: [],
     };
   },
   // props: ['actorID', 'person'],
   mixins: [movieGenresMixin],
-  created() {
+  async created() {
     // axios.get(`https://api.themoviedb.org/3/person${this.actorID}?api_key=f943d3d10cc39fd734122d69efabbacb`)
     axios
       .get(
@@ -149,14 +180,11 @@ export default {
           if (response.data.crew) {
             this.crew = response.data.crew;
           }
-        }),
-      axios
-        .get(
-          "https://api.themoviedb.org/3/genre/movie/list?api_key=f943d3d10cc39fd734122d69efabbacb"
-        )
-        .then((response) => {
-          this.genres = response.data.genres;
         });
+    // this.movieGenres = await this.getCurrentMediaTypeGenres("movie");
+    // this.tvshowGenres = await this.getCurrentMediaTypeGenres("tv");
+    this.movieGenres = this.$store.state.MovieGenres
+    this.tvshowGenres = this.$store.state.TVShowGenres
   },
   methods: {
     getGender(gender) {

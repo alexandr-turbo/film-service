@@ -3,7 +3,6 @@
     <div
       v-if="
         currentmovie &&
-          genres &&
           cast &&
           trailers
       "
@@ -14,6 +13,9 @@
         :src="`https://image.tmdb.org/t/p/w1280${currentmovie.backdrop_path}`"
       />
       <div class="container">
+        <div>
+          Genres: {{genres}}
+        </div>
         <div v-if="currentmovie.overview">
           <div class="uppercase left-text">summary</div>
           <div>{{ currentmovie.overview }}</div>
@@ -59,8 +61,8 @@ import Slick from "vue-slick";
 export default {
   data() {
     return {
-      currentmovie: null,
       genres: null,
+      currentmovie: null,
       cast: null,
       trailers: null,
       slickOptions_cast: {
@@ -78,40 +80,29 @@ export default {
     };
   },
   props: ["movieID", "movieType"],
-  created() {
+  async created() {
     axios
       .get(
         `https://api.themoviedb.org/3/${this.movieType}/${this.movieID}?api_key=f943d3d10cc39fd734122d69efabbacb`
       )
       .then((response) => {
         this.currentmovie = response.data;
-        /* eslint-disable */
-        // console.log(this.movieID)
-        // console.log(this.movieType)
-        // console.log(this.currentmovie)
-        /* eslint-enable */
+        this.genres = this.currentmovie.genres.map(el => el.name).join('/')
       }),
-      axios
-        .get(
-          `https://api.themoviedb.org/3/${this.movieType}/${this.movieID}/credits?api_key=f943d3d10cc39fd734122d69efabbacb`
-        )
-        .then((response) => {
-          this.cast = response.data.cast;
-        }),
-      axios
-        .get(
-          `https://api.themoviedb.org/3/${this.movieType}/${this.movieID}/videos?api_key=f943d3d10cc39fd734122d69efabbacb`
-        )
-        .then((response) => {
-          this.trailers = response.data.results;
-        }),
-      axios
-        .get(
-          `https://api.themoviedb.org/3/genre/${this.movieType}/list?api_key=f943d3d10cc39fd734122d69efabbacb`
-        )
-        .then((response) => {
-          this.genres = response.data.genres;
-        });
+    axios
+      .get(
+        `https://api.themoviedb.org/3/${this.movieType}/${this.movieID}/credits?api_key=f943d3d10cc39fd734122d69efabbacb`
+      )
+      .then((response) => {
+        this.cast = response.data.cast;
+      }),
+    axios
+      .get(
+        `https://api.themoviedb.org/3/${this.movieType}/${this.movieID}/videos?api_key=f943d3d10cc39fd734122d69efabbacb`
+      )
+      .then((response) => {
+        this.trailers = response.data.results;
+      })
   },
   components: {
     Slick,

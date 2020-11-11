@@ -1,5 +1,5 @@
 <template id="tvshows-upper-slick-template">
-  <div class="upper-slick" v-if="popular != null && genres != null">
+  <div class="upper-slick" v-if="popular != null && tvshowGenres != null">
     <slick class="slick" ref="slick" :options="slickOptionsUpper">
       <div v-for="item in popular" v-bind:key="item.id">
         <router-link
@@ -13,7 +13,7 @@
         <div class="upper-text white-text">
           <h3 class="uppercase">popular</h3>
           <h4>{{ item.original_name }}</h4>
-          <h5>{{ getMovieGenres(genres, item.genre_ids) }}</h5>
+          <h5>{{ getCurrentMediaTypeGenresNames(tvshowGenres, item.genre_ids) }}</h5>
         </div>
       </div>
     </slick>
@@ -29,7 +29,7 @@ export default {
   data() {
     return {
       popular: null,
-      genres: null,
+      tvshowGenres: null,
       slickOptionsUpper: {
         slidesToShow: 1,
         infinite: true,
@@ -41,7 +41,7 @@ export default {
     };
   },
   mixins: [movieGenresMixin],
-  created() {
+  async created() {
     axios
       .get(
         "https://api.themoviedb.org/3/tv/popular?api_key=f943d3d10cc39fd734122d69efabbacb"
@@ -49,13 +49,8 @@ export default {
       .then((response) => {
         this.popular = response.data.results;
       }),
-      axios
-        .get(
-          "https://api.themoviedb.org/3/genre/tv/list?api_key=f943d3d10cc39fd734122d69efabbacb"
-        )
-        .then((response) => {
-          this.genres = response.data.genres;
-        });
+    // this.tvshowGenres = await this.getCurrentMediaTypeGenres("tv");
+    this.tvshowGenres = this.$store.state.TVShowGenres
   },
   components: {
     Slick,

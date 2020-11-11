@@ -15,6 +15,10 @@ export default {
   components: {
     SearchBar,
   },
+  created() {
+    this.$store.dispatch('loadMovieGenres')
+    this.$store.dispatch('loadTVShowsGenres')
+  }
 };
 </script>
 <style>
