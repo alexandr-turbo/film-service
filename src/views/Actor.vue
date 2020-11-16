@@ -2,7 +2,8 @@
   <div class="actor">
     <div v-if="actor !== null">
       <div class="container">
-        <div
+        <ActorInfo :actor="actor" />
+        <!-- <div
           class="margin2"
           :class="getGender(actor.gender) === 'Male' ? 'blue' : 'pink'"
         >
@@ -31,10 +32,13 @@
           </div>
           <div class="title">Biography</div>
           <div class="justify">{{ actor.biography }}</div>
-        </div>
+        </div> -->
         <template v-if="roles.length">
           <div class="title">Cast</div>
-          <router-link
+          <div v-for="(role, index) in roles" :key="role.id">
+            <ActorCastCover :role="role" :index="index" :movieGenres="movieGenres" :tvshowGenres="tvshowGenres"/>
+          </div>
+          <!-- <router-link
             tag="div"
             class="margin"
             v-for="(role, index) in roles"
@@ -83,11 +87,14 @@
               </div>
               <div class="justify">Overview: {{ role.overview }}</div>
             </div>
-          </router-link>
+          </router-link> -->
         </template>
         <template v-if="crew.length">
           <div class="title">Crew</div>
-          <router-link
+          <div v-for="(crew, index) in crew" :key="crew.id">
+            <ActorCrewCover :crew="crew" :index="index" :movieGenres="movieGenres" :tvshowGenres="tvshowGenres"/>
+          </div>
+          <!-- <router-link
             tag="div"
             class="margin"
             v-for="(crew, index) in crew"
@@ -137,7 +144,7 @@
               </div>
               <div class="justify">Overview: {{ crew.overview }}</div>
             </div>
-          </router-link>
+          </router-link> -->
         </template>
       </div>
     </div>
@@ -147,6 +154,9 @@
 <script>
 import axios from "axios";
 import movieGenresMixin from "@/mixins/movieGenresMixin";
+import ActorInfo from "../components/ActorInfo.vue";
+import ActorCastCover from "../components/ActorCastCover.vue";
+import ActorCrewCover from "../components/ActorCrewCover.vue";
 
 export default {
   data() {
@@ -160,6 +170,9 @@ export default {
   },
   // props: ['actorID', 'person'],
   mixins: [movieGenresMixin],
+  components: {
+    ActorInfo, ActorCastCover, ActorCrewCover
+  },
   async created() {
     // axios.get(`https://api.themoviedb.org/3/person${this.actorID}?api_key=f943d3d10cc39fd734122d69efabbacb`)
     axios
@@ -169,63 +182,63 @@ export default {
       .then((response) => {
         this.actor = response.data;
       }),
-      axios
-        .get(
-          `https://api.themoviedb.org/3${this.$route.path}/combined_credits?api_key=f943d3d10cc39fd734122d69efabbacb`
-        )
-        .then((response) => {
-          if (response.data.cast) {
-            this.roles = response.data.cast;
-          }
-          if (response.data.crew) {
-            this.crew = response.data.crew;
-          }
-        });
+    axios
+      .get(
+        `https://api.themoviedb.org/3${this.$route.path}/combined_credits?api_key=f943d3d10cc39fd734122d69efabbacb`
+      )
+      .then((response) => {
+        if (response.data.cast) {
+          this.roles = response.data.cast;
+        }
+        if (response.data.crew) {
+          this.crew = response.data.crew;
+        }
+      });
     // this.movieGenres = await this.getCurrentMediaTypeGenres("movie");
     // this.tvshowGenres = await this.getCurrentMediaTypeGenres("tv");
     this.movieGenres = this.$store.state.MovieGenres
     this.tvshowGenres = this.$store.state.TVShowGenres
   },
-  methods: {
-    getGender(gender) {
-      return gender === 1 ? "Female" : "Male";
-    },
-    getAge(birthdayDate) {
-      var now = new Date();
-      var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-      var dateOfBirthday = new Date(birthdayDate);
-      var dateOfBirthdayThisYear = new Date(
-        today.getFullYear(),
-        dateOfBirthday.getMonth(),
-        dateOfBirthday.getDate()
-      );
-      var age;
-      age = today.getFullYear() - dateOfBirthday.getFullYear();
-      if (today < dateOfBirthdayThisYear) {
-        age = age - 1;
-      }
-      return age;
-    },
-    getPrettyDate(currentDate) {
-      let arr = currentDate.split("-");
-      let months = [
-        "Jan",
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-        "Oct",
-        "Nov",
-        "Dec",
-      ];
-      var prettyDate = months[+arr[1] - 1] + " " + arr[2] + ", " + arr[0];
-      return prettyDate;
-    },
-  },
+  // methods: {
+  //   getGender(gender) {
+  //     return gender === 1 ? "Female" : "Male";
+  //   },
+  //   getAge(birthdayDate) {
+  //     var now = new Date();
+  //     var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  //     var dateOfBirthday = new Date(birthdayDate);
+  //     var dateOfBirthdayThisYear = new Date(
+  //       today.getFullYear(),
+  //       dateOfBirthday.getMonth(),
+  //       dateOfBirthday.getDate()
+  //     );
+  //     var age;
+  //     age = today.getFullYear() - dateOfBirthday.getFullYear();
+  //     if (today < dateOfBirthdayThisYear) {
+  //       age = age - 1;
+  //     }
+  //     return age;
+  //   },
+  //   getPrettyDate(currentDate) {
+  //     let arr = currentDate.split("-");
+  //     let months = [
+  //       "Jan",
+  //       "Feb",
+  //       "Mar",
+  //       "Apr",
+  //       "May",
+  //       "Jun",
+  //       "Jul",
+  //       "Aug",
+  //       "Sep",
+  //       "Oct",
+  //       "Nov",
+  //       "Dec",
+  //     ];
+  //     var prettyDate = months[+arr[1] - 1] + " " + arr[2] + ", " + arr[0];
+  //     return prettyDate;
+  //   },
+  // },
 };
 </script>
 

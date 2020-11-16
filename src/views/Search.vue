@@ -1,7 +1,10 @@
 <template>
   <div class="container">
     <div class="flex" v-if="searchResultPage.total_results">
-      <router-link
+      <div class="flex-col" v-for="movie in searchResultPage.results" :key="movie.id">
+        <SearchCover :movie="movie" :movieGenres="movieGenres" :tvshowGenres="tvshowGenres"/>
+      </div>
+      <!-- <router-link
         tag="div"
         class="flex-col"
         v-for="movie in searchResultPage.results"
@@ -40,7 +43,7 @@
           }}
         </div>
         <div v-else class="movie-title">Genres are not provided</div>
-      </router-link>
+      </router-link> -->
     </div>
     <div class="center" v-else>
       Nothing found
@@ -66,6 +69,7 @@
 <script>
 import axios from "axios";
 import movieGenresMixin from "@/mixins/movieGenresMixin";
+import SearchCover from "../components/SearchCover.vue";
 
 export default {
   data() {
@@ -75,6 +79,9 @@ export default {
       movieGenres: null,
       tvshowGenres: null,
     };
+  },
+  components: {
+    SearchCover
   },
   mixins: [movieGenresMixin],
   watch: {
