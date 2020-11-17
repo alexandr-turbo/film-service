@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="cc">
     <router-link
       tag="button"
       class="button"
@@ -44,5 +44,10 @@ export default {
   }
   .text-justify {
     text-align: center;
+  }
+  .cc {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 </style>
