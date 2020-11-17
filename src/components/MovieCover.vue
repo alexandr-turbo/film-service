@@ -46,7 +46,6 @@ export default {
     text-align: center;
   }
   .cc {
-    
     display: flex;
     flex-direction: column;
     align-items: center;
