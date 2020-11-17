@@ -1,7 +1,7 @@
 <template>
   <div class="centered">
     <router-link to="/">
-      <img class="home-btn" src="../../public/home.svg" />
+      <img class="home-btn" src="../../public/home.png" />
     </router-link>
     <input class="input" v-model="query" @keyup.enter="send(query)" />
   </div>
