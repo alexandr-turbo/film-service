@@ -10,7 +10,7 @@
       <img
         v-if="currentmovie.backdrop_path"
         class="upper-imgs"
-        :src="`https://image.tmdb.org/t/p/w1280${currentmovie.backdrop_path}`"
+        :src="`${globalImgAddress}1280${currentmovie.backdrop_path}`"
       />
       <div class="container">
         <div>
@@ -30,9 +30,9 @@
                   v-if="item.profile_path && item.profile_path !== ''"
                   class="actor-image"
                   :title="item.bio"
-                  :src="`https://image.tmdb.org/t/p/w92${item.profile_path}`"
+                  :src="`${globalImgAddress}92${item.profile_path}`"
                 />
-                <img v-else class="actor-image" src="../../public/no-image.png" />
+                <img v-else class="actor-image" src="@/assets/no-image.png" />
               </router-link>
               <h4 class="actor-name">{{ item.name }}</h4>
             </div>

@@ -35,9 +35,11 @@ button.button {
   margin: 10px auto;
 }
 button.pretty {
-  padding: 10px 20px;
+  padding: 10px 50px;
   border-radius: 10px;
   outline: none;
+  background: none;
+  margin: 0 10px;
 }
 .fixed {
   position: fixed;

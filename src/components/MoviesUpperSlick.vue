@@ -10,7 +10,7 @@
         >
           <img
             class="upper-imgs"
-            :src="`https://image.tmdb.org/t/p/w1280${item.backdrop_path}`"
+            :src="`${globalImgAddress}1280${item.backdrop_path}`"
           />
         </router-link>
         <div class="upper-text white-text">
@@ -26,7 +26,7 @@
 <script>
 import axios from "axios";
 import Slick from "vue-slick";
-import movieGenresMixin from "@/mixins/movieGenresMixin";
+// import movieGenresMixin from "@/mixins/movieGenresMixin";
 
 export default {
   data() {
@@ -43,7 +43,7 @@ export default {
       },
     };
   },
-  mixins: [movieGenresMixin],
+  // mixins: [movieGenresMixin],
   async created() {
     axios
       .get(

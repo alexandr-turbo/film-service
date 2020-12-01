@@ -14,7 +14,7 @@
 <script>
 import axios from "axios";
 import Slick from "vue-slick";
-import movieGenresMixin from "@/mixins/movieGenresMixin";
+// import movieGenresMixin from "@/mixins/movieGenresMixin";
 import MovieCover from "../components/MovieCover.vue";
 
 export default {
@@ -75,7 +75,7 @@ export default {
    MovieCover, Slick, 
   },
   props: ["type"],
-  mixins: [movieGenresMixin],
+  // mixins: [movieGenresMixin],
   async created() {
     axios
       .get(

@@ -14,7 +14,7 @@
       <img
         :title="item.overview"
         class="main-imgs"
-        :src="`https://image.tmdb.org/t/p/w92${item.poster_path}`"
+        :src="`${globalImgAddress}92${item.poster_path}`"
       />
     </router-link>
     <div class="text-justify">
@@ -28,11 +28,11 @@
 <script>
 // import axios from "axios";
 // import Slick from "vue-slick";
-import movieGenresMixin from "@/mixins/movieGenresMixin";
+// import movieGenresMixin from "@/mixins/movieGenresMixin";
 
 export default {
   props: ["genres", "item"],
-  mixins: [movieGenresMixin],
+  // mixins: [movieGenresMixin],
 };
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->

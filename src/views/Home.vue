@@ -3,13 +3,13 @@
     <component :is="currentView"></component>
     <div class="center">
       <button
-        class="pretty"
+        class="pretty v2"
         @click="switchView('MoviesUpperSlick', 'MoviesSlicks')"
       >
         Movies
       </button>
       <button
-        class="pretty"
+        class="pretty v2"
         @click="switchView('TVShowsUpperSlick', 'TVShowsSlicks')"
       >
         TV Shows
@@ -57,5 +57,11 @@ export default {
 .center {
   display: flex;
   justify-content: center;
+  margin-top: 100px;
+}
+.v2 {
+  padding: 30px 200px !important;
+  font-size: 32px;
+  /* cursor: pointer; */
 }
 </style>

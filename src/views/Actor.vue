@@ -11,9 +11,9 @@
             <img
               v-if="actor.profile_path && actor.profile_path !== ''"
               class="actor-photo"
-              :src="`https://image.tmdb.org/t/p/w92${actor.profile_path}`"
+              :src="`${globalImgAddress}92${actor.profile_path}`"
             />
-            <img v-else class="actor-photo" src="../../public/no-image.png" />
+            <img v-else class="actor-photo" src="@/assets/no-image.png" />
             <div class="actor-description">
               <div>{{ actor.name }}</div>
               <div v-if="actor.birthday">
@@ -54,13 +54,13 @@
                   v-if="role.poster_path && role.poster_path !== ''"
                   class="movie-image"
                   :class="index % 2 === 0 ? 'left-image' : 'right-image'"
-                  :src="`https://image.tmdb.org/t/p/w1280${role.poster_path}`"
+                  :src="`${globalImgAddress}1280${role.poster_path}`"
                 />
                 <img
                   v-else
                   class="movie-image"
                   :class="index % 2 === 0 ? 'left-image' : 'right-image'"
-                  src="../../public/no-image.png"
+                  src="@/assets/no-image.png"
                 />
                 <div class="actor-description">
                   <div>Title: {{ role.title }}</div>
@@ -110,13 +110,13 @@
                   v-if="crew.poster_path && crew.poster_path !== ''"
                   class="movie-image"
                   :class="index % 2 === 0 ? 'left-image' : 'right-image'"
-                  :src="`https://image.tmdb.org/t/p/w1280${crew.poster_path}`"
+                  :src="`${globalImgAddress}1280${crew.poster_path}`"
                 />
                 <img
                   v-else
                   class="movie-image"
                   :class="index % 2 === 0 ? 'left-image' : 'right-image'"
-                  src="../../public/no-image.png"
+                  src="@/assets/no-image.png"
                 />
                 <div class="actor-description">
                   <div>Title: {{ crew.title }}</div>
@@ -153,7 +153,7 @@
 
 <script>
 import axios from "axios";
-import movieGenresMixin from "@/mixins/movieGenresMixin";
+// import movieGenresMixin from "@/mixins/movieGenresMixin";
 import ActorInfo from "../components/ActorInfo.vue";
 import ActorCastCover from "../components/ActorCastCover.vue";
 import ActorCrewCover from "../components/ActorCrewCover.vue";
@@ -169,7 +169,7 @@ export default {
     };
   },
   // props: ['actorID', 'person'],
-  mixins: [movieGenresMixin],
+  // // mixins: [movieGenresMixin],
   components: {
     ActorInfo, ActorCastCover, ActorCrewCover
   },

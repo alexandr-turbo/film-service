@@ -7,7 +7,7 @@ const routes = [
   {
     path: '/',
     name: 'home',
-    component: () => import(/* webpackChunkName: "about" */ '../views/Home.vue'),
+    component: () => import(/* webpackChunkName: "home" */ '../views/Home.vue'),
     // children: [
     //   {
     //     path: '/details/:movieType/:movieID',
@@ -30,25 +30,25 @@ const routes = [
   {
     path: '/details/:movieType/:movieID',
     name: 'movie',
-    component: () => import(/* webpackChunkName: "about" */ '../views/Movie.vue'),
+    component: () => import(/* webpackChunkName: "movie" */ '../views/Movie.vue'),
     props: true
   },
   {
     path: '/person/:actorID',
     name: 'actor',
-    component: () => import(/* webpackChunkName: "about" */ '../views/Actor.vue')
+    component: () => import(/* webpackChunkName: "person" */ '../views/Actor.vue')
   },
   {
     path: '/search',
     name: 'search',
-    component: () => import(/* webpackChunkName: "about" */ '../views/Search.vue'),
+    component: () => import(/* webpackChunkName: "search" */ '../views/Search.vue'),
     props: true
   },
-  {
-    path: '/search/:query',
-    name: 'search',
-    component: () => import(/* webpackChunkName: "about" */ '../views/Search.vue')
-  }
+  // {
+  //   path: '/search/:query',
+  //   name: 'search',
+  //   component: () => import(/* webpackChunkName: "about" */ '../views/Search.vue')
+  // }
 ]
 
 const router = new VueRouter({

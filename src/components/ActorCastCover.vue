@@ -14,13 +14,13 @@
             v-if="role.poster_path && role.poster_path !== ''"
             class="movie-image"
             :class="index % 2 === 0 ? 'left-image' : 'right-image'"
-            :src="`https://image.tmdb.org/t/p/w1280${role.poster_path}`"
+            :src="`${globalImgAddress}1280${role.poster_path}`"
           />
           <img
             v-else
             class="movie-image"
             :class="index % 2 === 0 ? 'left-image' : 'right-image'"
-            src="../../public/no-image.png"
+            src="@/assets/no-image.png"
           />
           <div class="actor-description">
             <div>Title: {{ role.title }}</div>
@@ -53,11 +53,11 @@
 <script>
 // import axios from "axios";
 // import Slick from "vue-slick";
-import movieGenresMixin from "@/mixins/movieGenresMixin";
+// import movieGenresMixin from "@/mixins/movieGenresMixin";
 
 export default {
   props: ["role", "index", "movieGenres", "tvshowGenres"],
-  mixins: [movieGenresMixin],
+  // mixins: [movieGenresMixin],
 };
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->

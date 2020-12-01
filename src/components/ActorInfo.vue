@@ -8,9 +8,9 @@
         <img
           v-if="actor.profile_path && actor.profile_path !== ''"
           class="actor-photo"
-          :src="`https://image.tmdb.org/t/p/w92${actor.profile_path}`"
+          :src="`${globalImgAddress}92${actor.profile_path}`"
         />
-        <img v-else class="actor-photo" src="../../public/no-image.png" />
+        <img v-else class="actor-photo" src="@/assets/no-image.png" />
         <div class="actor-description">
           <div>{{ actor.name }}</div>
           <div v-if="actor.birthday">
@@ -27,19 +27,21 @@
           </div>
         </div>
       </div>
-      <div class="title">Biography</div>
-      <div class="justify">{{ actor.biography }}</div>
+      <div v-if="actor.biography">
+        <div class="title">Biography</div>
+        <div class="justify">{{ actor.biography }}</div>
+      </div>
     </div>
   </div>
 </template>
 <script>
 // import axios from "axios";
 // import Slick from "vue-slick";
-// import movieGenresMixin from "@/mixins/movieGenresMixin";
+// // import movieGenresMixin from "@/mixins/movieGenresMixin";
 
 export default {
   props: ["actor"],
-  // mixins: [movieGenresMixin],
+  // // mixins: [movieGenresMixin],
   methods: {
     getGender(gender) {
       return gender === 1 ? "Female" : "Male";
