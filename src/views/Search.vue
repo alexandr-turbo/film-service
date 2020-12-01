@@ -20,7 +20,7 @@
           class="movie-image"
           :src="`${globalImgAddress}1280${movie.poster_path}`"
         />
-        <img v-else class="movie-image" src="../../public/no-image.png" />
+        <img v-else class="movie-image" src="@/assets/no-image.png" />
         <div v-if="movie.title && movie.title !== ''" class="movie-title">
           {{ movie.title }}
         </div>

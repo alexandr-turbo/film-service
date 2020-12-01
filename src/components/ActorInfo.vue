@@ -10,7 +10,7 @@
           class="actor-photo"
           :src="`${globalImgAddress}92${actor.profile_path}`"
         />
-        <img v-else class="actor-photo" src="../../public/no-image.png" />
+        <img v-else class="actor-photo" src="@/assets/no-image.png" />
         <div class="actor-description">
           <div>{{ actor.name }}</div>
           <div v-if="actor.birthday">

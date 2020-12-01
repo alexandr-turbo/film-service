@@ -20,7 +20,7 @@
             v-else
             class="movie-image"
             :class="index % 2 === 0 ? 'left-image' : 'right-image'"
-            src="../../public/no-image.png"
+            src="@/assets/no-image.png"
           />
           <div class="actor-description">
             <div>Title: {{ crew.title }}</div>
