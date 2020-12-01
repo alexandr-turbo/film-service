@@ -7,7 +7,7 @@
         :title="item.bio"
         :src="`${globalImgAddress}92${item.profile_path}`"
       />
-      <img v-else class="actor-image" src="@/assets/no-image.png" />
+      <img v-else class="actor-image" src="../../public/no-image.png" />
     </router-link>
     <h4 class="actor-name">{{ item.name }}</h4>
   </div>

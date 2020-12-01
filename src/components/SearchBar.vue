@@ -1,12 +1,14 @@
 <template>
   <div class="centered">
     <router-link to="/">
-      <img class="home-btn" src="@/assets/home.png" />
+      <!-- <img class="home-btn" src="@/assets/home.png" /> -->
+      <img class="home-btn" src="../../public/home.png" />
     </router-link>
     <form class="formheight" @submit.prevent="send(query)">
       <input class="inputfield" v-model="query" placeholder="search films" />
       <button class="buttonclass" type="submit">
-        <img class="imageclass" src="@/assets/search.png">
+        <!-- <img class="imageclass" src="@/assets/search.png"> -->
+        <img class="imageclass" src="../../public/search.png">
       </button>
     </form>
   </div>
