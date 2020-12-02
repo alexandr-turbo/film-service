@@ -57,7 +57,7 @@ export default {
 .center {
   display: flex;
   justify-content: center;
-  margin-top: 100px;
+  /* margin-top: 100px; */
 }
 .v2 {
   padding: 30px 200px !important;

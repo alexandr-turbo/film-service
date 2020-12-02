@@ -90,7 +90,7 @@ export default {
   /* height: 24px; */
   /* margin: auto; */
   padding: 6px 15px;
-  background: red;
+  background: blue;
   border: 0;
   margin-left: -43px;
   display: flex;

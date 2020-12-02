@@ -48,7 +48,13 @@ const routes = [
   //   path: '/search/:query',
   //   name: 'search',
   //   component: () => import(/* webpackChunkName: "about" */ '../views/Search.vue')
-  // }
+  // },
+  {
+    path: '/discover',
+    name: 'discover',
+    component: () => import(/* webpackChunkName: "search" */ '../views/Discover.vue'),
+    props: true
+  },
 ]
 
 const router = new VueRouter({

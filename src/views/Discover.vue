@@ -1,55 +1,15 @@
 <template>
   <div class="container">
-    <div class="prettytext" v-if="searchResultPage.page">Search results for {{ searchQuery }}
+    <!-- <div class="prettytext" v-if="searchResultPage.page">Search results for {{ searchQuery }} -->
       <div class="flex" v-if="searchResultPage.total_results">
         <div class="flex-col" v-for="movie in searchResultPage.results" :key="movie.id">
-          <SearchCover :movie="movie" :movieGenres="movieGenres" :tvshowGenres="tvshowGenres"/>
+          <DiscoverCover :movie="movie" :movieGenres="movieGenres" :tvshowGenres="tvshowGenres"/>
         </div>
-        <!-- <router-link
-          tag="div"
-          class="flex-col"
-          v-for="movie in searchResultPage.results"
-          :key="movie.id"
-          :to="{
-            name: 'movie',
-            params: { movieID: movie.id, movieType: movie.media_type },
-          }"
-        >
-          <img
-            v-if="movie.poster_path && movie.poster_path !== ''"
-            class="movie-image"
-            :src="`${globalImgAddress}1280${movie.poster_path}`"
-          />
-          <img v-else class="movie-image" src="@/assets/no-image.png" />
-          <div v-if="movie.title && movie.title !== ''" class="movie-title">
-            {{ movie.title }}
-          </div>
-          <div
-            v-else-if="movie.original_title && movie.original_title !== ''"
-            class="movie-title"
-          >
-            {{ movie.original_title }}
-          </div>
-          <div v-else class="movie-title">
-            DB thinks that search keyword is included
-          </div>
-          <div
-            v-if="movie.genre_ids && movie.genre_ids !== ''"
-            class="movie-title"
-          >
-            {{
-              movie.media_type === "movie"
-                ? getCurrentMediaTypeGenresNames(movieGenres, movie.genre_ids)
-                : getCurrentMediaTypeGenresNames(tvshowGenres, movie.genre_ids)
-            }}
-          </div>
-          <div v-else class="movie-title">Genres are not provided</div>
-        </router-link> -->
       </div>
-    </div>
-    <div class="center" v-else>
+    <!-- </div> -->
+    <!-- <div class="center" v-else>
       Nothing found
-    </div>
+    </div> -->
     <div v-if="searchResultPage.page" class="center mt">
       <!-- <div class="test"> -->
         <button
@@ -75,7 +35,7 @@
 <script>
 import axios from "axios";
 // import movieGenresMixin from "@/mixins/movieGenresMixin";
-import SearchCover from "../components/SearchCover.vue";
+import DiscoverCover from "../components/DiscoverCover.vue";
 
 export default {
   data() {
@@ -89,7 +49,7 @@ export default {
     };
   },
   components: {
-    SearchCover
+    DiscoverCover
   },
   // // mixins: [movieGenresMixin],
   watch: {
@@ -105,19 +65,15 @@ export default {
     },
   },
   async created() {
-    if (this.$route.fullPath.indexOf("?") !== -1) {
-      this.searchQuery = this.$route.fullPath.split("?")[1].split("&")[0];
-      this.pageNumber = this.$route.fullPath.split("=")[1];
-      this.getFirstPageSearchResults(this.searchQuery, this.pageNumber);
-      // this.movieGenres = await this.getCurrentMediaTypeGenres("movie");
-      // console.log(this.movieGenres)
-      // this.tvshowGenres = await this.getCurrentMediaTypeGenres("tv");
-      // console.log(this.tvshowGenres)
-    }
+    axios
+        .get(
+          `https://api.themoviedb.org/3/discover/movie?api_key=12a5356516535d4d67654a936a088c1b&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&`
+        )
+        .then((response) => {
+          this.searchResultPage = response.data;
+        });
     this.movieGenres = this.$store.state.MovieGenres
     this.tvshowGenres = this.$store.state.TVShowGenres
-    // console.log(this.$route.fullPath.split("?")[1].split("&")[0])
-    // this.searchQuery = this.searchQuery
   },
   methods: {
     getFirstPageSearchResults(query, page) {
