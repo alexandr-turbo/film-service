@@ -1,17 +1,63 @@
 <template>
   <div class="container">
-    <!-- <div class="prettytext" v-if="searchResultPage.page">Search results for {{ searchQuery }} -->
+      <form @submit.prevent="searchRequest">
+        <div class="flex2">
+          <div class="flexcol">
+            <div>Media type</div>
+            <select v-model="mediatype">
+              <option>movie</option>
+              <option>tv</option>
+            </select>
+          </div>
+          <div class="flexcol">
+            <div>Sort</div>
+            <select v-model="sort">
+              <option>&sort_by=popularity.desc</option>
+              <option>&sort_by=popularity.asc</option>
+              <option>&sort_by=release_date.desc</option>
+              <option>&sort_by=release_date.asc</option>
+              <option>&sort_by=revenue.desc</option>
+              <option>&sort_by=revenue.asc</option>
+              <option>&sort_by=vote_average.desc</option>
+              <option>&sort_by=vote_average.asc</option>
+            </select>
+          </div>
+          <div class="flexcol">
+            <div>Min average vote</div>
+            <input type="number" v-model="vote" placeholder="min average vote">
+          </div>
+          <div class="flexcol">
+            <div>Type involved actor</div>
+            <autocomplete
+              :search="search"
+              :get-result-value="getResultValue"
+              @submit="onSubmit"
+              auto-select
+            />
+          </div>
+          <div class="flexcol">
+            <div>Genre</div>
+            <select v-model="genre">
+              <option value=""></option>
+              <option v-for="g in genres" :key="g.id">{{g.name}}</option>
+            </select>
+          </div>
+          <div class="flexcol">
+            <div>Year</div>
+            <input type="number" v-model="year" placeholder="year">
+          </div>
+        </div>
+        <button type="submit">submit</button>
+      </form>
       <div class="flex" v-if="searchResultPage.total_results">
         <div class="flex-col" v-for="movie in searchResultPage.results" :key="movie.id">
-          <DiscoverCover :movie="movie" :movieGenres="movieGenres" :tvshowGenres="tvshowGenres"/>
+          <DiscoverCover :movie="movie" />
         </div>
       </div>
-    <!-- </div> -->
-    <!-- <div class="center" v-else>
+    <div class="center" v-else>
       Nothing found
-    </div> -->
+    </div>
     <div v-if="searchResultPage.page" class="center mt">
-      <!-- <div class="test"> -->
         <button
           class="pretty"
           v-if="searchResultPage.page > 1"
@@ -19,8 +65,6 @@
         >
           Previous page
         </button>
-      <!-- </div> -->
-      <!-- <div class="test"> -->
         <button
           class="pretty"
           v-if="searchResultPage.page < searchResultPage.total_pages"
@@ -28,87 +72,239 @@
         >
           Next page
         </button>
-      <!-- </div> -->
     </div>
   </div>
 </template>
 <script>
 import axios from "axios";
-// import movieGenresMixin from "@/mixins/movieGenresMixin";
 import DiscoverCover from "../components/DiscoverCover.vue";
+import Autocomplete from '@trevoreyre/autocomplete-vue'
 
 export default {
   data() {
     return {
+      year: '',
+      genre: '',
+      people: '',
+      vote: '',
+      sort: '&sort_by=popularity.desc',
+      mediatype: 'movie',
       searchResultPage: {},
       filteredSearchResults: {},
       movieGenres: null,
       tvshowGenres: null,
       searchQuery: '',
-      pageNumber: ''
+      pageNumber: '',
+      animals: ['first animal', "second animal"],
+      selectedActorFromList: '',
+      selectedYear: '&year=',
+      selectedGenreID: '',
+      selectedGenreIDString: '&with_genres=',
+      selectedActor: '&with_people=',
+      selectedVote: '&vote_average.gte=',
+      // adult: '&include_adult=false',
+      // video: '&include_video=false',
+      // language: '&language=en-US'
     };
   },
   components: {
-    DiscoverCover
+    DiscoverCover,
+    Autocomplete
   },
-  // // mixins: [movieGenresMixin],
+  computed: {
+    genres() {
+      return this.mediatype === "movie" ? this.movieGenres : this.tvshowGenres
+    }
+  },
   watch: {
+    mediatype() {
+      this.genre = ''
+    },
     $route() {
-      if (this.$route.fullPath.indexOf("?") !== -1 & this.searchResultPage.page !== 0) {
-        this.searchQuery = this.$route.fullPath.split("?")[1].split("&")[0];
-        this.pageNumber = this.$route.fullPath.split("=")[1];
-        this.getFirstPageSearchResults(this.searchQuery, this.pageNumber);
-        // this.searchQuery = this.searchQuery
-      } else {
-        this.searchResultPage.page = 0
-      }
+      // if (this.$route.fullPath.indexOf("?") !== -1 & this.searchResultPage.page !== 0) {
+        // console.log(this.$route.fullPath)
+      
+      // this.searchQuery = this.$route.fullPath.split("?")[1].split("&")[0];
+      let routeMediatype = this.$route.fullPath.split("?")[1].split("&")[0]
+      console.log(routeMediatype)
+      let routeSortBy = this.$route.fullPath.split("?")[1].split("&")[1]
+      console.log(routeSortBy)
+      // console.log(this.$route.fullPath.split("?")[1].split("&")[2])
+      // console.log(this.$route.fullPath.split("?")[1].split("&")[3])
+      let routeVote = this.$route.fullPath.split("?")[1].split("&")[2]
+      console.log(routeVote)
+      let routeActor = this.$route.fullPath.split("?")[1].split("&")[3]
+      console.log(routeActor)
+      let routeGenre = this.$route.fullPath.split("?")[1].split("&")[4]
+      console.log(routeGenre)
+      let routeYear = this.$route.fullPath.split("?")[1].split("&")[5]
+      console.log(routeYear)
+      let page = this.$route.fullPath.split("page=")[1]
+      console.log(page)
+      // console.log(this.$route.fullPath.split("?")[1].split("&")[8])
+      // console.log(this.$route)
+      this.getFirstPageSearchResults(routeMediatype, routeSortBy, routeVote, routeActor, routeGenre, routeYear, page);
+      // } else {
+      //   this.searchResultPage.page = 0
+      // }
     },
   },
-  async created() {
-    axios
-        .get(
-          `https://api.themoviedb.org/3/discover/movie?api_key=12a5356516535d4d67654a936a088c1b&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&`
-        )
-        .then((response) => {
-          this.searchResultPage = response.data;
-        });
+  created() {
+    let routeMediatype = this.$route.fullPath.split("?")[1].split("&")[0]
+      console.log(routeMediatype)
+      let routeSortBy = this.$route.fullPath.split("?")[1].split("&")[1]
+      console.log(routeSortBy)
+      // console.log(this.$route.fullPath.split("?")[1].split("&")[2])
+      // console.log(this.$route.fullPath.split("?")[1].split("&")[3])
+      let routeVote = this.$route.fullPath.split("?")[1].split("&")[2]
+      console.log(routeVote)
+      let routeActor = this.$route.fullPath.split("?")[1].split("&")[3]
+      console.log(routeActor)
+      let routeGenre = this.$route.fullPath.split("?")[1].split("&")[4]
+      console.log(routeGenre)
+      let routeYear = this.$route.fullPath.split("?")[1].split("&")[5]
+      console.log(routeYear)
+      let page = this.$route.fullPath.split("page=")[1]
+      console.log(page)
+      // console.log(this.$route.fullPath.split("?")[1].split("&")[8])
+      // console.log(this.$route)
+      this.getFirstPageSearchResults(routeMediatype, routeSortBy, routeVote, routeActor, routeGenre, routeYear, page);
+    // axios
+    //     .get(
+    //       `https://api.themoviedb.org/3/discover/${this.mediatype}?api_key=12a5356516535d4d67654a936a088c1b&language=en-US${this.sort}&include_adult=false&include_video=false${this.selectedVote}${this.selectedActor}${this.selectedGenreIDString}${this.selectedYear}&page=1`
+    //     )
+    //     .then((response) => {
+    //       this.searchResultPage = response.data;
+    //     });
     this.movieGenres = this.$store.state.MovieGenres
     this.tvshowGenres = this.$store.state.TVShowGenres
+    // let routeMediatype = this.$route.fullPath.split("?")[1].split("&")[0]
+    // let routeSortBy = this.$route.fullPath.split("?")[1].split("&")[1]
+    // console.log(this.$route.fullPath.split("?")[1].split("&")[2])
+    // console.log(this.$route.fullPath.split("?")[1].split("&")[3])
+    // let routeVote = this.$route.fullPath.split("?")[1].split("&")[4]
+    // let routeActor = this.$route.fullPath.split("?")[1].split("&")[5]
+    // let routeGenre = this.$route.fullPath.split("?")[1].split("&")[6]
+    // let routeYear = this.$route.fullPath.split("?")[1].split("&")[7]
+    // console.log(this.$route.fullPath.split("?")[1].split("&")[8])
+    // console.log(this.$route)
   },
   methods: {
-    getFirstPageSearchResults(query, page) {
+    async search(input) {
+      if (input.length < 1) {
+        this.selectedActorFromList = ''
+        return []
+      }
+      let a = []
+      await axios
+          .get(
+            `https://api.themoviedb.org/3/search/person?api_key=f943d3d10cc39fd734122d69efabbacb&language=en-US&query=${input}&include_adult=false&page=1`
+  
+          )
+          .then((response) => {
+            a = response.data.results
+          a.filter(animal => {
+            return animal.name.toLowerCase()
+                .includes(input.toLowerCase())
+            })
+          });
+          // console.log(input.length)
+      return a
+    },
+    getResultValue(result) {
+      return result.name
+    },
+    onSubmit(result) {
+      if (result) {
+        this.selectedActorFromList = result.id
+      }
+
+    },
+    searchRequest() {
+      this.selectedYear = '&year='
+      // let selectedGenreID = ''
+      this.selectedGenreIDString = '&with_genres='
+      this.selectedActor = '&with_people='
+      this.selectedVote = '&vote_average.gte='
+      if (this.year) {
+        this.selectedYear += this.year
+      }
+      if (this.genre) {
+        this.selectedGenreID = this.genres.find(name => name.name === this.genre)
+        this.selectedGenreIDString += this.selectedGenreID.id
+      }
+      if (this.selectedActorFromList) {
+        this.selectedActor += this.selectedActorFromList
+      }
+      if (this.vote) {
+        this.selectedVote += this.vote
+      }
+      // axios
+      //   .get(
+      //     `https://api.themoviedb.org/3/discover/${this.mediatype}?api_key=12a5356516535d4d67654a936a088c1b&language=en-US${this.sort}&include_adult=false&include_video=false${this.selectedVote}${this.selectedActor}${this.selectedGenreIDString}${this.selectedYear}&page=1`
+      //   )
+      //   .then((response) => {
+      //     this.searchResultPage = response.data;
+      //   });
+      this.$router.push(`${this.$route.path}?${this.mediatype}${this.sort}${this.selectedVote}${this.selectedActor}${this.selectedGenreIDString}${this.selectedYear}&page=1`);
+
+    },
+    getFirstPageSearchResults(routeMediatype, routeSortBy, routeVote, routeActor, routeGenre, routeYear, page) {
       axios
         .get(
-          `https://api.themoviedb.org/3/search/multi?api_key=f943d3d10cc39fd734122d69efabbacb&query=${query}&page=${page}&include_adult=false`
+          `https://api.themoviedb.org/3/discover/${routeMediatype}?api_key=12a5356516535d4d67654a936a088c1b&language=en-US&${routeSortBy}&include_adult=false&include_video=false&${routeVote}&${routeActor}&${routeGenre}&${routeYear}&page=${page}`
         )
         .then((response) => {
           this.searchResultPage = response.data;
         });
     },
     getNextPageSearchResults() {
-      this.searchQuery = this.$route.fullPath.split("?")[1].split("&")[0];
-      this.pageNumber = ++this.$route.fullPath.split("=")[1];
-      axios
-        .get(
-          `https://api.themoviedb.org/3/search/multi?api_key=f943d3d10cc39fd734122d69efabbacb&query=${this.searchQuery}&page=${this.pageNumber}&include_adult=false`
-        )
-        .then((response) => {
-          this.searchResultPage = response.data;
-          this.$router.push(`${this.$route.path}?${this.searchQuery}&page=${this.pageNumber}`);
-        });
+      // console.log(this.$route.fullPath)
+      // console.log(this.$route.fullPath.split("page=")[1])
+      // this.searchQuery = this.$route.fullPath.split("?")[1].split("&")[0];
+      let routeMediatype = this.$route.fullPath.split("?")[1].split("&")[0]
+      let routeSortBy = this.$route.fullPath.split("?")[1].split("&")[1]
+      // console.log(this.$route.fullPath.split("?")[1].split("&")[2])
+      // console.log(this.$route.fullPath.split("?")[1].split("&")[3])
+      let routeVote = this.$route.fullPath.split("?")[1].split("&")[2]
+      let routeActor = this.$route.fullPath.split("?")[1].split("&")[3]
+      let routeGenre = this.$route.fullPath.split("?")[1].split("&")[4]
+      let routeYear = this.$route.fullPath.split("?")[1].split("&")[5]
+      // console.log(this.$route.fullPath.split("?")[1].split("&")[8])
+      // console.log(this.$route)
+      this.pageNumber = ++this.$route.fullPath.split("page=")[1];
+      // axios
+      //   .get(
+      //     `https://api.themoviedb.org/3/discover/${this.mediatype}?api_key=12a5356516535d4d67654a936a088c1b&language=en-US&sort_by=${this.sort}&include_adult=false&include_video=false${this.selectedVote}${this.selectedActor}${this.selectedYear}${this.selectedGenreIDString}&page=${this.pageNumber}`
+      //   )
+      //   .then((response) => {
+      //     this.searchResultPage = response.data;
+      //   });
+          this.$router.push(`${this.$route.path}?${routeMediatype}&${routeSortBy}&${routeVote}&${routeActor}&${routeGenre}&${routeYear}&page=${this.pageNumber}`);
     },
     getPreviousPageSearchResults() {
-      this.searchQuery = this.$route.fullPath.split("?")[1].split("&")[0];
-      this.pageNumber = --this.$route.fullPath.split("=")[1];
-      axios
-        .get(
-          `https://api.themoviedb.org/3/search/multi?api_key=f943d3d10cc39fd734122d69efabbacb&query=${this.searchQuery}&page=${this.pageNumber}&include_adult=false`
-        )
-        .then((response) => {
-          this.searchResultPage = response.data;
-          // page === 1 ? this.$router.push(`${this.$route.path}?${query}`) : this.$router.push(`${this.$route.path}?${query}&page=${page}`)
-          this.$router.push(`${this.$route.path}?${this.searchQuery}&page=${this.pageNumber}`);
-        });
+      // console.log(this.$route.fullPath)
+      // console.log(this.$route.fullPath.split("page=")[1])
+      // this.searchQuery = this.$route.fullPath.split("?")[1].split("&")[0];
+      let routeMediatype = this.$route.fullPath.split("?")[1].split("&")[0]
+      let routeSortBy = this.$route.fullPath.split("?")[1].split("&")[1]
+      // console.log(this.$route.fullPath.split("?")[1].split("&")[2])
+      // console.log(this.$route.fullPath.split("?")[1].split("&")[3])
+      let routeVote = this.$route.fullPath.split("?")[1].split("&")[2]
+      let routeActor = this.$route.fullPath.split("?")[1].split("&")[3]
+      let routeGenre = this.$route.fullPath.split("?")[1].split("&")[4]
+      let routeYear = this.$route.fullPath.split("?")[1].split("&")[5]
+      // console.log(this.$route.fullPath.split("?")[1].split("&")[8])
+      // console.log(this.$route)
+      this.pageNumber = --this.$route.fullPath.split("page=")[1];
+      // axios
+      //   .get(
+      //     `https://api.themoviedb.org/3/discover/${this.mediatype}?api_key=12a5356516535d4d67654a936a088c1b&language=en-US&sort_by=${this.sort}&include_adult=false&include_video=false${this.selectedVote}${this.selectedActor}${this.selectedYear}${this.selectedGenreIDString}&page=${this.pageNumber}`
+      //   )
+      //   .then((response) => {
+      //     this.searchResultPage = response.data;
+      //   });
+          this.$router.push(`${this.$route.path}?${routeMediatype}&${routeSortBy}&${routeVote}&${routeActor}&${routeGenre}&${routeYear}&page=${this.pageNumber}`);
     },
   },
 };
@@ -169,5 +365,13 @@ export default {
 } */
 .prettytext {
   text-align: center;
+}
+.flex2 {
+  display: flex;
+  justify-content: space-between;
+}
+.flexcol {
+  display: flex;
+  flex-direction: column;
 }
 </style>

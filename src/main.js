@@ -4,7 +4,10 @@ import router from './router'
 import store from './store'
 import capitalize from '@/filters/capitalize'
 import movieGenresMixin from "@/mixins/movieGenresMixin";
+import Autocomplete from '@trevoreyre/autocomplete-vue'
+// import '@trevoreyre/autocomplete-vue/dist/style.css'
 
+Vue.use(Autocomplete)
 // Vue.use(VueRouter)
 Vue.config.productionTip = false
 Vue.filter('capitalize', capitalize)

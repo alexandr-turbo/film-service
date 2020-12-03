@@ -26,7 +26,7 @@
       <div v-else class="movie-title">
         DB thinks that search keyword is included
       </div>
-      <div
+      <!-- <div
         v-if="movie.genre_ids && movie.genre_ids !== ''"
         class="movie-title"
       >
@@ -36,7 +36,7 @@
             : getCurrentMediaTypeGenresNames(tvshowGenres, movie.genre_ids)
         }}
       </div>
-      <div v-else class="movie-title">Genres are not provided</div>
+      <div v-else class="movie-title">Genres are not provided</div> -->
     </router-link>
   </div>
 </template>

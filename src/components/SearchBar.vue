@@ -11,6 +11,10 @@
         <!-- <img class="imageclass" src="../../public/search.png"> -->
       </button>
     </form>
+    <router-link to="/discover?movie&sort_by=popularity.desc&vote_average.gte=&with_people=&with_genres=&year=&page=1">
+      <img class="discover-btn" src="@/assets/home.png" />
+      <!-- <img class="home-btn" src="../../public/home.png" /> -->
+    </router-link>
   </div>
 </template>
 <script>
@@ -52,6 +56,12 @@ export default {
   position: absolute;
   height: 36px;
   left: 10%;
+  top: calc(50% - (36px / 2));
+}
+.discover-btn {
+  position: absolute;
+  height: 36px;
+  right: 10%;
   top: calc(50% - (36px / 2));
 }
 .formheight {
