@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <lazy-component>
     <router-link
       tag="div"
       class="margin"
@@ -48,7 +48,7 @@
         <div class="justify">Overview: {{ role.overview }}</div>
       </div>
     </router-link>
-  </div>
+  </lazy-component>
 </template>
 <script>
 // import axios from "axios";

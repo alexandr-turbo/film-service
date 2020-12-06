@@ -12,6 +12,15 @@ Vue.use(Autocomplete)
 Vue.config.productionTip = false
 Vue.filter('capitalize', capitalize)
 
+import VueLazyload from 'vue-lazyload'
+
+// Vue.use(VueLazyload)
+
+// or with options
+Vue.use(VueLazyload, {
+  lazyComponent: true
+})
+
 Vue.mixin({
   data() {
     return {

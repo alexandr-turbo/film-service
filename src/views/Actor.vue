@@ -2,149 +2,21 @@
   <div class="actor">
     <div v-if="actor !== null">
       <div class="container">
-        <ActorInfo :actor="actor" />
-        <!-- <div
-          class="margin2"
-          :class="getGender(actor.gender) === 'Male' ? 'blue' : 'pink'"
-        >
-          <div class="main">
-            <img
-              v-if="actor.profile_path && actor.profile_path !== ''"
-              class="actor-photo"
-              :src="`${globalImgAddress}92${actor.profile_path}`"
-            />
-            <img v-else class="actor-photo" src="@/assets/no-image.png" />
-            <div class="actor-description">
-              <div>{{ actor.name }}</div>
-              <div v-if="actor.birthday">
-                {{ getPrettyDate(actor.birthday) }} ({{
-                  getAge(actor.birthday)
-                }}
-                y/o),
-              </div>
-              <div v-if="actor.place_of_birth">
-                in {{ actor.place_of_birth }}
-              </div>
-              <div>
-                {{ getGender(actor.gender) }} | {{ actor.known_for_department }}
-              </div>
-            </div>
-          </div>
-          <div class="title">Biography</div>
-          <div class="justify">{{ actor.biography }}</div>
+        <!-- <div v-for="i in 100" :key="i">
+          <img v-lazy="`https://via.placeholder.com/728x90.png?text=` + i" width="100%" height="400">
         </div> -->
+        <ActorInfo :actor="actor" />
         <template v-if="roles.length">
           <div class="title">Cast</div>
           <div v-for="(role, index) in roles" :key="role.id">
             <ActorCastCover :role="role" :index="index" :movieGenres="movieGenres" :tvshowGenres="tvshowGenres"/>
           </div>
-          <!-- <router-link
-            tag="div"
-            class="margin"
-            v-for="(role, index) in roles"
-            :key="role.id"
-            :to="{
-              name: 'movie',
-              params: { movieID: role.id, movieType: role.media_type },
-            }"
-          >
-            <div :class="index % 2 === 0 ? 'lightgray' : 'lightblue'">
-              <div :class="index % 2 === 0 ? 'main2' : 'main3'">
-                <img
-                  v-if="role.poster_path && role.poster_path !== ''"
-                  class="movie-image"
-                  :class="index % 2 === 0 ? 'left-image' : 'right-image'"
-                  :src="`${globalImgAddress}1280${role.poster_path}`"
-                />
-                <img
-                  v-else
-                  class="movie-image"
-                  :class="index % 2 === 0 ? 'left-image' : 'right-image'"
-                  src="@/assets/no-image.png"
-                />
-                <div class="actor-description">
-                  <div>Title: {{ role.title }}</div>
-                  <div>Original title: {{ role.original_title }}</div>
-                  <div>Character: {{ role.character }}</div>
-                  <div>
-                    Genres:
-                    {{
-                      role.media_type === "movie"
-                        ? getCurrentMediaTypeGenresNames(
-                            movieGenres,
-                            role.genre_ids
-                          )
-                        : getCurrentMediaTypeGenresNames(
-                            tvshowGenres,
-                            role.genre_ids
-                          )
-                    }}
-                  </div>
-                  <div>Media type: {{ role.media_type }}</div>
-                  <div>Release date: {{ role.release_date }}</div>
-                  <div>Rating: {{ role.vote_average }}</div>
-                </div>
-              </div>
-              <div class="justify">Overview: {{ role.overview }}</div>
-            </div>
-          </router-link> -->
         </template>
         <template v-if="crew.length">
           <div class="title">Crew</div>
           <div v-for="(crew, index) in crew" :key="crew.id">
             <ActorCrewCover :crew="crew" :index="index" :movieGenres="movieGenres" :tvshowGenres="tvshowGenres"/>
           </div>
-          <!-- <router-link
-            tag="div"
-            class="margin"
-            v-for="(crew, index) in crew"
-            :key="crew.id"
-            :to="{
-              name: 'movie',
-              params: { movieID: crew.id, movieType: crew.media_type },
-            }"
-          >
-            <div :class="index % 2 === 0 ? 'lightgray' : 'lightblue'">
-              <div :class="index % 2 === 0 ? 'main2' : 'main3'">
-                <img
-                  v-if="crew.poster_path && crew.poster_path !== ''"
-                  class="movie-image"
-                  :class="index % 2 === 0 ? 'left-image' : 'right-image'"
-                  :src="`${globalImgAddress}1280${crew.poster_path}`"
-                />
-                <img
-                  v-else
-                  class="movie-image"
-                  :class="index % 2 === 0 ? 'left-image' : 'right-image'"
-                  src="@/assets/no-image.png"
-                />
-                <div class="actor-description">
-                  <div>Title: {{ crew.title }}</div>
-                  <div>Original title: {{ crew.original_title }}</div>
-                  <div>Job: {{ crew.job }}</div>
-                  <div>
-                    Genres:
-                    {{
-                      crew.media_type === "movie"
-                        ? getCurrentMediaTypeGenresNames(
-                            movieGenres,
-                            crew.genre_ids
-                          )
-                        : getCurrentMediaTypeGenresNames(
-                            tvshowGenres,
-                            crew.genre_ids
-                          )
-                    }}
-                  </div>
-                  <div>Department: {{ crew.department }}</div>
-                  <div>Media type: {{ crew.media_type }}</div>
-                  <div>Release date: {{ crew.release_date }}</div>
-                  <div>Rating: {{ crew.vote_average }}</div>
-                </div>
-              </div>
-              <div class="justify">Overview: {{ crew.overview }}</div>
-            </div>
-          </router-link> -->
         </template>
       </div>
     </div>

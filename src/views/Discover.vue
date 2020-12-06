@@ -5,21 +5,23 @@
           <div class="flexcol">
             <div>Media type</div>
             <select v-model="mediatype">
-              <option>movie</option>
-              <option>tv</option>
+              <!-- <option>movie</option>
+              <option>tv</option> -->
+              <option v-for="s in mediatypeOptions" :value="s.value" :key="s.value">{{s.title}}</option>
             </select>
           </div>
           <div class="flexcol">
             <div>Sort</div>
             <select v-model="sort">
-              <option>&sort_by=popularity.desc</option>
+              <!-- <option>&sort_by=popularity.desc</option>
               <option>&sort_by=popularity.asc</option>
               <option>&sort_by=release_date.desc</option>
               <option>&sort_by=release_date.asc</option>
               <option>&sort_by=revenue.desc</option>
               <option>&sort_by=revenue.asc</option>
               <option>&sort_by=vote_average.desc</option>
-              <option>&sort_by=vote_average.asc</option>
+              <option>&sort_by=vote_average.asc</option> -->
+              <option v-for="s in sortOptions" :value="s.value" :key="s.value">{{s.title}}</option>
             </select>
           </div>
           <div class="flexcol">
@@ -83,6 +85,20 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 export default {
   data() {
     return {
+      sortOptions: [
+        {title: 'Popularity descending', value: '&sort_by=popularity.desc'},
+        {title: 'Popularity ascending', value: '&sort_by=popularity.asc'},
+        {title: 'Release date descending', value: '&sort_by=release_date.desc'},
+        {title: 'Release date ascending', value: '&sort_by=release_date.asc'},
+        {title: 'Revenue descending', value: '&sort_by=revenue.desc'},
+        {title: 'Revenue ascending', value: '&sort_by=revenue.asc'},
+        {title: 'Vote average descending', value: '&sort_by=vote_average.desc'},
+        {title: 'Vote average ascending', value: '&sort_by=vote_average.asc'},
+      ],
+      mediatypeOptions: [
+        {title: 'Movie', value: 'movie'},
+        {title: 'TVShow', value: 'tv'}
+      ],
       year: '',
       genre: '',
       people: '',
