@@ -142,21 +142,21 @@ export default {
       
       // this.searchQuery = this.$route.fullPath.split("?")[1].split("&")[0];
       let routeMediatype = this.$route.fullPath.split("?")[1].split("&")[0]
-      console.log(routeMediatype)
+      // console.log(routeMediatype)
       let routeSortBy = this.$route.fullPath.split("?")[1].split("&")[1]
-      console.log(routeSortBy)
+      // console.log(routeSortBy)
       // console.log(this.$route.fullPath.split("?")[1].split("&")[2])
       // console.log(this.$route.fullPath.split("?")[1].split("&")[3])
       let routeVote = this.$route.fullPath.split("?")[1].split("&")[2]
-      console.log(routeVote)
+      // console.log(routeVote)
       let routeActor = this.$route.fullPath.split("?")[1].split("&")[3]
-      console.log(routeActor)
+      // console.log(routeActor)
       let routeGenre = this.$route.fullPath.split("?")[1].split("&")[4]
-      console.log(routeGenre)
+      // console.log(routeGenre)
       let routeYear = this.$route.fullPath.split("?")[1].split("&")[5]
-      console.log(routeYear)
+      // console.log(routeYear)
       let page = this.$route.fullPath.split("page=")[1]
-      console.log(page)
+      // console.log(page)
       // console.log(this.$route.fullPath.split("?")[1].split("&")[8])
       // console.log(this.$route)
       this.getFirstPageSearchResults(routeMediatype, routeSortBy, routeVote, routeActor, routeGenre, routeYear, page);
@@ -167,21 +167,21 @@ export default {
   },
   created() {
     let routeMediatype = this.$route.fullPath.split("?")[1].split("&")[0]
-      console.log(routeMediatype)
+      // console.log(routeMediatype)
       let routeSortBy = this.$route.fullPath.split("?")[1].split("&")[1]
-      console.log(routeSortBy)
+      // console.log(routeSortBy)
       // console.log(this.$route.fullPath.split("?")[1].split("&")[2])
       // console.log(this.$route.fullPath.split("?")[1].split("&")[3])
       let routeVote = this.$route.fullPath.split("?")[1].split("&")[2]
-      console.log(routeVote)
+      // console.log(routeVote)
       let routeActor = this.$route.fullPath.split("?")[1].split("&")[3]
-      console.log(routeActor)
+      // console.log(routeActor)
       let routeGenre = this.$route.fullPath.split("?")[1].split("&")[4]
-      console.log(routeGenre)
+      // console.log(routeGenre)
       let routeYear = this.$route.fullPath.split("?")[1].split("&")[5]
-      console.log(routeYear)
+      // console.log(routeYear)
       let page = this.$route.fullPath.split("page=")[1]
-      console.log(page)
+      // console.log(page)
       // console.log(this.$route.fullPath.split("?")[1].split("&")[8])
       // console.log(this.$route)
       this.getFirstPageSearchResults(routeMediatype, routeSortBy, routeVote, routeActor, routeGenre, routeYear, page);

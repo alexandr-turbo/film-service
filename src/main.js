@@ -18,7 +18,15 @@ import VueLazyload from 'vue-lazyload'
 
 // or with options
 Vue.use(VueLazyload, {
-  lazyComponent: true
+  lazyComponent: true,
+  // preLoad: 1.3,
+  // listenEvents: [ 'scroll' ],
+  // attempt: 10,
+  // observer: true,
+  // observerOptions: {
+  //   rootMargin: '0px',
+  //   threshold: 0.1
+  // }
 })
 
 Vue.mixin({
@@ -30,9 +38,20 @@ Vue.mixin({
   }
 })
 Vue.mixin(movieGenresMixin)
-
-new Vue({
+const app = new Vue({
+  data: { loading: false },
+// new Vue({
   router,
   store,
   render: h => h(App),
 }).$mount('#app')
+
+// router.((to, from, next) => {
+//   app.loading = true
+//   next()
+// });
+
+router.afterEach(() => {
+  app.loading = true
+  setTimeout(() => app.loading = false, 3000) // timeout for demo purposes
+})

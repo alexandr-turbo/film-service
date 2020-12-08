@@ -97,12 +97,12 @@ export default {
 </script>
 
 <style scoped>
-img.upper-imgs {
+/* img.upper-imgs {
   margin: 0;
   padding: 0;
   height: auto;
   width: 100vw;
-}
+} */
 .uppercase {
   text-transform: uppercase;
 }

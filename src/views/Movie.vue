@@ -1,5 +1,6 @@
 <template id="about-movie-template">
   <div class="movie">
+    <!-- <div :class="{preloader: isvisible}">asd</div> -->
     <div
       v-if="
         currentmovie &&
@@ -53,6 +54,9 @@
             </div>
           </slick> -->
         </div>
+        <div v-for="(review, index) in reviews" :key="review.id">
+          <Review :review="review"  :index="index" />
+        </div>
       </div>
     </div>
   </div>
@@ -63,6 +67,7 @@ import axios from "axios";
 // import Slick from "vue-slick";
 import MovieActorsSlick from "../components/MovieActorsSlick.vue";
 import MovieTrailersSlick from "../components/MovieTrailersSlick.vue";
+import Review from "../components/Review.vue";
 export default {
   data() {
     return {
@@ -70,6 +75,8 @@ export default {
       currentmovie: null,
       cast: null,
       trailers: null,
+      reviews: null,
+      isvisible: true
       // slickOptions_cast: {
       //   slidesToShow: 5,
       //   infinite: true,
@@ -86,10 +93,12 @@ export default {
   },
   components: {
     MovieActorsSlick,
-    MovieTrailersSlick
+    MovieTrailersSlick,
+    Review
   },
   props: ["movieID", "movieType"],
-  async created() {
+  created() {
+    // const p1 = axios
     axios
       .get(
         `https://api.themoviedb.org/3/${this.movieType}/${this.movieID}?api_key=f943d3d10cc39fd734122d69efabbacb`
@@ -97,8 +106,9 @@ export default {
       .then((response) => {
         this.currentmovie = response.data;
         this.genres = this.currentmovie.genres.map(el => el.name).join('/')
-      }),
-    await axios
+      })
+    // const p2 = axios
+    axios
       .get(
         `https://api.themoviedb.org/3/${this.movieType}/${this.movieID}/credits?api_key=f943d3d10cc39fd734122d69efabbacb`
       )
@@ -113,7 +123,8 @@ export default {
               this.cast[i].bio = response.data.biography;
             })
         }
-      }),
+      })
+    // const p3 = axios
     axios
       .get(
         `https://api.themoviedb.org/3/${this.movieType}/${this.movieID}/videos?api_key=f943d3d10cc39fd734122d69efabbacb`
@@ -121,6 +132,23 @@ export default {
       .then((response) => {
         this.trailers = response.data.results;
       })
+    // const p4 = axios
+    axios
+      .get(
+        `https://api.themoviedb.org/3/${this.movieType}/${this.movieID}/reviews?api_key=f943d3d10cc39fd734122d69efabbacb&language=en-US`
+      )
+      .then((response) => {
+        this.reviews = response.data.results;
+        console.log(this.reviews)
+      })
+      // if (this.reviews) {
+      // setTimeout(() => this.isvisible = false, 3000)
+        
+      // }
+      // const ps = [p1, p2, p3, p4]
+      // Promise.allSettled(ps).then(() => {
+      //   this.isvisible = false
+      // })
   },
   // methods: {
   //   next() {
@@ -138,11 +166,17 @@ export default {
 </script>
 
 <style scoped>
-img.upper-imgs {
+/* img.upper-imgs {
   margin: 0;
   padding: 0;
   height: auto;
   width: 100vw;
+} */
+.preloader {
+  width: 100%;
+  height: 100%;
+  background: red;
+  /* z-index: 100600; */
 }
 .uppercase {
   text-transform: uppercase;

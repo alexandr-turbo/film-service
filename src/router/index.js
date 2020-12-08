@@ -61,4 +61,16 @@ const router = new VueRouter({
   routes
 })
 
+// router.beforeEach((to, from, next) => {
+//   // this.$root.loading = true
+//   console.log(1)
+//   // console.log(this)
+// 	next()
+// })
+// router.afterEach(() => {
+//   // app.loading = true
+//   console.log(2)
+// 	// next()
+// })
+
 export default router

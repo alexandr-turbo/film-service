@@ -14,7 +14,7 @@
             v-if="crew.poster_path && crew.poster_path !== ''"
             class="movie-image"
             :class="index % 2 === 0 ? 'left-image' : 'right-image'"
-            :src="`${globalImgAddress}1280${crew.poster_path}`"
+            v-lazy="`${globalImgAddress}1280${crew.poster_path}`"
           />
           <img
             v-else

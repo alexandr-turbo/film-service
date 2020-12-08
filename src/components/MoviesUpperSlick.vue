@@ -73,14 +73,13 @@ export default {
   },
 };
 </script>
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-img.upper-imgs {
+/* img.upper-imgs {
   margin: 0;
   padding: 0;
   height: auto;
-  width: 100vw;
-}
+  width: 100%;
+} */
 .uppercase {
   text-transform: uppercase;
 }

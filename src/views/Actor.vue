@@ -8,16 +8,18 @@
         <ActorInfo :actor="actor" />
         <template v-if="roles.length">
           <div class="title">Cast</div>
-          <div v-for="(role, index) in roles" :key="role.id">
-            <ActorCastCover :role="role" :index="index" :movieGenres="movieGenres" :tvshowGenres="tvshowGenres"/>
+          <div v-for="(role, index) in roles1" :key="role.id">
+            <!-- <lazy-component> -->
+              <ActorCastCover :role="role" :index="index" :movieGenres="movieGenres" :tvshowGenres="tvshowGenres"/>
+            <!-- </lazy-component> -->
           </div>
         </template>
-        <template v-if="crew.length">
+        <!-- <template v-if="crew.length">
           <div class="title">Crew</div>
           <div v-for="(crew, index) in crew" :key="crew.id">
             <ActorCrewCover :crew="crew" :index="index" :movieGenres="movieGenres" :tvshowGenres="tvshowGenres"/>
           </div>
-        </template>
+        </template> -->
       </div>
     </div>
   </div>
@@ -28,24 +30,99 @@ import axios from "axios";
 // import movieGenresMixin from "@/mixins/movieGenresMixin";
 import ActorInfo from "../components/ActorInfo.vue";
 import ActorCastCover from "../components/ActorCastCover.vue";
-import ActorCrewCover from "../components/ActorCrewCover.vue";
+// import ActorCrewCover from "../components/ActorCrewCover.vue";
 
 export default {
-  data() {
-    return {
+  data: () => ({
+    // return {
       actor: null,
       movieGenres: null,
       tvshowGenres: null,
       roles: [],
       crew: [],
-    };
-  },
+      roles1: [],
+      scrollHeight: 0,
+      interval: null,
+      i: 0
+    // };
+  }),
   // props: ['actorID', 'person'],
   // // mixins: [movieGenresMixin],
   components: {
-    ActorInfo, ActorCastCover, ActorCrewCover
+    ActorInfo,
+    ActorCastCover,
+    // ActorCrewCover
+  },
+  // mounted() {
+  //   // console.log(this.scrollHeight)
+  //   this.interval = setInterval(() => {
+  //     this.scrollHeight = Math.max(
+  //     document.body.scrollHeight, document.documentElement.scrollHeight,
+  //     document.body.offsetHeight, document.documentElement.offsetHeight,
+  //     document.body.clientHeight, document.documentElement.clientHeight
+  //   );
+  //   }, 100);
+  //   // console.log(this.scrollHeight)
+
+  // },
+
+  // destroyed() {
+  //   clearInterval(this.interval);
+  // },
+  // watch: {
+  //   `$window.pageYOffset`() {
+  //     // console.log(1)
+  //   console.log(this.scrollHeight)
+  //   console.log(document.documentElement.clientHeight)
+  //   console.log(window.pageYOffset)
+  //     if((this.scrollHeight - document.documentElement.clientHeight - window.pageYOffset) < 100) {
+  //       // console.log(3)
+        
+  //       this.roles1.push(this.roles[0])
+  //     }
+  //     // return this.roles1
+  //   }
+  // },
+  // watch: {
+  //   'window.pageYOffset' () {
+  //     console.log(this.window.pageYOffset)
+  //   }
+  // },
+  mounted() {
+    window.addEventListener("scroll", this.onScroll);
+  },
+  beforeDestroy() {
+    window.removeEventListener("scroll", this.onScroll);
+  },
+  methods: {
+    onScroll() {
+      this.scrollHeight = Math.max(
+      document.body.scrollHeight, document.documentElement.scrollHeight,
+      document.body.offsetHeight, document.documentElement.offsetHeight,
+      document.body.clientHeight, document.documentElement.clientHeight
+      )
+      console.log(this.scrollHeight)
+    if(this.scrollHeight - document.documentElement.clientHeight - window.pageYOffset < 100) {
+      // if(e.target.documentElement.scrollTop < 100) {
+        for(; this.i < this.roles.length;) {
+          this.roles1.push(this.roles[this.i])
+          this.i++
+          return
+        }
+      }
+      // console.log({ top: this.windowTop });
+    }
   },
   async created() {
+    // let scrollHeight = Math.max(
+    //   document.body.scrollHeight, document.documentElement.scrollHeight,
+    //   document.body.offsetHeight, document.documentElement.offsetHeight,
+    //   document.body.clientHeight, document.documentElement.clientHeight
+    // );
+    // console.log(window.pageYOffset)
+    // console.log(scrollHeight)
+
+    // console.log(document.documentElement.clientHeight)
     // axios.get(`https://api.themoviedb.org/3/person${this.actorID}?api_key=f943d3d10cc39fd734122d69efabbacb`)
     axios
       .get(
