@@ -114,6 +114,8 @@ export default {
     }
   },
   async created() {
+    
+    // console.log(this.scrollHeight - document.documentElement.clientHeight - window.pageYOffset);
     // let scrollHeight = Math.max(
     //   document.body.scrollHeight, document.documentElement.scrollHeight,
     //   document.body.offsetHeight, document.documentElement.offsetHeight,
@@ -141,6 +143,14 @@ export default {
         }
         if (response.data.crew) {
           this.crew = response.data.crew;
+        }
+        if(this.scrollHeight - document.documentElement.clientHeight - window.pageYOffset < 100) {
+          // if(e.target.documentElement.scrollTop < 100) {
+          for(; this.i < this.roles.length;) {
+            this.roles1.push(this.roles[this.i])
+            this.i++
+            return
+          }
         }
       });
     // this.movieGenres = await this.getCurrentMediaTypeGenres("movie");
