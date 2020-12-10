@@ -2,24 +2,22 @@
   <div class="actor">
     <div v-if="actor !== null">
       <div class="container">
-        <!-- <div v-for="i in 100" :key="i">
-          <img v-lazy="`https://via.placeholder.com/728x90.png?text=` + i" width="100%" height="400">
-        </div> -->
         <ActorInfo :actor="actor" />
-        <template v-if="roles.length">
+          <button class="title" @click="m(1)">Cast</button>
+          <button class="title" @click="m(2)">Crew</button>
+
+        <template v-if="roles.length && cast">
           <div class="title">Cast</div>
           <div v-for="(role, index) in roles1" :key="role.id">
-            <!-- <lazy-component> -->
-              <ActorCastCover :role="role" :index="index" :movieGenres="movieGenres" :tvshowGenres="tvshowGenres"/>
-            <!-- </lazy-component> -->
+            <ActorCastCover :role="role" :index="index" :movieGenres="movieGenres" :tvshowGenres="tvshowGenres"/>
           </div>
         </template>
-        <!-- <template v-if="crew.length">
+        <template v-if="crews.length && !cast">
           <div class="title">Crew</div>
-          <div v-for="(crew, index) in crew" :key="crew.id">
+          <div v-for="(crew, index) in crews1" :key="crew.id">
             <ActorCrewCover :crew="crew" :index="index" :movieGenres="movieGenres" :tvshowGenres="tvshowGenres"/>
           </div>
-        </template> -->
+        </template>
       </div>
     </div>
   </div>
@@ -27,67 +25,31 @@
 
 <script>
 import axios from "axios";
-// import movieGenresMixin from "@/mixins/movieGenresMixin";
 import ActorInfo from "../components/ActorInfo.vue";
 import ActorCastCover from "../components/ActorCastCover.vue";
-// import ActorCrewCover from "../components/ActorCrewCover.vue";
+import ActorCrewCover from "../components/ActorCrewCover.vue";
 
 export default {
   data: () => ({
     // return {
+      cast: true,
       actor: null,
       movieGenres: null,
       tvshowGenres: null,
       roles: [],
-      crew: [],
+      crews: [],
       roles1: [],
+      crews1: [],
       scrollHeight: 0,
       interval: null,
-      i: 0
-    // };
+      i: 0,
+      j: 0
   }),
-  // props: ['actorID', 'person'],
-  // // mixins: [movieGenresMixin],
   components: {
     ActorInfo,
     ActorCastCover,
-    // ActorCrewCover
+    ActorCrewCover
   },
-  // mounted() {
-  //   // console.log(this.scrollHeight)
-  //   this.interval = setInterval(() => {
-  //     this.scrollHeight = Math.max(
-  //     document.body.scrollHeight, document.documentElement.scrollHeight,
-  //     document.body.offsetHeight, document.documentElement.offsetHeight,
-  //     document.body.clientHeight, document.documentElement.clientHeight
-  //   );
-  //   }, 100);
-  //   // console.log(this.scrollHeight)
-
-  // },
-
-  // destroyed() {
-  //   clearInterval(this.interval);
-  // },
-  // watch: {
-  //   `$window.pageYOffset`() {
-  //     // console.log(1)
-  //   console.log(this.scrollHeight)
-  //   console.log(document.documentElement.clientHeight)
-  //   console.log(window.pageYOffset)
-  //     if((this.scrollHeight - document.documentElement.clientHeight - window.pageYOffset) < 100) {
-  //       // console.log(3)
-        
-  //       this.roles1.push(this.roles[0])
-  //     }
-  //     // return this.roles1
-  //   }
-  // },
-  // watch: {
-  //   'window.pageYOffset' () {
-  //     console.log(this.window.pageYOffset)
-  //   }
-  // },
   mounted() {
     window.addEventListener("scroll", this.onScroll);
   },
@@ -95,6 +57,52 @@ export default {
     window.removeEventListener("scroll", this.onScroll);
   },
   methods: {
+    m(z) {
+      if(z === 1 && !this.roles1.length && this.cast !== true) {
+        console.log(z)
+        this.cast = true
+        // if(this.scrollHeight - document.documentElement.clientHeight - window.pageYOffset < 100) {
+          for(; this.i < this.roles.length;) {
+            this.roles1.push(this.roles[this.i])
+            this.i++
+            return
+          }
+        // }
+      }
+      else if(z === 2 && !this.crews1.length && this.cast !== false) {
+        console.log(z)
+        this.cast = false
+        // if(this.scrollHeight - document.documentElement.clientHeight - window.pageYOffset < 100) {
+          for(; this.j < this.crews.length;) {
+            this.crews1.push(this.crews[this.j])
+            this.j++
+            return
+          }
+        // }
+      }
+      else if(z === 1 && this.roles1.length && this.cast !== true) {
+        console.log(z)
+        this.cast = true
+        // if(this.scrollHeight - document.documentElement.clientHeight - window.pageYOffset < 100) {
+          // for(; this.i < this.roles.length;) {
+          //   this.roles1.push(this.roles[this.i])
+          //   this.i++
+          //   return
+          // }
+        // }
+      }
+      else if(z === 2 && this.crews1.length && this.cast !== false) {
+        console.log(z)
+        this.cast = false
+        // if(this.scrollHeight - document.documentElement.clientHeight - window.pageYOffset < 100) {
+          // for(; this.j < this.crews.length;) {
+          //   this.crews1.push(this.crews[this.j])
+          //   this.j++
+          //   return
+          // }
+        // }
+      }
+    },
     onScroll() {
       this.scrollHeight = Math.max(
       document.body.scrollHeight, document.documentElement.scrollHeight,
@@ -102,15 +110,22 @@ export default {
       document.body.clientHeight, document.documentElement.clientHeight
       )
       console.log(this.scrollHeight)
-    if(this.scrollHeight - document.documentElement.clientHeight - window.pageYOffset < 100) {
-      // if(e.target.documentElement.scrollTop < 100) {
+      if(this.scrollHeight - document.documentElement.clientHeight - window.pageYOffset < 100 && this.cast === true) {
+        
         for(; this.i < this.roles.length;) {
           this.roles1.push(this.roles[this.i])
           this.i++
           return
         }
       }
-      // console.log({ top: this.windowTop });
+      if(this.scrollHeight - document.documentElement.clientHeight - window.pageYOffset < 100 && this.cast === false) {
+        
+        for(; this.j < this.crews.length;) {
+          this.crews1.push(this.crews[this.j])
+          this.j++
+          return
+        }
+      }
     }
   },
   async created() {
@@ -142,62 +157,28 @@ export default {
           this.roles = response.data.cast;
         }
         if (response.data.crew) {
-          this.crew = response.data.crew;
+          this.crews = response.data.crew;
         }
         if(this.scrollHeight - document.documentElement.clientHeight - window.pageYOffset < 100) {
-          // if(e.target.documentElement.scrollTop < 100) {
+          // this.cast = true
           for(; this.i < this.roles.length;) {
             this.roles1.push(this.roles[this.i])
             this.i++
             return
           }
         }
+        if(this.scrollHeight - document.documentElement.clientHeight - window.pageYOffset < 100) {
+          // this.cast = false
+          for(; this.j < this.crews.length;) {
+            this.crews1.push(this.crews[this.j])
+            this.j++
+            return
+          }
+        }
       });
-    // this.movieGenres = await this.getCurrentMediaTypeGenres("movie");
-    // this.tvshowGenres = await this.getCurrentMediaTypeGenres("tv");
     this.movieGenres = this.$store.state.MovieGenres
     this.tvshowGenres = this.$store.state.TVShowGenres
   },
-  // methods: {
-  //   getGender(gender) {
-  //     return gender === 1 ? "Female" : "Male";
-  //   },
-  //   getAge(birthdayDate) {
-  //     var now = new Date();
-  //     var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  //     var dateOfBirthday = new Date(birthdayDate);
-  //     var dateOfBirthdayThisYear = new Date(
-  //       today.getFullYear(),
-  //       dateOfBirthday.getMonth(),
-  //       dateOfBirthday.getDate()
-  //     );
-  //     var age;
-  //     age = today.getFullYear() - dateOfBirthday.getFullYear();
-  //     if (today < dateOfBirthdayThisYear) {
-  //       age = age - 1;
-  //     }
-  //     return age;
-  //   },
-  //   getPrettyDate(currentDate) {
-  //     let arr = currentDate.split("-");
-  //     let months = [
-  //       "Jan",
-  //       "Feb",
-  //       "Mar",
-  //       "Apr",
-  //       "May",
-  //       "Jun",
-  //       "Jul",
-  //       "Aug",
-  //       "Sep",
-  //       "Oct",
-  //       "Nov",
-  //       "Dec",
-  //     ];
-  //     var prettyDate = months[+arr[1] - 1] + " " + arr[2] + ", " + arr[0];
-  //     return prettyDate;
-  //   },
-  // },
 };
 </script>
 

@@ -1,5 +1,5 @@
 <template>
-  <lazy-component>
+  <div>
     <router-link
       tag="div"
       class="margin"
@@ -14,7 +14,7 @@
             v-if="crew.poster_path && crew.poster_path !== ''"
             class="movie-image"
             :class="index % 2 === 0 ? 'left-image' : 'right-image'"
-            v-lazy="`${globalImgAddress}1280${crew.poster_path}`"
+            :src="`${globalImgAddress}1280${crew.poster_path}`"
           />
           <img
             v-else
@@ -49,7 +49,7 @@
         <div class="justify">Overview: {{ crew.overview }}</div>
       </div>
     </router-link>
-  </lazy-component>
+  </div>
 </template>
 <script>
 // import axios from "axios";
