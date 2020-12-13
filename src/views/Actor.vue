@@ -60,48 +60,26 @@ export default {
   methods: {
     m(z) {
       if(z === 1 && !this.roles1.length && this.cast !== true) {
-        // console.log(z)
         this.cast = true
-        // if(this.scrollHeight - document.documentElement.clientHeight - window.pageYOffset < 100) {
           for(; this.i < this.roles.length;) {
             this.roles1.push(this.roles[this.i])
             this.i++
             return
           }
-        // }
       }
       else if(z === 2 && !this.crews1.length && this.cast !== false) {
-        // console.log(z)
         this.cast = false
-        // if(this.scrollHeight - document.documentElement.clientHeight - window.pageYOffset < 100) {
           for(; this.j < this.crews.length;) {
             this.crews1.push(this.crews[this.j])
             this.j++
             return
           }
-        // }
       }
       else if(z === 1 && this.roles1.length && this.cast !== true) {
-        // console.log(z)
         this.cast = true
-        // if(this.scrollHeight - document.documentElement.clientHeight - window.pageYOffset < 100) {
-          // for(; this.i < this.roles.length;) {
-          //   this.roles1.push(this.roles[this.i])
-          //   this.i++
-          //   return
-          // }
-        // }
       }
       else if(z === 2 && this.crews1.length && this.cast !== false) {
-        // console.log(z)
         this.cast = false
-        // if(this.scrollHeight - document.documentElement.clientHeight - window.pageYOffset < 100) {
-          // for(; this.j < this.crews.length;) {
-          //   this.crews1.push(this.crews[this.j])
-          //   this.j++
-          //   return
-          // }
-        // }
       }
     },
     onScroll() {
@@ -110,7 +88,6 @@ export default {
       document.body.offsetHeight, document.documentElement.offsetHeight,
       document.body.clientHeight, document.documentElement.clientHeight
       )
-      // console.log(this.scrollHeight)
       if(this.scrollHeight - document.documentElement.clientHeight - window.pageYOffset < 100 && this.cast === true) {
         
         for(; this.i < this.roles.length;) {
@@ -130,18 +107,6 @@ export default {
     }
   },
   async created() {
-    
-    // console.log(this.scrollHeight - document.documentElement.clientHeight - window.pageYOffset);
-    // let scrollHeight = Math.max(
-    //   document.body.scrollHeight, document.documentElement.scrollHeight,
-    //   document.body.offsetHeight, document.documentElement.offsetHeight,
-    //   document.body.clientHeight, document.documentElement.clientHeight
-    // );
-    // console.log(window.pageYOffset)
-    // console.log(scrollHeight)
-
-    // console.log(document.documentElement.clientHeight)
-    // axios.get(`https://api.themoviedb.org/3/person${this.actorID}?api_key=f943d3d10cc39fd734122d69efabbacb`)
     axios
       .get(
         `https://api.themoviedb.org/3${this.$route.path}?api_key=f943d3d10cc39fd734122d69efabbacb`
@@ -161,7 +126,6 @@ export default {
           this.crews = response.data.crew;
         }
         if(this.scrollHeight - document.documentElement.clientHeight - window.pageYOffset < 100) {
-          // this.cast = true
           for(; this.i < this.roles.length;) {
             this.roles1.push(this.roles[this.i])
             this.i++
@@ -169,7 +133,6 @@ export default {
           }
         }
         if(this.scrollHeight - document.documentElement.clientHeight - window.pageYOffset < 100) {
-          // this.cast = false
           for(; this.j < this.crews.length;) {
             this.crews1.push(this.crews[this.j])
             this.j++
@@ -217,13 +180,11 @@ export default {
 .main2 {
   display: flex;
   align-items: center;
-  /* background: lightblue; */
 }
 .main3 {
   display: flex;
   flex-direction: row-reverse;
   align-items: center;
-  /* background: lightgray; */
 }
 .justify {
   text-align: justify;

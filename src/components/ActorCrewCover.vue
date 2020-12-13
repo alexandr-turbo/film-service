@@ -8,64 +8,56 @@
         params: { movieID: crew.id, movieType: crew.media_type },
       }"
     >
-      <!-- <div :class="index % 2 === 0 ? 'lightgray' : 'lightblue'"> -->
-        <div :class="index % 2 === 0 ? 'main2' : 'main3'">
-          <div class="fl">
-            <img
-              v-if="crew.poster_path && crew.poster_path !== ''"
-              class="movie-image"
-              :src="`${globalImgAddress}1280${crew.poster_path}`"
-            />
-            <img
-              v-else
-              class="movie-image"
-              src="@/assets/no-image.png"
-            />
-            <div class="actor-description">
-              <div>Title: {{ crew.title }}</div>
-              <div>Original title: {{ crew.original_title }}</div>
-              <div>Job: {{ crew.job }}</div>
-              <div>
-                Genres:
-                {{
-                  crew.media_type === "movie"
-                    ? getCurrentMediaTypeGenresNames(
-                        movieGenres,
-                        crew.genre_ids
-                      )
-                    : getCurrentMediaTypeGenresNames(
-                        tvshowGenres,
-                        crew.genre_ids
-                      )
-                }}
-              </div>
-              <div>Department: {{ crew.department }}</div>
-              <div class="cap">Media type: {{ crew.media_type }}</div>
-              <div>Release date: {{ crew.release_date }}</div>
-              <div>Rating: {{ crew.vote_average }}</div>
+      <div :class="index % 2 === 0 ? 'main2' : 'main3'">
+        <div class="fl">
+          <img
+            v-if="crew.poster_path && crew.poster_path !== ''"
+            class="movie-image"
+            :src="`${globalImgAddress}1280${crew.poster_path}`"
+          />
+          <img
+            v-else
+            class="movie-image"
+            src="@/assets/no-image.png"
+          />
+          <div class="actor-description">
+            <div>Title: {{ crew.title }}</div>
+            <div>Original title: {{ crew.original_title }}</div>
+            <div>Job: {{ crew.job }}</div>
+            <div>
+              Genres:
+              {{
+                crew.media_type === "movie"
+                  ? getCurrentMediaTypeGenresNames(
+                      movieGenres,
+                      crew.genre_ids
+                    )
+                  : getCurrentMediaTypeGenresNames(
+                      tvshowGenres,
+                      crew.genre_ids
+                    )
+              }}
             </div>
+            <div>Department: {{ crew.department }}</div>
+            <div class="cap">Media type: {{ crew.media_type }}</div>
+            <div>Release date: {{ crew.release_date }}</div>
+            <div>Rating: {{ crew.vote_average }}</div>
           </div>
-          <div class="justify">Overview: {{ crew.overview }}</div>
         </div>
-      <!-- </div> -->
+        <div class="justify">Overview: {{ crew.overview }}</div>
+      </div>
     </router-link>
   </div>
 </template>
 <script>
-// import axios from "axios";
-// import Slick from "vue-slick";
-// import movieGenresMixin from "@/mixins/movieGenresMixin";
 
 export default {
   props: ["crew", "index", "movieGenres", "tvshowGenres"],
-  // mixins: [movieGenresMixin],
 };
 </script>
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .fl {
   display: flex;
-  /* align-items: flex-start !important; */
 }
 .actor-image {
   border-radius: 5px;
@@ -81,11 +73,9 @@ export default {
 }
 .left-image {
   margin-right: 32px;
-  /* margin-bottom: 32px; */
 }
 .right-image {
   margin-left: 32px;
-  /* margin-bottom: 32px; */
 }
 .main {
   display: flex;
@@ -95,9 +85,7 @@ export default {
   display: flex;
   background: #1C262B;
   padding: 20px;
-  /* align-items: center; */
   border-right: 5px solid white;
-  /* background: lightblue; */
   flex-direction: column;
 }
 .main3 {
@@ -105,8 +93,6 @@ export default {
   background: #1C262B;
   flex-direction: column;
   padding: 20px;
-  /* align-items: center; */
-  /* background: lightgray; */
   border-left: 5px solid white;
 }
 .justify {
@@ -141,7 +127,6 @@ export default {
 .margin {
   margin: 25px 0;
   border-radius: 10px;
-  /* border: lightseagreen 1px solid; */
 }
 .margin2 {
   padding: 20px;
@@ -154,9 +139,6 @@ export default {
 .pink {
   background: lightpink;
 }
-/* .actor {
-    background: #0D0032;
-  } */
 .cap {
   text-transform: capitalize;
 }

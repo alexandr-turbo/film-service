@@ -1,7 +1,6 @@
 <template>
   <div class="home">
     <UpperSlick :movieType="movieType" :genres="genres" />
-    <!-- <component :is="currentView" /> -->
     <div class="center">
       <button
         class="home-btn"
@@ -16,24 +15,17 @@
         TV Shows
       </button>
     </div>
-    <!-- <component :is="currentView2" /> -->
     <FilmSlicks :filmSlickArr="filmSlickArr" :movieType="movieType" :genres="genres" />
   </div>
 </template>
 
 <script>
-// import MoviesSlicks from "../components/MoviesSlicks.vue";
-// import TVShowsSlicks from "../components/TVShowsSlicks.vue";
-// import MoviesUpperSlick from "../components/MoviesUpperSlick.vue";
-// import TVShowsUpperSlick from "../components/TVShowsUpperSlick.vue";
 import UpperSlick from "../components/UpperSlick.vue";
 import FilmSlicks from "../components/FilmSlicks.vue";
 
 export default {
   data() {
     return {
-      currentView: "MoviesUpperSlick",
-      currentView2: "MoviesSlicks",
       movieType: "movie",
       genres: [],
       tvshowSlickArr: ["airing_today", "popular", "on_the_air", "top_rated"],
@@ -42,10 +34,6 @@ export default {
     };
   },
   components: {
-    // MoviesSlicks,
-    // TVShowsSlicks,
-    // MoviesUpperSlick,
-    // TVShowsUpperSlick,
     UpperSlick,
     FilmSlicks
   },
