@@ -31,9 +31,7 @@
         class="movie-title"
       >
         {{
-          movie.media_type === "movie"
-            ? getCurrentMediaTypeGenresNames(movieGenres, movie.genre_ids)
-            : getCurrentMediaTypeGenresNames(tvshowGenres, movie.genre_ids)
+          getCurrentMediaTypeGenresNames(genres, movie.genre_ids)
         }}
       </div>
       <div v-else class="movie-title">Genres are not provided</div>
@@ -53,19 +51,19 @@ export default {
   //     tvshowGenres: null,
   //   };
   // },
-  props: ["movie", "movieGenres", "tvshowGenres"],
+  props: ["movie", "genres"],
   // mixins: [movieGenresMixin],
   // watch: {
   //   $route() {
   //     this.searchQuery = this.$route.fullPath.split("?")[1].split("&")[0];
   //     this.pageNumber = this.$route.fullPath.split("=")[1];
-  //     this.getFirstPageSearchResults(this.searchQuery, this.pageNumber);
+  //     this.getPageSearchResults(this.searchQuery, this.pageNumber);
   //   },
   // },
   // async created() {
     // this.searchQuery = this.$route.fullPath.split("?")[1].split("&")[0];
     // this.pageNumber = this.$route.fullPath.split("=")[1];
-    // this.getFirstPageSearchResults(this.searchQuery, this.pageNumber);
+    // this.getPageSearchResults(this.searchQuery, this.pageNumber);
     // this.movieGenres = await this.getCurrentMediaTypeGenres("movie");
     // console.log(this.movieGenres)
     // this.tvshowGenres = await this.getCurrentMediaTypeGenres("tv");
@@ -74,7 +72,7 @@ export default {
     // this.tvshowGenres = this.$store.state.TVShowGenres
   // },
   // methods: {
-  //   getFirstPageSearchResults(query, page) {
+  //   getPageSearchResults(query, page) {
   //     axios
   //       .get(
   //         `https://api.themoviedb.org/3/search/multi?api_key=f943d3d10cc39fd734122d69efabbacb&query=${query}&page=${page}&include_adult=false`

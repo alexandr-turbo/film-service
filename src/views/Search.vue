@@ -4,7 +4,7 @@
       <div class="prettytext" v-if="searchResultPage.page">Search results for {{ searchQuery }}
         <div class="flex" v-if="searchResultPage.total_results">
           <div class="flex-col" v-for="movie in searchResultPage.results" :key="movie.id">
-            <SearchCover :movie="movie" :movieGenres="movieGenres" :tvshowGenres="tvshowGenres"/>
+            <SearchCover :movie="movie" :genres="movie.media_type === 'movie' ? movieGenres : tvshowGenres"/>
           </div>
         </div>
       </div>
@@ -41,6 +41,7 @@ export default {
       filteredSearchResults: {},
       movieGenres: null,
       tvshowGenres: null,
+      genres: [],
       searchQuery: '',
       pageNumber: ''
     };
@@ -53,7 +54,7 @@ export default {
       if (this.$route.fullPath.indexOf("?") !== -1 & this.searchResultPage.page !== 0) {
         this.searchQuery = this.$route.fullPath.split("?")[1].split("&")[0];
         this.pageNumber = this.$route.fullPath.split("=")[1];
-        this.getFirstPageSearchResults(this.searchQuery, this.pageNumber);
+        this.getPageSearchResults(this.searchQuery, this.pageNumber);
       } else {
         this.searchResultPage.page = 0
       }
@@ -63,13 +64,13 @@ export default {
     if (this.$route.fullPath.indexOf("?") !== -1) {
       this.searchQuery = this.$route.fullPath.split("?")[1].split("&")[0];
       this.pageNumber = this.$route.fullPath.split("=")[1];
-      this.getFirstPageSearchResults(this.searchQuery, this.pageNumber);
+      this.getPageSearchResults(this.searchQuery, this.pageNumber);
     }
     this.movieGenres = this.$store.state.MovieGenres
     this.tvshowGenres = this.$store.state.TVShowGenres
   },
   methods: {
-    getFirstPageSearchResults(query, page) {
+    getPageSearchResults(query, page) {
       axios
         .get(
           `https://api.themoviedb.org/3/search/multi?api_key=f943d3d10cc39fd734122d69efabbacb&query=${query}&page=${page}&include_adult=false`

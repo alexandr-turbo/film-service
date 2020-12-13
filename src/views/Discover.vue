@@ -11,7 +11,7 @@
           </div>
           <div class="flexcol">
             <div>Sort</div>
-            <select v-model="sort">
+            <select v-model="sortType">
               <option v-for="s in sortOptions" :value="s.value" :key="s.value">{{s.title}}</option>
             </select>
           </div>
@@ -97,7 +97,7 @@ export default {
       genre: '',
       people: '',
       vote: '',
-      sort: '&sort_by=popularity.desc',
+      sortType: '&sort_by=popularity.desc',
       mediatype: 'movie',
       searchResultPage: {},
       filteredSearchResults: {},
@@ -105,6 +105,7 @@ export default {
       tvshowGenres: null,
       searchQuery: '',
       pageNumber: '',
+      fullPath: '',
       animals: ['first animal', "second animal"],
       selectedActorFromList: '',
       selectedYear: '&year=',
@@ -135,22 +136,29 @@ export default {
       let routeGenre = this.$route.fullPath.split("?")[1].split("&")[4]
       let routeYear = this.$route.fullPath.split("?")[1].split("&")[5]
       let page = this.$route.fullPath.split("page=")[1]
-      this.getFirstPageSearchResults(routeMediatype, routeSortBy, routeVote, routeActor, routeGenre, routeYear, page);
+      this.getPageSearchResults(routeMediatype, routeSortBy, routeVote, routeActor, routeGenre, routeYear, page);
     },
   },
   created() {
     let routeMediatype = this.$route.fullPath.split("?")[1].split("&")[0]
     let routeSortBy = this.$route.fullPath.split("?")[1].split("&")[1]
+    // this.sortType = this.sortOptions.find(item => item.value.slice(1) === routeSortBy).title
+    // this.sortType = '&' + routeSortBy
+
     let routeVote = this.$route.fullPath.split("?")[1].split("&")[2]
+    // this.vote = this.$route.fullPath.split("=")[2].split("&")[0]
     let routeActor = this.$route.fullPath.split("?")[1].split("&")[3]
     let routeGenre = this.$route.fullPath.split("?")[1].split("&")[4]
     let routeYear = this.$route.fullPath.split("?")[1].split("&")[5]
     let page = this.$route.fullPath.split("page=")[1]
-    this.getFirstPageSearchResults(routeMediatype, routeSortBy, routeVote, routeActor, routeGenre, routeYear, page);
+    this.getPageSearchResults(routeMediatype, routeSortBy, routeVote, routeActor, routeGenre, routeYear, page);
     this.movieGenres = this.$store.state.MovieGenres
     this.tvshowGenres = this.$store.state.TVShowGenres
   },
   methods: {
+    getRoutePaths() {
+
+    },
     async search(input) {
       if (input.length < 1) {
         this.selectedActorFromList = ''
@@ -164,8 +172,8 @@ export default {
         )
         .then((response) => {
           a = response.data.results
-        a.filter(animal => {
-          return animal.name.toLowerCase()
+        a.filter(actor => {
+          return actor.name.toLowerCase()
               .includes(input.toLowerCase())
           })
         });
@@ -198,39 +206,27 @@ export default {
       if (this.vote) {
         this.selectedVote += this.vote
       }
-      this.$router.push(`${this.$route.path}?${this.mediatype}${this.sort}${this.selectedVote}${this.selectedActor}${this.selectedGenreIDString}${this.selectedYear}&page=1`);
+      this.$router.push(`${this.$route.path}?${this.mediatype}${this.sortType}${this.selectedVote}${this.selectedActor}${this.selectedGenreIDString}${this.selectedYear}&page=1`);
 
     },
-    getFirstPageSearchResults(routeMediatype, routeSortBy, routeVote, routeActor, routeGenre, routeYear, page) {
+    getPageSearchResults(routeMediatype, routeSortBy, routeVote, routeActor, routeGenre, routeYear, page) {
       axios
         .get(
           `https://api.themoviedb.org/3/discover/${routeMediatype}?api_key=12a5356516535d4d67654a936a088c1b&language=en-US&${routeSortBy}&include_adult=false&include_video=false&${routeVote}&${routeActor}&${routeGenre}&${routeYear}&page=${page}`
         )
         .then((response) => {
           this.searchResultPage = response.data;
-          console.log(this.searchResultPage)
-          console.log(this.routeMediatype)
         });
     },
     getNextPageSearchResults() {
-      let routeMediatype = this.$route.fullPath.split("?")[1].split("&")[0]
-      let routeSortBy = this.$route.fullPath.split("?")[1].split("&")[1]
-      let routeVote = this.$route.fullPath.split("?")[1].split("&")[2]
-      let routeActor = this.$route.fullPath.split("?")[1].split("&")[3]
-      let routeGenre = this.$route.fullPath.split("?")[1].split("&")[4]
-      let routeYear = this.$route.fullPath.split("?")[1].split("&")[5]
+      this.fullPath = this.$route.fullPath.split("page=")[0]
       this.pageNumber = ++this.$route.fullPath.split("page=")[1];
-      this.$router.push(`${this.$route.path}?${routeMediatype}&${routeSortBy}&${routeVote}&${routeActor}&${routeGenre}&${routeYear}&page=${this.pageNumber}`);
+      this.$router.push(`${this.fullPath}&page=${this.pageNumber}`);
     },
     getPreviousPageSearchResults() {
-      let routeMediatype = this.$route.fullPath.split("?")[1].split("&")[0]
-      let routeSortBy = this.$route.fullPath.split("?")[1].split("&")[1]
-      let routeVote = this.$route.fullPath.split("?")[1].split("&")[2]
-      let routeActor = this.$route.fullPath.split("?")[1].split("&")[3]
-      let routeGenre = this.$route.fullPath.split("?")[1].split("&")[4]
-      let routeYear = this.$route.fullPath.split("?")[1].split("&")[5]
-      this.pageNumber = --this.$route.fullPath.split("page=")[1];
-      this.$router.push(`${this.$route.path}?${routeMediatype}&${routeSortBy}&${routeVote}&${routeActor}&${routeGenre}&${routeYear}&page=${this.pageNumber}`);
+      this.fullPath = this.$route.fullPath.split("page=")[0]
+      this.pageNumber = --this.$route.fullPath.split("page=")[1]
+      this.$router.push(`${this.fullPath}&page=${this.pageNumber}`);
     },
   },
 };
