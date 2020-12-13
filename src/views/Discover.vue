@@ -1,5 +1,5 @@
 <template>
-  <div class="dicover">
+  <div class="discover">
     <div class="container">
       <form @submit.prevent="searchRequest">
         <div class="flex2">
@@ -50,7 +50,9 @@
             <input type="number" v-model="year" placeholder="year">
           </div>
         </div>
-        <button type="submit">submit</button>
+        <div class="sdf">
+          <button class="submit" type="submit">submit</button>
+        </div>
       </form>
       <div class="flex" v-if="searchResultPage.total_results">
         <div class="flex-col" v-for="movie in searchResultPage.results" :key="movie.id">
@@ -62,14 +64,14 @@
     </div>
     <div v-if="searchResultPage.page" class="center mt">
         <button
-          class="pretty"
+          class="submit before"
           v-if="searchResultPage.page > 1"
           @click="getPreviousPageSearchResults()"
         >
           Previous page
         </button>
         <button
-          class="pretty"
+          class="submit after"
           v-if="searchResultPage.page < searchResultPage.total_pages"
           @click="getNextPageSearchResults()"
         >
@@ -331,8 +333,8 @@ export default {
 </script>
 <style scoped>
 .discover {
-      color: #fff;
-    background-color: #111617;
+  color: #fff;
+  background-color: #111617;
 }
 .flex {
   display: flex;
@@ -397,5 +399,32 @@ export default {
 .flexcol {
   display: flex;
   flex-direction: column;
+}
+.submit {
+  background: none;
+  border: 2px solid #fff;
+  border-radius: 20px;
+  color: #fff;
+  cursor: pointer;
+  font-family: "Alegreya Sans", sans-serif;
+  font-size: 1.1rem;
+  letter-spacing: .1rem;
+  margin: 2rem auto;
+  outline: none;
+  padding: .7rem;
+  -webkit-transition: background .5s;
+  -o-transition: background .5s;
+  transition: background .5s;
+  width: 180px;
+}
+.sdf {
+  display: flex;
+  justify-content: center;
+}
+.before::before {
+  content: "<<";
+}
+.after::after {
+  content: ">>";
 }
 </style>

@@ -2,7 +2,6 @@
   <div>
     <div
       class="margin2"
-      :class="getGender(actor.gender) === 'Male' ? 'blue' : 'pink'"
     >
       <div class="main">
         <img
@@ -154,11 +153,11 @@ export default {
   border-radius: 10px;
   border: lightseagreen 1px solid;
 }
-.margin2 {
+/* .margin2 {
   padding: 20px;
   border-radius: 10px;
   border: lightseagreen 1px solid;
-}
+} */
 .blue {
   background: lightblue;
 }

@@ -3,9 +3,10 @@
     <div v-if="actor !== null">
       <div class="container">
         <ActorInfo :actor="actor" />
-          <button class="title" @click="m(1)">Cast</button>
-          <button class="title" @click="m(2)">Crew</button>
-
+        <div class="beauty">
+          <button class="home-btn" @click="m(1)">Cast</button>
+          <button class="home-btn" @click="m(2)">Crew</button>
+        </div>
         <template v-if="roles.length && cast">
           <div class="title">Cast</div>
           <div v-for="(role, index) in roles1" :key="role.id">
@@ -185,9 +186,9 @@ export default {
 <style scoped>
 .actor {
   background: -webkit-linear-gradient(285deg, #251431 0%, #161130 22%);
-    background: -o-linear-gradient(285deg, #251431 0%, #161130 22%);
-    background: linear-gradient(165deg, #251431 0%, #161130 22%);
-    color: #fff;
+  background: -o-linear-gradient(285deg, #251431 0%, #161130 22%);
+  background: linear-gradient(165deg, #251431 0%, #161130 22%);
+  color: #fff;
 }
 .actor-image {
   border-radius: 5px;
@@ -236,6 +237,10 @@ export default {
 .actor-description {
   margin: auto 0;
 }
+.title-btn {
+  font-size: 32px;
+  
+}
 .title {
   font-size: 32px;
 }
@@ -268,7 +273,33 @@ export default {
 .pink {
   background: lightpink;
 }
-/* .actor {
-    background: #0D0032;
-  } */
+.home-btn {
+  background: none;
+  border: none;
+  background-image: -webkit-gradient(linear, left top, right top, from(rgba(255, 86, 132, 0.4)), color-stop(68%, rgba(83, 50, 201, 0.4))), -webkit-gradient(linear, left top, right top, from(rgba(255, 86, 132, 0.4)), color-stop(68%, rgba(83, 50, 201, 0.4)));
+  background-image: -webkit-linear-gradient(left, rgba(255, 86, 132, 0.4) 0%, rgba(83, 50, 201, 0.4) 68%), -webkit-linear-gradient(left, rgba(255, 86, 132, 0.4) 0%, rgba(83, 50, 201, 0.4) 68%);
+  background-image: -o-linear-gradient(left, rgba(255, 86, 132, 0.4) 0%, rgba(83, 50, 201, 0.4) 68%), -o-linear-gradient(left, rgba(255, 86, 132, 0.4) 0%, rgba(83, 50, 201, 0.4) 68%);
+  background-image: linear-gradient(90deg, rgba(255, 86, 132, 0.4) 0%, rgba(83, 50, 201, 0.4) 68%), linear-gradient(90deg, rgba(255, 86, 132, 0.4) 0%, rgba(83, 50, 201, 0.4) 68%);
+  border-image-slice: 1;
+  border-left: 3px solid rgba(255, 86, 132, 0.4);
+  border-right: 3px solid rgba(83, 50, 201, 0.4);
+  border-radius: 10px;
+  background-position: 0 0, 0 100%;
+  background-repeat: no-repeat;
+  background-size: 100% 3px;
+  color: #fff;
+  cursor: pointer;
+  display: block;
+  font-family: "Alegreya Sans", sans-serif;
+  font-weight: bold;
+  letter-spacing: .4rem;
+  outline: none;
+  padding: 30px 100px;
+  margin: 25px 10px 0;
+  text-transform: uppercase;
+}
+.beauty {
+  display: flex;
+  justify-content: center;
+}
 </style>

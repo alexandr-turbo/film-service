@@ -54,7 +54,7 @@
       <div v-if="searchResultPage.page" class="center mt">
         <!-- <div class="test"> -->
           <button
-            class="pretty"
+            class="submit before"
             v-if="searchResultPage.page > 1"
             @click="getPreviousPageSearchResults()"
           >
@@ -63,7 +63,7 @@
         <!-- </div> -->
         <!-- <div class="test"> -->
           <button
-            class="pretty"
+            class="submit after"
             v-if="searchResultPage.page < searchResultPage.total_pages"
             @click="getNextPageSearchResults()"
           >
@@ -221,5 +221,32 @@ export default {
 } */
 .prettytext {
   text-align: center;
+}
+.submit {
+  background: none;
+  border: 2px solid #fff;
+  border-radius: 20px;
+  color: #fff;
+  cursor: pointer;
+  font-family: "Alegreya Sans", sans-serif;
+  font-size: 1.1rem;
+  letter-spacing: .1rem;
+  margin: 2rem auto;
+  outline: none;
+  padding: .7rem;
+  -webkit-transition: background .5s;
+  -o-transition: background .5s;
+  transition: background .5s;
+  width: 180px;
+}
+.sdf {
+  display: flex;
+  justify-content: center;
+}
+.before::before {
+  content: "<<";
+}
+.after::after {
+  content: ">>";
 }
 </style>
