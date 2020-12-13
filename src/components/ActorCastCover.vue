@@ -21,29 +21,26 @@
             src="@/assets/no-image.png"
           />
           <div class="actor-description">
-            <div>Title: {{ role.title }}</div>
-            <div>Original title: {{ role.original_title }}</div>
-            <div>Character: {{ role.character }}</div>
-            <div>
+            <div v-if="role.title || role.name">Title: {{ role.media_type === "movie" ? role.title : role.name }}</div>
+            <!-- <div>Title: {{ role.title }}</div> -->
+            <div v-if="role.original_title || role.original_name">Original title: {{ role.media_type === "movie" ? role.original_title : role.original_name }}</div>
+            <div v-if="role.character">Character: {{ role.character }}</div>
+            <div v-if="role.genre_ids">
               Genres:
               {{
-                role.media_type === "movie"
-                  ? getCurrentMediaTypeGenresNames(
-                      movieGenres,
-                      role.genre_ids
-                    )
-                  : getCurrentMediaTypeGenresNames(
-                      tvshowGenres,
+                getCurrentMediaTypeGenresNames(
+                      genres,
                       role.genre_ids
                     )
               }}
             </div>
-            <div class="cap">Media type: {{ role.media_type }}</div>
-            <div>Release date: {{ role.release_date }}</div>
-            <div>Rating: {{ role.vote_average }}</div>
+            <div v-if="role.media_type" class="cap">Media type: {{ role.media_type }}</div>
+            <div v-if="role.release_date">Release date: {{ role.release_date }}</div>
+            <div v-else-if="role.first_air_date">First air date: {{ role.first_air_date }}</div>
+            <div v-if="role.vote_average">Rating: {{ role.vote_average }}</div>
           </div>
         </div>
-        <div class="justify">Overview: {{ role.overview }}</div>
+        <div v-if="role.overview" class="justify">Overview: {{ role.overview }}</div>
       </div>
     </router-link>
   </div>
@@ -51,7 +48,7 @@
 <script>
 
 export default {
-  props: ["role", "index", "movieGenres", "tvshowGenres"],
+  props: ["role", "index", "genres"],
 };
 </script>
 <style scoped>

@@ -10,11 +10,6 @@
 import FilmSlick from "../components/FilmSlick.vue";
 
 export default {
-  // data() {
-  //   return {
-  //     tvshowSlickArr: ["airing_today", "popular", "on_the_air", "top_rated"]
-  //   };
-  // },
   props: ['filmSlickArr', 'movieType', 'genres'],
   components: {
     FilmSlick,

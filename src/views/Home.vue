@@ -33,6 +33,12 @@ export default {
       filmSlickArr: []
     };
   },
+  // provide() {
+  //   return {
+  //     genres: this.genres,
+  //     movieType: this.movieType
+  //   }
+  // },
   components: {
     UpperSlick,
     FilmSlicks
@@ -42,14 +48,14 @@ export default {
     this.filmSlickArr = this.movieSlickArr
   },
   methods: {
-    switchView(view, view2) {
-      if (view) {
-        this.currentView = view;
-      }
-      if (view2) {
-        this.currentView2 = view2;
-      }
-    },
+    // switchView(view, view2) {
+    //   if (view) {
+    //     this.currentView = view;
+    //   }
+    //   if (view2) {
+    //     this.currentView2 = view2;
+    //   }
+    // },
     switchType(type) {
       this.movieType = type;
       if (type === 'tv') {

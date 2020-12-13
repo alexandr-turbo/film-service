@@ -21,30 +21,26 @@
             src="@/assets/no-image.png"
           />
           <div class="actor-description">
-            <div>Title: {{ crew.title }}</div>
-            <div>Original title: {{ crew.original_title }}</div>
-            <div>Job: {{ crew.job }}</div>
-            <div>
+            <div v-if="crew.title || crew.name">Title: {{ crew.media_type === "movie" ? crew.title : crew.name }}</div>
+            <div v-if="crew.original_title || crew.original_name">Original title: {{ crew.media_type === "movie" ? crew.original_title : crew.original_name }}</div>
+            <div v-if="crew.job">Job: {{ crew.job }}</div>
+            <div v-if="crew.genre_ids">
               Genres:
               {{
-                crew.media_type === "movie"
-                  ? getCurrentMediaTypeGenresNames(
-                      movieGenres,
-                      crew.genre_ids
-                    )
-                  : getCurrentMediaTypeGenresNames(
-                      tvshowGenres,
+                getCurrentMediaTypeGenresNames(
+                      genres,
                       crew.genre_ids
                     )
               }}
             </div>
-            <div>Department: {{ crew.department }}</div>
-            <div class="cap">Media type: {{ crew.media_type }}</div>
-            <div>Release date: {{ crew.release_date }}</div>
-            <div>Rating: {{ crew.vote_average }}</div>
+            <div v-if="crew.department">Department: {{ crew.department }}</div>
+            <div v-if="crew.media_type" class="cap">Media type: {{ crew.media_type }}</div>
+            <div v-if="crew.release_date">Release date: {{ crew.release_date }}</div>
+            <div v-else-if="crew.first_air_date">First air date: {{ crew.first_air_date }}</div>
+            <div v-if="crew.vote_average">Rating: {{ crew.vote_average }}</div>
           </div>
         </div>
-        <div class="justify">Overview: {{ crew.overview }}</div>
+        <div v-if="crew.overview" class="justify">Overview: {{ crew.overview }}</div>
       </div>
     </router-link>
   </div>
@@ -52,7 +48,7 @@
 <script>
 
 export default {
-  props: ["crew", "index", "movieGenres", "tvshowGenres"],
+  props: ["crew", "index", "genres"],
 };
 </script>
 <style scoped>

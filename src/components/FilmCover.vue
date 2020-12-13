@@ -35,16 +35,12 @@
   </div>
 </template>
 <script>
-// import axios from "axios";
-// import Slick from "vue-slick";
-// import movieGenresMixin from "@/mixins/movieGenresMixin";
 
 export default {
   props: ["genres", "item", "movieType"],
-  // mixins: [movieGenresMixin],
+  // inject: ["genres", "movieType"],
 };
 </script>
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
   .cs {
     display: flex !important;

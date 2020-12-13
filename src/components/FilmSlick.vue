@@ -14,13 +14,11 @@
 <script>
 import axios from "axios";
 import Slick from "vue-slick";
-// import movieGenresMixin from "@/mixins/movieGenresMixin";
 import FilmCover from "../components/FilmCover.vue";
 
 export default {
   data() {
     return {
-      // movieGenres: null,
       type1: [],
       slickOptions: {
         slidesToShow: 7,
@@ -77,7 +75,7 @@ export default {
    FilmCover, Slick, 
   },
   props: ["type", "genres", "movieType"],
-  // mixins: [movieGenresMixin],
+  // inject: ["movieType"],
   created() {
     this.getFilms()
   },

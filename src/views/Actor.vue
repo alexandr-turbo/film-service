@@ -10,13 +10,13 @@
         <template v-if="roles.length && cast">
           <div class="title">Cast</div>
           <div v-for="(role, index) in roles1" :key="role.id">
-            <ActorCastCover :role="role" :index="index" :movieGenres="movieGenres" :tvshowGenres="tvshowGenres"/>
+            <ActorCastCover :role="role" :index="index" :genres="role.media_type === 'movie' ? movieGenres : tvshowGenres"/>
           </div>
         </template>
         <template v-if="crews.length && !cast">
           <div class="title">Crew</div>
           <div v-for="(crew, index) in crews1" :key="crew.id">
-            <ActorCrewCover :crew="crew" :index="index" :movieGenres="movieGenres" :tvshowGenres="tvshowGenres"/>
+            <ActorCrewCover :crew="crew" :index="index" :genres="crew.media_type === 'movie' ? movieGenres : tvshowGenres"/>
           </div>
         </template>
       </div>

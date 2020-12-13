@@ -28,7 +28,6 @@
 <script>
 import axios from "axios";
 import Slick from "vue-slick";
-// import movieGenresMixin from "@/mixins/movieGenresMixin";
 
 export default {
   data() {
@@ -46,6 +45,7 @@ export default {
     };
   },
   props: ['movieType', 'genres'],
+  // inject: ['genres', 'movieType'],
   components: {
     Slick,
   },
