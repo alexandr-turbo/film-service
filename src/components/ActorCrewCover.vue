@@ -41,7 +41,7 @@
               }}
             </div>
             <div>Department: {{ crew.department }}</div>
-            <div>Media type: {{ crew.media_type | capitalize }}</div>
+            <div class="cap">Media type: {{ crew.media_type }}</div>
             <div>Release date: {{ crew.release_date }}</div>
             <div>Rating: {{ crew.vote_average }}</div>
           </div>
@@ -145,4 +145,7 @@ export default {
 /* .actor {
     background: #0D0032;
   } */
+.cap {
+  text-transform: capitalize;
+}
 </style>

@@ -1,16 +1,19 @@
 <template>
   <div>
-    <div class="uppercase left-text">trailers</div>
-    <slick class="slick" ref="slick" :options="slickOptions_trailers">
-      <div v-for="item in trailers" v-bind:key="item.id">
-        <MovieTrailerCover :item="item" />
-        <!-- <div class="iframe">
-          <iframe
-            class="trailer"
-            :src="`https://www.youtube.com/embed/${item.key}`"
-          ></iframe>
-        </div>
-        <h4 class="trailer-name">{{ item.name }}</h4> -->
+    <div class="uppercase left-text">cast</div>
+    <slick class="slick" ref="slick" :options="slickOptions_cast">
+      <div v-for="item in cast" :key="item.id">
+        <FilmActorCover :item="item" />
+        <!-- <router-link :to="{ name: 'actor', params: { actorID: item.id } }">
+          <img
+            v-if="item.profile_path && item.profile_path !== ''"
+            class="actor-image"
+            :title="item.bio"
+            :src="`${globalImgAddress}92${item.profile_path}`"
+          />
+          <img v-else class="actor-image" src="@/assets/no-image.png" />
+        </router-link>
+        <h4 class="actor-name">{{ item.name }}</h4> -->
       </div>
     </slick>
   </div>
@@ -19,7 +22,7 @@
 <script>
 // import axios from "axios";
 import Slick from "vue-slick";
-import MovieTrailerCover from "../components/MovieTrailerCover.vue";
+import FilmActorCover from "../components/FilmActorCover.vue";
 
 export default {
   data() {
@@ -27,24 +30,24 @@ export default {
       // genres: null,
       // currentmovie: null,
       // trailers: null,
-      // slickOptions_cast: {
-      //   slidesToShow: 5,
-      //   infinite: true,
-      //   arrows: true,
-      //   draggable: false,
-      // },
-      slickOptions_trailers: {
-        slidesToShow: 3,
+      slickOptions_cast: {
+        slidesToShow: 5,
         infinite: true,
         arrows: true,
         draggable: false,
       },
+      // slickOptions_trailers: {
+      //   slidesToShow: 3,
+      //   infinite: true,
+      //   arrows: true,
+      //   draggable: false,
+      // },
     };
   },
   components: {
-    Slick, MovieTrailerCover
+    Slick, FilmActorCover
   },
-  props: ["trailers"],
+  props: ["cast"],
   // async created() {
   //   axios
   //     .get(

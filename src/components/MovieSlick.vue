@@ -1,7 +1,7 @@
 <template id="movie-slick-template">
   <div class="container" v-if="type1 != null">
     <h3 class="uppercase left-text">
-      {{ type }}
+      {{ type | replaceDash }}
     </h3>
     <slick class="slick" ref="slick" :options="slickOptions">
       <div class="cs" v-for="item in type1" :key="item.id">
@@ -26,6 +26,8 @@ export default {
         infinite: true,
         // autoplay: true,
         // autoplaySpeed: 500,
+        draggable: false,
+        lazyLoad: 'ondemand',
         responsive: [
           {
             breakpoint: 1280,

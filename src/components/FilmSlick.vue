@@ -1,11 +1,11 @@
-<template id="tvshow-slick-template">
-  <div class="container" v-if="type1 != null">
+<template id="film-slick-template">
+  <div class="container" v-if="type1.length">
     <h3 class="uppercase left-text">
       {{ type | replaceDash }}
     </h3>
     <slick class="slick" ref="slick" :options="slickOptions">
       <div class="cs" v-for="item in type1" :key="item.id">
-        <TVShowCover :item="item" :genres="tvshowGenres" />
+        <FilmCover :item="item" :genres="genres" :movieType="movieType" />
       </div>
     </slick>
   </div>
@@ -15,12 +15,13 @@
 import axios from "axios";
 import Slick from "vue-slick";
 // import movieGenresMixin from "@/mixins/movieGenresMixin";
-import TVShowCover from "../components/TVShowCover.vue";
+import FilmCover from "../components/FilmCover.vue";
 
 export default {
   data() {
     return {
-      tvshowGenres: null,
+      // movieGenres: null,
+      type1: [],
       slickOptions: {
         slidesToShow: 7,
         infinite: true,
@@ -70,26 +71,32 @@ export default {
           // instead of a settings object
         ]
       },
-      type1: null,
     };
   },
   components: {
-    TVShowCover, Slick,
+   FilmCover, Slick, 
   },
-  props: ["type"],
+  props: ["type", "genres", "movieType"],
   // mixins: [movieGenresMixin],
-  async created() {
-    axios
-      .get(
-        `https://api.themoviedb.org/3/tv/${this.type}?api_key=f943d3d10cc39fd734122d69efabbacb`
-      )
-      .then((response) => {
-        this.type1 = response.data.results;
-      }),
-    // this.tvshowGenres = await this.getCurrentMediaTypeGenres("tv");
-    this.tvshowGenres = this.$store.state.TVShowGenres
+  created() {
+    this.getFilms()
+  },
+  watch: {
+    movieType() {
+      this.type1 = []
+      this.getFilms()
+    }
   },
   methods: {
+    async getFilms() {
+      await axios
+        .get(
+          `https://api.themoviedb.org/3/${this.movieType}/${this.type}?api_key=f943d3d10cc39fd734122d69efabbacb`
+        )
+        .then((response) => {
+          this.type1 = response.data.results;
+        })
+    },
     next() {
       this.$refs.slick.next();
     },

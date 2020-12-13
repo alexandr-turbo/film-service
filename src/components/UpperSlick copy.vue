@@ -1,12 +1,9 @@
-<template id="tvshows-upper-slick-template">
-  <div class="upper-slick" v-if="popular != null && tvshowGenres != null">
+<template id="upper-slick-template">
+  <div class="upper-slick" v-if="popular.length">
     <slick class="slick" ref="slick" :options="slickOptionsUpper">
-      <div v-for="item in popular" :key="item.id">
+      <div v-for="item in popular" v-bind:key="item.id">
         <router-link
-          :to="{
-            name: 'movie',
-            params: { movieID: item.id, movieType: 'tv' }
-          }"
+          :to="{ name: 'movie', params: { movieID: item.id, movieType: movieType } }"
         >
           <img
             class="upper-imgs"
@@ -15,8 +12,9 @@
         </router-link>
         <div class="upper-text white-text">
           <h3 class="uppercase">popular</h3>
-          <h4>{{ item.original_name }}</h4>
-          <h5>{{ getCurrentMediaTypeGenresNames(tvshowGenres, item.genre_ids) }}</h5>
+          <h4 v-if="movieType === 'movie'">{{ item.original_title }}</h4>
+          <h4 v-if="movieType === 'tv'">{{ item.original_name }}</h4>
+          <h5>{{ getCurrentMediaTypeGenresNames(genres, item.genre_ids) }}</h5>
         </div>
       </div>
     </slick>
@@ -31,8 +29,8 @@ import Slick from "vue-slick";
 export default {
   data() {
     return {
-      popular: null,
-      tvshowGenres: null,
+      popular: [],
+      genres: [],
       slickOptionsUpper: {
         slidesToShow: 1,
         infinite: true,
@@ -43,17 +41,39 @@ export default {
       },
     };
   },
+  props: ['movieType'],
   // mixins: [movieGenresMixin],
   async created() {
-    axios
+    console.log(this.movieType)
+    await axios
       .get(
-        "https://api.themoviedb.org/3/tv/popular?api_key=f943d3d10cc39fd734122d69efabbacb"
+        `https://api.themoviedb.org/3/${this.movieType}/popular?api_key=f943d3d10cc39fd734122d69efabbacb`
       )
       .then((response) => {
         this.popular = response.data.results;
+        console.log(this.popular);
       }),
     // this.tvshowGenres = await this.getCurrentMediaTypeGenres("tv");
-    this.tvshowGenres = this.$store.state.TVShowGenres
+    this.movieType === 'movie' ? this.genres = await this.$store.state.MovieGenres : this.genres = await this.$store.state.TVShowGenres;
+    console.log(this.genres);
+  },
+  watch: {
+    async movieType() {
+      console.log(this.movieType)
+      await axios
+        .get(
+          `https://api.themoviedb.org/3/${this.movieType}/popular?api_key=f943d3d10cc39fd734122d69efabbacb`
+        )
+        .then((response) => {
+          // this.popular = []
+          this.popular = response.data.results;
+          console.log(this.popular);
+        }),
+      // this.tvshowGenres = await this.getCurrentMediaTypeGenres("tv");
+      this.movieType === 'movie' ? this.genres = await this.$store.state.MovieGenres : this.genres = await this.$store.state.TVShowGenres;
+      // this.reInit()
+      console.log(this.genres);
+    }
   },
   components: {
     Slick,

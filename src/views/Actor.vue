@@ -59,7 +59,7 @@ export default {
   methods: {
     m(z) {
       if(z === 1 && !this.roles1.length && this.cast !== true) {
-        console.log(z)
+        // console.log(z)
         this.cast = true
         // if(this.scrollHeight - document.documentElement.clientHeight - window.pageYOffset < 100) {
           for(; this.i < this.roles.length;) {
@@ -70,7 +70,7 @@ export default {
         // }
       }
       else if(z === 2 && !this.crews1.length && this.cast !== false) {
-        console.log(z)
+        // console.log(z)
         this.cast = false
         // if(this.scrollHeight - document.documentElement.clientHeight - window.pageYOffset < 100) {
           for(; this.j < this.crews.length;) {
@@ -81,7 +81,7 @@ export default {
         // }
       }
       else if(z === 1 && this.roles1.length && this.cast !== true) {
-        console.log(z)
+        // console.log(z)
         this.cast = true
         // if(this.scrollHeight - document.documentElement.clientHeight - window.pageYOffset < 100) {
           // for(; this.i < this.roles.length;) {
@@ -92,7 +92,7 @@ export default {
         // }
       }
       else if(z === 2 && this.crews1.length && this.cast !== false) {
-        console.log(z)
+        // console.log(z)
         this.cast = false
         // if(this.scrollHeight - document.documentElement.clientHeight - window.pageYOffset < 100) {
           // for(; this.j < this.crews.length;) {
@@ -109,7 +109,7 @@ export default {
       document.body.offsetHeight, document.documentElement.offsetHeight,
       document.body.clientHeight, document.documentElement.clientHeight
       )
-      console.log(this.scrollHeight)
+      // console.log(this.scrollHeight)
       if(this.scrollHeight - document.documentElement.clientHeight - window.pageYOffset < 100 && this.cast === true) {
         
         for(; this.i < this.roles.length;) {
@@ -183,6 +183,12 @@ export default {
 </script>
 
 <style scoped>
+.actor {
+  background: -webkit-linear-gradient(285deg, #251431 0%, #161130 22%);
+    background: -o-linear-gradient(285deg, #251431 0%, #161130 22%);
+    background: linear-gradient(165deg, #251431 0%, #161130 22%);
+    color: #fff;
+}
 .actor-image {
   border-radius: 5px;
   height: 190px;

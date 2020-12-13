@@ -1,74 +1,76 @@
 <template>
-  <div class="container">
-    <div class="prettytext" v-if="searchResultPage.page">Search results for {{ searchQuery }}
-      <div class="flex" v-if="searchResultPage.total_results">
-        <div class="flex-col" v-for="movie in searchResultPage.results" :key="movie.id">
-          <SearchCover :movie="movie" :movieGenres="movieGenres" :tvshowGenres="tvshowGenres"/>
+  <div class="search">
+    <div class="container">
+      <div class="prettytext" v-if="searchResultPage.page">Search results for {{ searchQuery }}
+        <div class="flex" v-if="searchResultPage.total_results">
+          <div class="flex-col" v-for="movie in searchResultPage.results" :key="movie.id">
+            <SearchCover :movie="movie" :movieGenres="movieGenres" :tvshowGenres="tvshowGenres"/>
+          </div>
+          <!-- <router-link
+            tag="div"
+            class="flex-col"
+            v-for="movie in searchResultPage.results"
+            :key="movie.id"
+            :to="{
+              name: 'movie',
+              params: { movieID: movie.id, movieType: movie.media_type },
+            }"
+          >
+            <img
+              v-if="movie.poster_path && movie.poster_path !== ''"
+              class="movie-image"
+              :src="`${globalImgAddress}1280${movie.poster_path}`"
+            />
+            <img v-else class="movie-image" src="@/assets/no-image.png" />
+            <div v-if="movie.title && movie.title !== ''" class="movie-title">
+              {{ movie.title }}
+            </div>
+            <div
+              v-else-if="movie.original_title && movie.original_title !== ''"
+              class="movie-title"
+            >
+              {{ movie.original_title }}
+            </div>
+            <div v-else class="movie-title">
+              DB thinks that search keyword is included
+            </div>
+            <div
+              v-if="movie.genre_ids && movie.genre_ids !== ''"
+              class="movie-title"
+            >
+              {{
+                movie.media_type === "movie"
+                  ? getCurrentMediaTypeGenresNames(movieGenres, movie.genre_ids)
+                  : getCurrentMediaTypeGenresNames(tvshowGenres, movie.genre_ids)
+              }}
+            </div>
+            <div v-else class="movie-title">Genres are not provided</div>
+          </router-link> -->
         </div>
-        <!-- <router-link
-          tag="div"
-          class="flex-col"
-          v-for="movie in searchResultPage.results"
-          :key="movie.id"
-          :to="{
-            name: 'movie',
-            params: { movieID: movie.id, movieType: movie.media_type },
-          }"
-        >
-          <img
-            v-if="movie.poster_path && movie.poster_path !== ''"
-            class="movie-image"
-            :src="`${globalImgAddress}1280${movie.poster_path}`"
-          />
-          <img v-else class="movie-image" src="@/assets/no-image.png" />
-          <div v-if="movie.title && movie.title !== ''" class="movie-title">
-            {{ movie.title }}
-          </div>
-          <div
-            v-else-if="movie.original_title && movie.original_title !== ''"
-            class="movie-title"
-          >
-            {{ movie.original_title }}
-          </div>
-          <div v-else class="movie-title">
-            DB thinks that search keyword is included
-          </div>
-          <div
-            v-if="movie.genre_ids && movie.genre_ids !== ''"
-            class="movie-title"
-          >
-            {{
-              movie.media_type === "movie"
-                ? getCurrentMediaTypeGenresNames(movieGenres, movie.genre_ids)
-                : getCurrentMediaTypeGenresNames(tvshowGenres, movie.genre_ids)
-            }}
-          </div>
-          <div v-else class="movie-title">Genres are not provided</div>
-        </router-link> -->
       </div>
-    </div>
-    <div class="center" v-else>
-      Nothing found
-    </div>
-    <div v-if="searchResultPage.page" class="center mt">
-      <!-- <div class="test"> -->
-        <button
-          class="pretty"
-          v-if="searchResultPage.page > 1"
-          @click="getPreviousPageSearchResults()"
-        >
-          Previous page
-        </button>
-      <!-- </div> -->
-      <!-- <div class="test"> -->
-        <button
-          class="pretty"
-          v-if="searchResultPage.page < searchResultPage.total_pages"
-          @click="getNextPageSearchResults()"
-        >
-          Next page
-        </button>
-      <!-- </div> -->
+      <div class="center" v-else>
+        Nothing found
+      </div>
+      <div v-if="searchResultPage.page" class="center mt">
+        <!-- <div class="test"> -->
+          <button
+            class="pretty"
+            v-if="searchResultPage.page > 1"
+            @click="getPreviousPageSearchResults()"
+          >
+            Previous page
+          </button>
+        <!-- </div> -->
+        <!-- <div class="test"> -->
+          <button
+            class="pretty"
+            v-if="searchResultPage.page < searchResultPage.total_pages"
+            @click="getNextPageSearchResults()"
+          >
+            Next page
+          </button>
+        <!-- </div> -->
+      </div>
     </div>
   </div>
 </template>
@@ -158,6 +160,12 @@ export default {
 };
 </script>
 <style scoped>
+.search {
+  background: -webkit-linear-gradient(285deg, #251431 0%, #161130 22%);
+    background: -o-linear-gradient(285deg, #251431 0%, #161130 22%);
+    background: linear-gradient(165deg, #251431 0%, #161130 22%);
+    color: white;
+}
 .flex {
   display: flex;
   flex-wrap: wrap;

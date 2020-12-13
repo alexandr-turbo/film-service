@@ -2,7 +2,8 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import capitalize from '@/filters/capitalize'
+// import capitalize from '@/filters/capitalize'
+import replaceDash from '@/filters/replaceDash'
 import movieGenresMixin from "@/mixins/movieGenresMixin";
 import Autocomplete from '@trevoreyre/autocomplete-vue'
 // import '@trevoreyre/autocomplete-vue/dist/style.css'
@@ -10,7 +11,8 @@ import Autocomplete from '@trevoreyre/autocomplete-vue'
 Vue.use(Autocomplete)
 // Vue.use(VueRouter)
 Vue.config.productionTip = false
-Vue.filter('capitalize', capitalize)
+// Vue.filter('capitalize', capitalize)
+Vue.filter('replaceDash', replaceDash)
 
 import VueLazyload from 'vue-lazyload'
 
@@ -53,5 +55,5 @@ const app = new Vue({
 
 router.afterEach(() => {
   app.loading = true
-  setTimeout(() => app.loading = false, 3000) // timeout for demo purposes
+  setTimeout(() => app.loading = false, 1500) // timeout for demo purposes
 })

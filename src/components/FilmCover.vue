@@ -7,7 +7,7 @@
         name: 'movie',
         params: {
           movieID: item.id,
-          movieType: 'movie',
+          movieType: movieType,
         },
       }"
     >
@@ -17,8 +17,17 @@
         :src="`${globalImgAddress}92${item.poster_path}`"
       />
     </router-link>
-    <div class="text-justify">
+    <div
+      v-if="movieType === 'movie'"
+      class="text-justify"
+    >
       {{ item.original_title }}
+    </div>
+    <div
+      v-else-if="movieType === 'tv'"
+      class="text-justify"
+    >
+      {{ item.original_name }}
     </div>
     <div class="text-justify">
       {{ getCurrentMediaTypeGenresNames(genres, item.genre_ids) }}
@@ -31,7 +40,7 @@
 // import movieGenresMixin from "@/mixins/movieGenresMixin";
 
 export default {
-  props: ["genres", "item"],
+  props: ["genres", "item", "movieType"],
   // mixins: [movieGenresMixin],
 };
 </script>

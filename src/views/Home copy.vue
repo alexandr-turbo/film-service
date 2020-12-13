@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <UpperSlick :movieType="movieType" :genres="genres" />
+    <UpperSlick :movieType="movieType" />
     <!-- <component :is="currentView" /> -->
     <div class="center">
       <button
@@ -17,7 +17,6 @@
       </button>
     </div>
     <!-- <component :is="currentView2" /> -->
-    <FilmSlicks :filmSlickArr="filmSlickArr" :movieType="movieType" :genres="genres" />
   </div>
 </template>
 
@@ -27,18 +26,13 @@
 // import MoviesUpperSlick from "../components/MoviesUpperSlick.vue";
 // import TVShowsUpperSlick from "../components/TVShowsUpperSlick.vue";
 import UpperSlick from "../components/UpperSlick.vue";
-import FilmSlicks from "../components/FilmSlicks.vue";
 
 export default {
   data() {
     return {
       currentView: "MoviesUpperSlick",
       currentView2: "MoviesSlicks",
-      movieType: "movie",
-      genres: [],
-      tvshowSlickArr: ["airing_today", "popular", "on_the_air", "top_rated"],
-      movieSlickArr: ["upcoming", "popular", "now_playing", "top_rated"],
-      filmSlickArr: []
+      movieType: "movie"
     };
   },
   components: {
@@ -47,11 +41,6 @@ export default {
     // MoviesUpperSlick,
     // TVShowsUpperSlick,
     UpperSlick,
-    FilmSlicks
-  },
-  created() {
-    this.genres = this.$store.state.MovieGenres
-    this.filmSlickArr = this.movieSlickArr
   },
   methods: {
     switchView(view, view2) {
@@ -64,13 +53,6 @@ export default {
     },
     switchType(type) {
       this.movieType = type;
-      if (type === 'tv') {
-        this.genres = this.$store.state.TVShowGenres
-        this.filmSlickArr = this.tvshowSlickArr
-      } else if (type === 'movie') {
-        this.genres = this.$store.state.MovieGenres
-        this.filmSlickArr = this.movieSlickArr
-      }
       // console.log(type)
     } 
   },

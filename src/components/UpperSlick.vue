@@ -1,12 +1,9 @@
-<template id="movies-upper-slick-template">
-  <div class="upper-slick" v-if="popular != null && movieGenres != null">
+<template id="upper-slick-template">
+  <div class="upper-slick" v-if="popular.length">
     <slick class="slick" ref="slick" :options="slickOptionsUpper">
-      <div v-for="item in popular" :key="item.id">  
+      <div v-for="item in popular" :key="item.id">
         <router-link
-          :to="{
-            name: 'movie',
-            params: { movieID: item.id, movieType: 'movie' }
-          }"
+          :to="{ name: 'movie', params: { movieID: item.id, movieType: movieType } }"
         >
           <img
             class="upper-imgs"
@@ -15,9 +12,14 @@
         </router-link>
         <div class="upper-text white-text">
           <h3 class="uppercase">popular</h3>
-          <h4>{{ item.original_title }}</h4>
-          <h5>{{ getCurrentMediaTypeGenresNames(movieGenres, item.genre_ids) }}</h5>
-        </div>  
+          <h4 v-if="movieType === 'movie'">
+            {{ item.original_title }}
+          </h4>
+          <h4 v-else-if="movieType === 'tv'">
+            {{ item.original_name }}
+          </h4>
+          <h5>{{ getCurrentMediaTypeGenresNames(genres, item.genre_ids) }}</h5>
+        </div>
       </div>
     </slick>
   </div>
@@ -26,13 +28,12 @@
 <script>
 import axios from "axios";
 import Slick from "vue-slick";
+// import movieGenresMixin from "@/mixins/movieGenresMixin";
 
 export default {
   data() {
     return {
-      st: false,
-      popular: null,
-      movieGenres: null,
+      popular: [],
       slickOptionsUpper: {
         slidesToShow: 1,
         infinite: true,
@@ -44,20 +45,29 @@ export default {
       },
     };
   },
-  async created() {
-    axios
-      .get(
-        "https://api.themoviedb.org/3/movie/popular?api_key=f943d3d10cc39fd734122d69efabbacb"
-      )
-      .then((response) => {
-        this.popular = response.data.results;
-      })
-    this.movieGenres = this.$store.state.MovieGenres
-  },
+  props: ['movieType', 'genres'],
   components: {
     Slick,
   },
+  watch: {
+    movieType() {
+      this.popular = []
+      this.getPopularFilms()
+    }
+  },
+  created() {
+    this.getPopularFilms()
+  },
   methods: {
+    async getPopularFilms() {
+      await axios
+        .get(
+          `https://api.themoviedb.org/3/${this.movieType}/popular?api_key=f943d3d10cc39fd734122d69efabbacb`
+        )
+        .then((response) => {
+          this.popular = response.data.results;
+        })
+    },
     next() {
       this.$refs.slick.next();
     },
@@ -65,12 +75,19 @@ export default {
       this.$refs.slick.prev();
     },
     reInit() {
+      // Helpful if you have to deal with v-for to update dynamic lists
       this.$refs.slick.reSlick();
     },
   },
 };
 </script>
 <style scoped>
+/* img.upper-imgs {
+  margin: 0;
+  padding: 0;
+  height: auto;
+  width: 100vw;
+} */
 .uppercase {
   text-transform: uppercase;
 }
@@ -85,11 +102,5 @@ export default {
 }
 .white-text {
   color: white;
-}
-.nonclickable {
-  pointer-events: none;
-}
-.clickable {
-  pointer-events: none;
 }
 </style>

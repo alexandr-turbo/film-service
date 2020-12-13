@@ -1,8 +1,7 @@
 <template>
   <div class="centered">
     <router-link to="/">
-      <img class="home-btn" src="@/assets/home.png" />
-      <!-- <img class="home-btn" src="../../public/home.png" /> -->
+      <img class="home-link" src="@/assets/home.png" />
     </router-link>
     <form class="formheight" @submit.prevent="send(query)">
       <input class="inputfield" v-model="query" placeholder="search films" />
@@ -12,8 +11,7 @@
       </button>
     </form>
     <router-link to="/discover?movie&sort_by=popularity.desc&vote_average.gte=&with_people=&with_genres=&year=&page=1">
-      <img class="discover-btn" src="@/assets/home.png" />
-      <!-- <img class="home-btn" src="../../public/home.png" /> -->
+      <img class="discover-link" src="@/assets/discover.png" />
     </router-link>
   </div>
 </template>
@@ -37,8 +35,8 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100px;
-  background: black;
+  height: 80px;
+  background: #1C262B;
   position: relative;
 }
 .input {
@@ -52,17 +50,17 @@ export default {
 .relat {
   position: relative;
 }
-.home-btn {
+.home-link {
   position: absolute;
-  height: 36px;
+  height: 40px;
   left: 10%;
-  top: calc(50% - (36px / 2));
+  top: calc(50% - (40px / 2));
 }
-.discover-btn {
+.discover-link {
   position: absolute;
-  height: 36px;
+  height: 40px;
   right: 10%;
-  top: calc(50% - (36px / 2));
+  top: calc(50% - (40px / 2));
 }
 .formheight {
   display: flex;
@@ -75,34 +73,32 @@ export default {
   /* height: 30px; */
   outline: none;
 }
-.imgclass {
-  height: 30px;
-  /* position: absolute; */
-}
 .inputfield {
-  height: 24px;
+  height: 32px;
+  width: 30vw;
   border: 0;
-  border-radius: 12px;
+  border-radius: 20px;
   outline: none;
-  padding-left: 10px;
-  padding-right: 50px;
+  padding-left: 18px;
+  padding-right: 100px;
+  font-size: 18px;
 }
 .imageclass {
   /* border: 0; */
-  height: 14px;
+  height: 16px;
   /* margin: auto; */
   /* padding: 0; */
   /* width: auto; */
 }
 .buttonclass {
-  border-radius: 12px;
+  border-radius: 20px;
   outline: none;
   /* height: 24px; */
   /* margin: auto; */
-  padding: 6px 15px;
-  background: blue;
+  padding: 9px 30px;
+  background: #EB4E7A;
   border: 0;
-  margin-left: -43px;
+  margin-left: -76px;
   display: flex;
   align-items: center;
 }

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="cc">
     <router-link
       tag="button"
       class="button"
@@ -17,10 +17,10 @@
         :src="`${globalImgAddress}92${item.poster_path}`"
       />
     </router-link>
-    <div>
+    <div class="text-justify">
       {{ item.original_name }}
     </div>
-    <div>
+    <div class="text-justify">
       {{ getCurrentMediaTypeGenresNames(genres, item.genre_ids) }}
     </div>
   </div>
@@ -33,6 +33,9 @@
 export default {
   props: ["genres", "item"],
   // mixins: [movieGenresMixin],
+  created() {
+    console.log(this.item)
+  }
 };
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -45,4 +48,10 @@ export default {
 .text-justify {
   text-align: center;
 }
+.cc {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* outline: none !important; */
+  }
 </style>

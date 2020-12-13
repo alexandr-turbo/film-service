@@ -1,5 +1,6 @@
 <template>
-  <div class="container">
+  <div class="dicover">
+    <div class="container">
       <form @submit.prevent="searchRequest">
         <div class="flex2">
           <div class="flexcol">
@@ -53,7 +54,7 @@
       </form>
       <div class="flex" v-if="searchResultPage.total_results">
         <div class="flex-col" v-for="movie in searchResultPage.results" :key="movie.id">
-          <DiscoverCover :movie="movie" />
+          <DiscoverCover :movie="movie" :movieType="mediatype" />
         </div>
       </div>
     <div class="center" v-else>
@@ -74,6 +75,7 @@
         >
           Next page
         </button>
+    </div>
     </div>
   </div>
 </template>
@@ -272,6 +274,8 @@ export default {
         )
         .then((response) => {
           this.searchResultPage = response.data;
+          console.log(this.searchResultPage)
+          console.log(this.routeMediatype)
         });
     },
     getNextPageSearchResults() {
@@ -326,6 +330,10 @@ export default {
 };
 </script>
 <style scoped>
+.discover {
+      color: #fff;
+    background-color: #111617;
+}
 .flex {
   display: flex;
   flex-wrap: wrap;

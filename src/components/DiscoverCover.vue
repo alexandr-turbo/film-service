@@ -5,7 +5,7 @@
       class="classas"
       :to="{
         name: 'movie',
-        params: { movieID: movie.id, movieType: movie.media_type },
+        params: { movieID: movie.id, movieType: movieType },
       }"
     >
       <img
@@ -53,7 +53,7 @@ export default {
   //     tvshowGenres: null,
   //   };
   // },
-  props: ["movie", "movieGenres", "tvshowGenres"],
+  props: ["movie", "movieGenres", "tvshowGenres", "movieType"],
   // mixins: [movieGenresMixin],
   // watch: {
   //   $route() {

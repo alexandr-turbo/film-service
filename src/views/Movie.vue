@@ -1,6 +1,5 @@
 <template id="about-movie-template">
   <div class="movie">
-    <!-- <div :class="{preloader: isvisible}">asd</div> -->
     <div
       v-if="
         currentmovie &&
@@ -22,37 +21,10 @@
           <div>{{ currentmovie.overview }}</div>
         </div>
         <div v-if="cast.length">
-          <MovieActorsSlick :cast="cast" />
-          <!-- <div class="uppercase left-text">cast</div>
-          <slick class="slick" ref="slick" :options="slickOptions_cast">
-            <div v-for="item in cast" :key="item.id">
-              <router-link :to="{ name: 'actor', params: { actorID: item.id } }">
-                <img
-                  v-if="item.profile_path && item.profile_path !== ''"
-                  class="actor-image"
-                  :title="item.bio"
-                  :src="`${globalImgAddress}92${item.profile_path}`"
-                />
-                <img v-else class="actor-image" src="@/assets/no-image.png" />
-              </router-link>
-              <h4 class="actor-name">{{ item.name }}</h4>
-            </div>
-          </slick> -->
+          <FilmActorsSlick :cast="cast" />
         </div>
         <div v-if="trailers.length">
-          <MovieTrailersSlick :trailers="trailers" />
-          <!-- <div class="uppercase left-text">trailers</div>
-          <slick class="slick" ref="slick" :options="slickOptions_trailers">
-            <div v-for="item in trailers" v-bind:key="item.id">
-              <div class="iframe">
-                <iframe
-                  class="trailer"
-                  :src="`https://www.youtube.com/embed/${item.key}`"
-                ></iframe>
-              </div>
-              <h4 class="trailer-name">{{ item.name }}</h4>
-            </div>
-          </slick> -->
+          <FilmTrailersSlick :trailers="trailers" />
         </div>
         <div v-for="(review, index) in reviews" :key="review.id">
           <Review :review="review"  :index="index" />
@@ -65,8 +37,8 @@
 <script>
 import axios from "axios";
 // import Slick from "vue-slick";
-import MovieActorsSlick from "../components/MovieActorsSlick.vue";
-import MovieTrailersSlick from "../components/MovieTrailersSlick.vue";
+import FilmActorsSlick from "../components/FilmActorsSlick.vue";
+import FilmTrailersSlick from "../components/FilmTrailersSlick.vue";
 import Review from "../components/Review.vue";
 export default {
   data() {
@@ -92,8 +64,8 @@ export default {
     };
   },
   components: {
-    MovieActorsSlick,
-    MovieTrailersSlick,
+    FilmActorsSlick,
+    FilmTrailersSlick,
     Review
   },
   props: ["movieID", "movieType"],
@@ -139,7 +111,7 @@ export default {
       )
       .then((response) => {
         this.reviews = response.data.results;
-        console.log(this.reviews)
+        // console.log(this.reviews)
       })
       // if (this.reviews) {
       // setTimeout(() => this.isvisible = false, 3000)
@@ -166,6 +138,12 @@ export default {
 </script>
 
 <style scoped>
+.movie {
+  background: -webkit-linear-gradient(285deg, #251431 0%, #161130 22%);
+    background: -o-linear-gradient(285deg, #251431 0%, #161130 22%);
+    background: linear-gradient(165deg, #251431 0%, #161130 22%);
+    color: #fff;
+}
 /* img.upper-imgs {
   margin: 0;
   padding: 0;

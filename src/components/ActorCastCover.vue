@@ -40,7 +40,7 @@
                     )
               }}
             </div>
-            <div>Media type: {{ role.media_type | capitalize }}</div>
+            <div class="cap">Media type: {{ role.media_type }}</div>
             <div>Release date: {{ role.release_date }}</div>
             <div>Rating: {{ role.vote_average }}</div>
           </div>
@@ -144,4 +144,7 @@ export default {
 /* .actor {
     background: #0D0032;
   } */
+.cap {
+  text-transform: capitalize;
+}
 </style>
