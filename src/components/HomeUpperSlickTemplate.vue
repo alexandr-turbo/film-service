@@ -3,7 +3,7 @@
     <slick class="slick" ref="slick" :options="slickOptionsUpper">
       <div v-for="item in popular" :key="item.id">
         <router-link
-          class="sss"
+          class="home-upper-slick-template"
           tag="div"
           :to="{
             name: 'film',
@@ -86,21 +86,24 @@ export default {
 };
 </script>
 <style scoped>
-.sss {
+.home-upper-slick-template {
   overflow: hidden;
   max-height: calc(100vh - 80px);
   max-width: 100vw;
+  position: relative;
 }
 .home-upper-slick-template__poster {
   height: 100%;
   width: 100%;
 }
 .home-upper-slick-template__bio {
-  /* text-align: left; */
-  margin-left: 100px;
-  margin-top: -250px;
-  padding-bottom: 250px;
+  position: absolute;
+  left: 100px;
+  bottom: 100px;
   color: white;
+  /* margin-left: 100px;
+  margin-top: -250px;
+  padding-bottom: 250px; */
 }
 .home-upper-slick-template__title {
   text-transform: uppercase;
