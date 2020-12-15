@@ -10,9 +10,9 @@ const routes = [
     component: () => import(/* webpackChunkName: "home" */ '../views/Home.vue'),
     // children: [
     //   {
-    //     path: '/details/:movieType/:movieID',
-    //     name: 'movie',
-    //     component: () => import(/* webpackChunkName: "about" */ '../views/Movie.vue'),
+    //     path: '/details/:filmType/:filmID',
+    //     name: 'film',
+    //     component: () => import(/* webpackChunkName: "about" */ '../views/film.vue'),
     //     props: true
     //   },
     //   {
@@ -28,9 +28,9 @@ const routes = [
     // ]
   },
   {
-    path: '/details/:movieType/:movieID',
-    name: 'movie',
-    component: () => import(/* webpackChunkName: "movie" */ '../views/Movie.vue'),
+    path: '/details/:filmType/:filmID',
+    name: 'film',
+    component: () => import(/* webpackChunkName: "film" */ '../views/Film.vue'),
     props: true
   },
   {
@@ -58,7 +58,11 @@ const routes = [
 ]
 
 const router = new VueRouter({
-  routes
+  routes,
+  scrollBehavior() {
+    // document.getElementById('app').scrollIntoView({behavior: "smooth"});
+    document.getElementById('app').scrollIntoView();
+}
 })
 
 // router.beforeEach((to, from, next) => {

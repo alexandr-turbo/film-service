@@ -6,11 +6,13 @@
     <form class="formheight" @submit.prevent="send(query)">
       <input class="inputfield" v-model="query" placeholder="search films" />
       <button class="buttonclass" type="submit">
-        <img class="imageclass" src="@/assets/search.png">
+        <img class="imageclass" src="@/assets/search.png" />
         <!-- <img class="imageclass" src="../../public/search.png"> -->
       </button>
     </form>
-    <router-link to="/discover?movie&sort_by=popularity.desc&vote_average.gte=&with_people=&with_genres=&year=&page=1">
+    <router-link
+      to="/discover?movie&sort_by=popularity.desc&vote_average.gte=&with_people=&with_genres=&year=&page=1"
+    >
       <img class="discover-link" src="@/assets/discover.png" />
     </router-link>
   </div>
@@ -36,8 +38,11 @@ export default {
   justify-content: center;
   align-items: center;
   height: 80px;
-  background: #1C262B;
+  background: #1c262b;
   position: relative;
+  /* position: absolute;
+  z-index: 1000000000;
+  width: 100%; */
 }
 .input {
   height: 24px;
@@ -96,7 +101,7 @@ export default {
   /* height: 24px; */
   /* margin: auto; */
   padding: 9px 30px;
-  background: #EB4E7A;
+  background: #eb4e7a;
   border: 0;
   margin-left: -76px;
   display: flex;

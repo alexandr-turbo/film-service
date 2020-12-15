@@ -3,14 +3,14 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import replaceDash from '@/filters/replaceDash'
-import movieGenresMixin from "@/mixins/movieGenresMixin";
+import filmGenresMixin from "@/mixins/filmGenresMixin";
 import Autocomplete from '@trevoreyre/autocomplete-vue'
 // import '@trevoreyre/autocomplete-vue/dist/style.css'
-
+// import GoTop from '@inotom/vue-go-top';
 Vue.use(Autocomplete)
 Vue.config.productionTip = false
 Vue.filter('replaceDash', replaceDash)
-
+// Vue.use(GoTop);
 import VueLazyload from 'vue-lazyload'
 Vue.use(VueLazyload, {
   lazyComponent: true,
@@ -23,7 +23,7 @@ Vue.mixin({
     }
   }
 })
-Vue.mixin(movieGenresMixin)
+Vue.mixin(filmGenresMixin)
 const app = new Vue({
   data: { loading: false },
   router,

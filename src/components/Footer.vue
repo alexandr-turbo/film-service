@@ -9,7 +9,10 @@
             <router-link class="nounder" to="/">
               <div>Home</div>
             </router-link>
-            <router-link class="nounder" to="/discover?movie&sort_by=popularity.desc&vote_average.gte=&with_people=&with_genres=&year=&page=1">
+            <router-link
+              class="nounder"
+              to="/discover?movie&sort_by=popularity.desc&vote_average.gte=&with_people=&with_genres=&year=&page=1"
+            >
               <div>Discover</div>
             </router-link>
             <!-- </div> -->
@@ -18,19 +21,17 @@
             Code and design by Aleksandr Savostian
           </div>
         </div>
-        <img src="@/assets/TMDB.png">
+        <img src="@/assets/TMDB.png" />
       </div>
     </div>
   </div>
 </template>
 <script>
-export default {
-  
-};
+export default {};
 </script>
 <style scoped>
 .footer {
-  background: #1C262B;
+  background: #1c262b;
   color: white;
 }
 .input {
@@ -90,7 +91,7 @@ export default {
   /* height: 24px; */
   /* margin: auto; */
   padding: 9px 30px;
-  background: #EB4E7A;
+  background: #eb4e7a;
   border: 0;
   margin-left: -76px;
   display: flex;
@@ -118,7 +119,7 @@ export default {
   font-size: 32px;
 }
 .block {
-  position:relative;
+  position: relative;
   display: inline-block;
 }
 </style>

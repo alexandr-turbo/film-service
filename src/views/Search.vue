@@ -1,10 +1,20 @@
 <template>
   <div class="search">
     <div class="container">
-      <div class="prettytext" v-if="searchResultPage.page">Search results for {{ searchQuery }}
+      <div class="prettytext" v-if="searchResultPage.page">
+        Search results for {{ searchQuery }}
         <div class="flex" v-if="searchResultPage.total_results">
-          <div class="flex-col" v-for="movie in searchResultPage.results" :key="movie.id">
-            <SearchCover :movie="movie" :genres="movie.media_type === 'movie' ? movieGenres : tvshowGenres"/>
+          <div
+            class="flex-col"
+            v-for="film in searchResultPage.results"
+            :key="film.id"
+          >
+            <SearchCoverTemplate
+              :film="film"
+              :genres="
+                film.media_type === 'movie' ? movieGenres : tvshowGenres
+              "
+            />
           </div>
         </div>
       </div>
@@ -32,7 +42,7 @@
 </template>
 <script>
 import axios from "axios";
-import SearchCover from "../components/SearchCover.vue";
+import SearchCoverTemplate from "../components/SearchCoverTemplate.vue";
 
 export default {
   data() {
@@ -42,21 +52,24 @@ export default {
       movieGenres: null,
       tvshowGenres: null,
       genres: [],
-      searchQuery: '',
-      pageNumber: ''
+      searchQuery: "",
+      pageNumber: "",
     };
   },
   components: {
-    SearchCover
+    SearchCoverTemplate,
   },
   watch: {
     $route() {
-      if (this.$route.fullPath.indexOf("?") !== -1 & this.searchResultPage.page !== 0) {
+      if (
+        (this.$route.fullPath.indexOf("?") !== -1) &
+        (this.searchResultPage.page !== 0)
+      ) {
         this.searchQuery = this.$route.fullPath.split("?")[1].split("&")[0];
         this.pageNumber = this.$route.fullPath.split("=")[1];
         this.getPageSearchResults(this.searchQuery, this.pageNumber);
       } else {
-        this.searchResultPage.page = 0
+        this.searchResultPage.page = 0;
       }
     },
   },
@@ -66,8 +79,8 @@ export default {
       this.pageNumber = this.$route.fullPath.split("=")[1];
       this.getPageSearchResults(this.searchQuery, this.pageNumber);
     }
-    this.movieGenres = this.$store.state.MovieGenres
-    this.tvshowGenres = this.$store.state.TVShowGenres
+    this.movieGenres = this.$store.state.MovieGenres;
+    this.tvshowGenres = this.$store.state.TVShowGenres;
   },
   methods: {
     getPageSearchResults(query, page) {
@@ -88,7 +101,9 @@ export default {
         )
         .then((response) => {
           this.searchResultPage = response.data;
-          this.$router.push(`${this.$route.path}?${this.searchQuery}&page=${this.pageNumber}`);
+          this.$router.push(
+            `${this.$route.path}?${this.searchQuery}&page=${this.pageNumber}`
+          );
         });
     },
     getPreviousPageSearchResults() {
@@ -100,7 +115,9 @@ export default {
         )
         .then((response) => {
           this.searchResultPage = response.data;
-          this.$router.push(`${this.$route.path}?${this.searchQuery}&page=${this.pageNumber}`);
+          this.$router.push(
+            `${this.$route.path}?${this.searchQuery}&page=${this.pageNumber}`
+          );
         });
     },
   },
@@ -109,9 +126,9 @@ export default {
 <style scoped>
 .search {
   background: -webkit-linear-gradient(285deg, #251431 0%, #161130 22%);
-    background: -o-linear-gradient(285deg, #251431 0%, #161130 22%);
-    background: linear-gradient(165deg, #251431 0%, #161130 22%);
-    color: white;
+  background: -o-linear-gradient(285deg, #251431 0%, #161130 22%);
+  background: linear-gradient(165deg, #251431 0%, #161130 22%);
+  color: white;
 }
 .flex {
   display: flex;
@@ -123,23 +140,23 @@ export default {
   width: 20%;
   height: auto;
 }
-.movie-image {
+.film-image {
   object-fit: fill;
   border-radius: 5px;
   width: 80%;
   height: 246px;
   margin: 36px auto 12px;
 }
-.movie-title {
+.film-title {
   width: 80%;
   margin: 0 auto;
   text-align: center;
 }
-.container {
+/* .container {
   padding: 2rem 4rem;
   margin: 0 auto;
   max-width: 80%;
-}
+} */
 .center {
   display: flex;
   justify-content: center;
@@ -161,13 +178,13 @@ export default {
   cursor: pointer;
   font-family: "Alegreya Sans", sans-serif;
   font-size: 1.1rem;
-  letter-spacing: .1rem;
+  letter-spacing: 0.1rem;
   margin: 2rem auto;
   outline: none;
-  padding: .7rem;
-  -webkit-transition: background .5s;
-  -o-transition: background .5s;
-  transition: background .5s;
+  padding: 0.7rem;
+  -webkit-transition: background 0.5s;
+  -o-transition: background 0.5s;
+  transition: background 0.5s;
   width: 180px;
 }
 .sdf {

@@ -4,17 +4,20 @@
     <SearchBar /> 
     <router-view />
     <Footer />
+    <GoTop :right="30" :bottom="30" :has-outline="false" bg-color="#eb4e7a" />
   </div>
 </template>
 <script>
 import SearchBar from "./components/SearchBar.vue";
 import Footer from "./components/Footer.vue";
+import GoTop from '@inotom/vue-go-top';
 import Preloader from "./components/Preloader.vue";
 export default {
   components: {
     SearchBar,
     Footer,
-    Preloader
+    Preloader,
+    GoTop
   },
   created() {
     this.$store.dispatch('loadMovieGenres')
@@ -23,52 +26,12 @@ export default {
 };
 </script>
 <style>
-h1 {
-      display: block;
-      font-size: 2em;
-      margin: 0.67em 0;
-      font-weight: 300;
-    }
-
-    h2 {
-      display: block;
-      font-size: 1.5em;
-      margin: 0.83em 0;
-      font-weight: 300;
-    }
-
-    h3 {
-      display: block;
-      font-size: 1.17em;
-      margin: 1em 0;
-      font-weight: bold;
-    }
-
-    h4 {
-      display: block;
-      font-size: 1em;
-      margin: 1.33em 0;
-      font-weight: bold;
-    }
-
-    h5 {
-      display: block;
-      font-size: 0.83em;
-      margin: 1.67em 0;
-      font-weight: bold;
-    }
-
-    h6 {
-      display: block;
-      font-size: 0.67em;
-      margin: 2.33em 0;
-      font-weight: bold;
-    }
+#app {
+    margin-top: 0 !important;
+}
 body {
-  /* margin: 0;
-  padding: 0; */
+    margin: 0 !important;
   font-family: sans-serif;
-  /* line-height: 1.5; */
 }
 button.button {
   border: none;
@@ -79,6 +42,7 @@ button.button {
   box-shadow: none;
   margin: 10px auto;
   outline: none;
+  cursor: pointer;
 }
 button.pretty {
   padding: 10px 50px;
@@ -86,10 +50,6 @@ button.pretty {
   outline: none;
   background: none;
   margin: 0 10px;
-}
-.fixed {
-  position: fixed;
-  z-index: 100500;
 }
 .container {
   padding: 2rem 4rem;
@@ -112,12 +72,12 @@ img.main-imgs:hover {
 .left-text {
   text-align: left;
 }
-img.upper-imgs {
+/* img.upper-imgs {
   margin: 0;
   padding: 0;
   height: auto;
   width: 100%;
-}
+} */
 .preloader {
   position: fixed;
   left: 0;
