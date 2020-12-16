@@ -1,7 +1,7 @@
 <template>
   <div v-if="type1.length">
     <h3 class="home-slick-template-title">
-      {{ type | replaceDash }}
+      {{ type | replaceLodashToSpace }}
     </h3>
     <slick class="slick" ref="slick" :options="slickOptions">
       <div v-for="item in type1" :key="item.id">

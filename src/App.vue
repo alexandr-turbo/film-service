@@ -1,21 +1,21 @@
 <template>
   <div id="app">
     <Preloader v-if="$root.loading" />
-    <SearchBar /> 
+    <SearchBarTemplate /> 
     <router-view />
-    <Footer />
+    <FooterTemplate />
     <GoTop :right="30" :bottom="30" :has-outline="false" bg-color="#eb4e7a" />
   </div>
 </template>
 <script>
-import SearchBar from "./components/SearchBar.vue";
-import Footer from "./components/Footer.vue";
+import SearchBarTemplate from "./components/SearchBarTemplate.vue";
+import FooterTemplate from "./components/FooterTemplate.vue";
 import GoTop from '@inotom/vue-go-top';
 import Preloader from "./components/Preloader.vue";
 export default {
   components: {
-    SearchBar,
-    Footer,
+    SearchBarTemplate,
+    FooterTemplate,
     Preloader,
     GoTop
   },
@@ -51,11 +51,11 @@ button.pretty {
   background: none;
   margin: 0 10px;
 }
-.container {
-  padding: 2rem 4rem;
+/* .container {
+  padding: 2rem 0;
   margin: 0 auto;
   max-width: 80%;
-}
+} */
 img.main-imgs {
   border-radius: 5px;
   height: 190px;

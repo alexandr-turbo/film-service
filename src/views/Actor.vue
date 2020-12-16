@@ -1,17 +1,14 @@
-<template id="actor-template">
+<template>
   <div class="actor">
     <div v-if="actor !== null">
-      <div class="container">
+      <div class="actor__container">
         <ActorInfoTemplate :actor="actor" />
-        <div class="beauty">
-          <!-- <button class="home-btn" @click="m(1)">Cast</button>
-          <button class="home-btn" @click="m(2)">Crew</button> -->
-          <button class="home-btn" v-if="roles.length" @click="cast = true">Cast</button>
-          <button class="home-btn" v-if="crews.length" @click="cast = false">Crew</button>
+        <div class="actor__buttons">
+          <button class="actor__switch-button" v-if="roles.length" @click="cast = true">Cast</button>
+          <button class="actor__switch-button" v-if="crews.length" @click="cast = false">Crew</button>
         </div>
-        <!-- <template v-if="roles.length && cast"> -->
         <template v-if="cast">
-          <div class="title">Cast</div>
+          <div class="actor__title">Cast</div>
           <div v-for="(role, index) in roles1" :key="index">
             <ActorCastTemplate
               :role="role"
@@ -20,9 +17,8 @@
             />
           </div>
         </template>
-        <!-- <template v-if="crews.length && !cast"> -->
         <template v-if="!cast">
-          <div class="title">Crew</div>
+          <div class="actor__title">Crew</div>
           <div v-for="(crew, index) in crews1" :key="index">
             <ActorCrewTemplate
               :crew="crew"
@@ -69,27 +65,6 @@ export default {
     window.removeEventListener("scroll", this.onScroll);
   },
   methods: {
-    // m(z) {
-    //   if (z === 1 && !this.roles1.length && this.cast !== true) {
-    //     this.cast = true;
-    //     for (; this.i < this.roles.length; ) {
-    //       this.roles1.push(this.roles[this.i]);
-    //       this.i++;
-    //       return;
-    //     }
-    //   } else if (z === 2 && !this.crews1.length && this.cast !== false) {
-    //     this.cast = false;
-    //     for (; this.j < this.crews.length; ) {
-    //       this.crews1.push(this.crews[this.j]);
-    //       this.j++;
-    //       return;
-    //     }
-    //   } else if (z === 1 && this.roles1.length && this.cast !== true) {
-    //     this.cast = true;
-    //   } else if (z === 2 && this.crews1.length && this.cast !== false) {
-    //     this.cast = false;
-    //   }
-    // },
     onScroll() {
       this.scrollHeight = Math.max(
         document.body.scrollHeight,
@@ -184,66 +159,16 @@ export default {
   background: linear-gradient(165deg, #251431 0%, #161130 22%);
   color: #fff;
 }
-.actor-image {
-  border-radius: 5px;
-  height: 190px;
-  width: auto;
-  margin-left: auto;
-  margin-right: auto;
+.actor__container {
+  padding: 2rem 0;
+  margin: 0 auto;
+  max-width: 80%;
 }
-.film-image {
-  border-radius: 5px;
-  height: 240px;
-  width: auto;
-}
-.justify {
-  text-align: justify;
-}
-.actor-photo {
-  border-radius: 5px;
-  height: 240px;
-  width: auto;
-  margin-right: 16px;
-}
-.actor-description {
-  margin: auto 0;
-}
-.title-btn {
-  font-size: 32px;
-}
-.title {
-  font-size: 32px;
-}
-.genres {
+.actor__buttons {
   display: flex;
+  justify-content: center;
 }
-.lightgray {
-  border-radius: 10px;
-  background: lightgray;
-  padding: 20px;
-}
-.lightblue {
-  border-radius: 10px;
-  background: lightyellow;
-  padding: 20px;
-}
-.margin {
-  margin: 25px 0;
-  border-radius: 10px;
-  border: lightseagreen 1px solid;
-}
-/* .margin2 {
-  padding: 20px;
-  border-radius: 10px;
-  border: lightseagreen 1px solid;
-} */
-.blue {
-  background: lightblue;
-}
-.pink {
-  background: lightpink;
-}
-.home-btn {
+.actor__switch-button {
   background: none;
   border: none;
   background-image: -webkit-gradient(
@@ -301,8 +226,7 @@ export default {
   margin: 25px 10px 0;
   text-transform: uppercase;
 }
-.beauty {
-  display: flex;
-  justify-content: center;
+.actor__title {
+  font-size: 32px;
 }
 </style>

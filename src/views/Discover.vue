@@ -1,9 +1,9 @@
 <template>
   <div class="discover">
-    <div class="container">
+    <div class="discover__container">
       <form @submit.prevent="searchRequest">
-        <div class="flex2">
-          <div class="flexcol">
+        <div class="discover__form">
+          <div class="discover__form-field">
             <div>Media type</div>
             <select v-model="mediatype">
               <option
@@ -14,7 +14,7 @@
               >
             </select>
           </div>
-          <div class="flexcol">
+          <div class="discover__form-field">
             <div>Sort</div>
             <select v-model="sortType">
               <option
@@ -25,7 +25,7 @@
               >
             </select>
           </div>
-          <div class="flexcol">
+          <div class="discover__form-field">
             <div>Min average vote</div>
             <input
               type="number"
@@ -33,7 +33,7 @@
               placeholder="min average vote"
             />
           </div>
-          <div class="flexcol">
+          <div class="discover__form-field">
             <div>Type involved actor</div>
             <autocomplete
               :search="search"
@@ -42,44 +42,44 @@
               auto-select
             />
           </div>
-          <div class="flexcol">
+          <div class="discover__form-field">
             <div>Genre</div>
             <select v-model="genre">
               <option value=""></option>
               <option v-for="g in genres" :key="g.id">{{ g.name }}</option>
             </select>
           </div>
-          <div class="flexcol">
+          <div class="discover__form-field">
             <div>Year</div>
             <input type="number" v-model="year" placeholder="year" />
           </div>
         </div>
-        <div class="sdf">
-          <button class="submit" type="submit">submit</button>
+        <div class="discover__form-button-container">
+          <button class="discover__form-button" type="submit">submit</button>
         </div>
       </form>
-      <div class="flex" v-if="searchResultPage.total_results">
+      <div class="discover__results" v-if="searchResultPage.total_results">
         <div
-          class="flex-col"
+          class="discover__result"
           v-for="film in searchResultPage.results"
           :key="film.id"
         >
           <DiscoverCoverTemplate :film="film" :filmType="mediatype" />
         </div>
       </div>
-      <div class="center" v-else>
+      <div class="discover__results-title" v-else>
         Nothing found
       </div>
-      <div v-if="searchResultPage.page" class="center mt">
+      <div v-if="searchResultPage.page" class="discover__page-buttons">
         <button
-          class="submit before"
+          class="discover__page-button discover__page-button--previous"
           v-if="searchResultPage.page > 1"
           @click="getPreviousPageSearchResults()"
         >
           Previous page
         </button>
         <button
-          class="submit after"
+          class="discover__page-button discover__page-button--next"
           v-if="searchResultPage.page < searchResultPage.total_pages"
           @click="getNextPageSearchResults()"
         >
@@ -281,55 +281,25 @@ export default {
   color: #fff;
   background-color: #111617;
 }
-.flex {
-  display: flex;
-  flex-wrap: wrap;
-}
-.flex-col {
-  display: flex;
-  flex-direction: column;
-  width: 20%;
-  height: auto;
-}
-.film-image {
-  object-fit: fill;
-  border-radius: 5px;
-  width: 80%;
-  height: 246px;
-  margin: 36px auto 12px;
-}
-.film-title {
-  width: 80%;
-  margin: 0 auto;
-  text-align: center;
-}
-/* .container {
+.discover__container {
   padding: 2rem 4rem;
   margin: 0 auto;
   max-width: 80%;
-} */
-.center {
-  display: flex;
-  justify-content: center;
 }
-.mt {
-  margin-top: 36px;
-}
-.test {
-  position: relative;
-}
-.prettytext {
-  text-align: center;
-}
-.flex2 {
+.discover__form {
   display: flex;
   justify-content: space-between;
 }
-.flexcol {
+.discover__form-field {
   display: flex;
   flex-direction: column;
 }
-.submit {
+.discover__form-button-container {
+  display: flex;
+  justify-content: center;
+}
+.discover__form-button,
+.discover__page-button {
   background: none;
   border: 2px solid #fff;
   border-radius: 20px;
@@ -346,14 +316,29 @@ export default {
   transition: background 0.5s;
   width: 180px;
 }
-.sdf {
+.discover__results {
+  display: flex;
+  flex-wrap: wrap;
+}
+.discover__result {
+  display: flex;
+  flex-direction: column;
+  width: 20%;
+  height: auto;
+}
+.discover__results-title {
   display: flex;
   justify-content: center;
 }
-.before::before {
+.discover__page-buttons {
+  display: flex;
+  justify-content: center;
+  margin-top: 36px;
+}
+.discover__page-button--previous::before {
   content: "<<";
 }
-.after::after {
+.discover__page-button--next::after {
   content: ">>";
 }
 </style>

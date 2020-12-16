@@ -1,18 +1,18 @@
 <template>
   <div class="film">
     <div v-if="currentfilm && cast && trailers">
-      <div class="ss"
+      <div class="film__poster-container"
       >
         <img
           v-if="currentfilm.backdrop_path"
-          class="upper-imgs"
+          class="film__poster"
           :src="`${globalImgAddress}1280${currentfilm.backdrop_path}`"
         />
       </div>
-      <div class="container">
+      <div class="film__container">
         <div>Genres: {{ genres }}</div>
         <div v-if="currentfilm.overview">
-          <div class="uppercase">summary</div>
+          <div>SUMMARY</div>
           <div>{{ currentfilm.overview }}</div>
         </div>
         <div v-if="cast.length">
@@ -21,8 +21,8 @@
         <div v-if="trailers.length">
           <FilmTrailersSlickTemplate :trailers="trailers" />
         </div>
-        <div v-if="reviews && reviews.lenght">
-          Reviews
+        <div v-if="reviews && reviews.length">
+          REVIEWS
         </div>
         <div v-for="(review, index) in reviews" :key="review.id">
           <FilmReviewTemplate :review="review" :index="index" />
@@ -98,61 +98,26 @@ export default {
 </script>
 
 <style scoped>
-.ss {
-  overflow: hidden;
-  max-height: calc(100vh - 80px);
-  max-width: 100vw;
-}
 .film {
   background: -webkit-linear-gradient(285deg, #251431 0%, #161130 22%);
   background: -o-linear-gradient(285deg, #251431 0%, #161130 22%);
   background: linear-gradient(165deg, #251431 0%, #161130 22%);
   color: #fff;
 }
-.upper-imgs {
+.film__poster-container {
+  overflow: hidden;
+  max-height: calc(100vh - 80px);
+  max-width: 100vw;
+}
+.film__poster {
   /* margin: 0;
   padding: 0; */
   height: 100%;
   width: 100%;
 }
-.uppercase {
-  text-transform: uppercase;
-}
-.left-text {
-  text-align: left;
-}
-.upper-text {
-  text-align: left;
-  margin-left: 100px;
-  margin-top: -350px;
-  padding-bottom: 50px;
-}
-.white-text {
-  color: white;
-}
-/* .container {
-  padding: 2rem 4rem;
+.film__container {
+  padding: 2rem 0;
   margin: 0 auto;
   max-width: 80%;
-} */
-.actor-image {
-  border-radius: 5px;
-  height: 190px;
-  width: auto;
-  margin-left: auto;
-  margin-right: auto;
-}
-.iframe {
-  text-align: center;
-}
-.actor-name,
-.trailer-name {
-  text-align: center;
-}
-.uppercase {
-  text-transform: uppercase;
-}
-.left-text {
-  text-align: left;
 }
 </style>

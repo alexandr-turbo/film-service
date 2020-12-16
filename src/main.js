@@ -2,19 +2,18 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import replaceDash from '@/filters/replaceDash'
+import replaceLodashToSpace from '@/filters/replaceLodashToSpace'
+import replaceAllToDash from '@/filters/replaceAllToDash'
+import replaceDashToSpace from '@/filters/replaceDashToSpace'
 import filmGenresMixin from "@/mixins/filmGenresMixin";
 import Autocomplete from '@trevoreyre/autocomplete-vue'
 // import '@trevoreyre/autocomplete-vue/dist/style.css'
-// import GoTop from '@inotom/vue-go-top';
+
 Vue.use(Autocomplete)
 Vue.config.productionTip = false
-Vue.filter('replaceDash', replaceDash)
-// Vue.use(GoTop);
-import VueLazyload from 'vue-lazyload'
-Vue.use(VueLazyload, {
-  lazyComponent: true,
-})
+Vue.filter('replaceLodashToSpace', replaceLodashToSpace)
+Vue.filter('replaceAllToDash', replaceAllToDash)
+Vue.filter('replaceDashToSpace', replaceDashToSpace)
 
 Vue.mixin({
   data() {

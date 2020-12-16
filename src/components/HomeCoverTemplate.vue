@@ -38,9 +38,6 @@
 <script>
 export default {
   props: ["genres", "item", "filmType"],
-  created() {
-    console.log(this.item)
-  }
 };
 </script>
 <style scoped>

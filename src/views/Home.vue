@@ -1,12 +1,12 @@
 <template>
   <div class="home">
     <HomeUpperSlickTemplate :filmType="filmType" :genres="genres" />
-    <div class="container">
-      <div class="center">
-        <button class="home-btn" @click="switchType('movie')">
+    <div class="home__container">
+      <div class="home__buttons">
+        <button class="home__switch-button" @click="switchType('movie')">
           Movies
         </button>
-        <button class="home-btn" @click="switchType('tv')">
+        <button class="home__switch-button" @click="switchType('tv')">
           TV Shows
         </button>
       </div>
@@ -42,14 +42,6 @@ export default {
     this.filmSlickArr = this.movieSlickArr;
   },
   methods: {
-    // switchView(view, view2) {
-    //   if (view) {
-    //     this.currentView = view;
-    //   }
-    //   if (view2) {
-    //     this.currentView2 = view2;
-    //   }
-    // },
     switchType(type) {
       this.filmType = type;
       if (type === "tv") {
@@ -59,29 +51,28 @@ export default {
         this.genres = this.$store.state.MovieGenres;
         this.filmSlickArr = this.movieSlickArr;
       }
-      // console.log(type)
     },
   },
 };
 </script>
 
-<style>
+<style scoped>
 .home {
   background: -webkit-linear-gradient(285deg, #251431 0%, #161130 22%);
   background: -o-linear-gradient(285deg, #251431 0%, #161130 22%);
   background: linear-gradient(165deg, #251431 0%, #161130 22%);
   color: #fff;
 }
-.center {
+.home__container {
+  padding: 2rem 0;
+  margin: 0 auto;
+  max-width: 80%;
+}
+.home__buttons {
   display: flex;
   justify-content: center;
 }
-.v2 {
-  padding: 30px 200px !important;
-  font-size: 32px;
-  margin-top: 100px !important;
-}
-.home-btn {
+.home__switch-button {
   background: none;
   border: none;
   background-image: -webkit-gradient(

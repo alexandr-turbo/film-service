@@ -1,36 +1,36 @@
 <template>
   <div class="search">
-    <div class="container">
-      <div class="prettytext" v-if="searchResultPage.page">
-        Search results for {{ searchQuery }}
-        <div class="flex" v-if="searchResultPage.total_results">
-          <div
-            class="flex-col"
-            v-for="film in searchResultPage.results"
-            :key="film.id"
-          >
-            <SearchCoverTemplate
-              :film="film"
-              :genres="
-                film.media_type === 'movie' ? movieGenres : tvshowGenres
-              "
-            />
-          </div>
+    <div class="search__container">
+      <div class="search__results-title" v-if="searchResultPage.page">
+        Search results for {{ searchQuery | replaceDashToSpace }}
+      </div>
+      <div class="search__results" v-if="searchResultPage.total_results">
+        <div
+          class="search__result"
+          v-for="film in searchResultPage.results"
+          :key="film.id"
+        >
+          <SearchCoverTemplate
+            :film="film"
+            :genres="
+              film.media_type === 'movie' ? movieGenres : tvshowGenres
+            "
+          />
         </div>
       </div>
-      <div class="center" v-else>
+      <div class="search__results-title" v-else>
         Nothing found
       </div>
-      <div v-if="searchResultPage.page" class="center mt">
+      <div v-if="searchResultPage.page" class="search__page-buttons">
         <button
-          class="submit before"
+          class="search__page-button search__page-button--previous"
           v-if="searchResultPage.page > 1"
           @click="getPreviousPageSearchResults()"
         >
           Previous page
         </button>
         <button
-          class="submit after"
+          class="search__page-button search__page-button--next"
           v-if="searchResultPage.page < searchResultPage.total_pages"
           @click="getNextPageSearchResults()"
         >
@@ -130,47 +130,30 @@ export default {
   background: linear-gradient(165deg, #251431 0%, #161130 22%);
   color: white;
 }
-.flex {
+.search__container {
+  padding: 2rem 0;
+  margin: 0 auto;
+  max-width: 80%;
+}
+.search__results-title {
+  text-align: center;
+}
+.search__results {
   display: flex;
   flex-wrap: wrap;
 }
-.flex-col {
+.search__result {
   display: flex;
   flex-direction: column;
   width: 20%;
   height: auto;
 }
-.film-image {
-  object-fit: fill;
-  border-radius: 5px;
-  width: 80%;
-  height: 246px;
-  margin: 36px auto 12px;
-}
-.film-title {
-  width: 80%;
-  margin: 0 auto;
-  text-align: center;
-}
-/* .container {
-  padding: 2rem 4rem;
-  margin: 0 auto;
-  max-width: 80%;
-} */
-.center {
+.search__page-buttons {
   display: flex;
   justify-content: center;
-}
-.mt {
   margin-top: 36px;
 }
-.test {
-  position: relative;
-}
-.prettytext {
-  text-align: center;
-}
-.submit {
+.search__page-button {
   background: none;
   border: 2px solid #fff;
   border-radius: 20px;
@@ -187,14 +170,10 @@ export default {
   transition: background 0.5s;
   width: 180px;
 }
-.sdf {
-  display: flex;
-  justify-content: center;
-}
-.before::before {
+.search__page-button--previous::before {
   content: "<<";
 }
-.after::after {
+.search__page-button--next::after {
   content: ">>";
 }
 </style>
