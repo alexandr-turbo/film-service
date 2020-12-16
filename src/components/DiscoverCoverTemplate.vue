@@ -11,9 +11,10 @@
       <img
         v-if="film.poster_path && film.poster_path !== ''"
         class="discover-cover-template__poster"
-        :src="`${globalImgAddress}1280${film.poster_path}`"
+        :title="film.overview"
+        :src="`${globalImgAddress}154${film.poster_path}`"
       />
-      <img v-else class="discover-cover-template__poster" src="@/assets/no-image.png" />
+      <img v-else class="discover-cover-template__poster" :title="film.overview" src="@/assets/no-image.png" />
       <div v-if="film.title || film.name" class="discover-cover-template__film-title">
         {{ film.title || film.name }}
       </div>

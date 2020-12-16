@@ -60,8 +60,8 @@ const routes = [
 const router = new VueRouter({
   routes,
   scrollBehavior() {
-    // document.getElementById('app').scrollIntoView({behavior: "smooth"});
-    document.getElementById('app').scrollIntoView();
+    document.getElementById('app').scrollIntoView({behavior: "smooth"});
+    // document.getElementById('app').scrollIntoView();
 }
 })
 
