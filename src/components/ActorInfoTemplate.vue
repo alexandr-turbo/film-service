@@ -5,7 +5,7 @@
         <img
           v-if="actor.profile_path && actor.profile_path !== ''"
           class="actor-info-template__actor-photo"
-          :src="`${globalImgAddress}92${actor.profile_path}`"
+          :src="`${globalImgAddress}185${actor.profile_path}`"
         />
         <img v-else class="actor-info-template__actor-photo" src="@/assets/no-image.png" />
         <div class="actor-info-template__actor-description">

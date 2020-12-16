@@ -19,7 +19,7 @@
           <img
             v-if="role.poster_path && role.poster_path !== ''"
             class="actor-cast-template__poster"
-            :src="`${globalImgAddress}1280${role.poster_path}`"
+            :src="`${globalImgAddress}154${role.poster_path}`"
           />
           <img
             v-else

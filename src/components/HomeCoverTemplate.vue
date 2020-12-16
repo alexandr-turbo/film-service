@@ -15,7 +15,7 @@
         v-if="item.poster_path && item.poster_path !== ''"
         :title="item.overview"
         class="home-cover-template__poster"
-        :src="`${globalImgAddress}92${item.poster_path}`"
+        :src="`${globalImgAddress}154${item.poster_path}`"
       />
       <img
         v-else
@@ -38,6 +38,9 @@
 <script>
 export default {
   props: ["genres", "item", "filmType"],
+  created() {
+    console.log(this.item)
+  }
 };
 </script>
 <style scoped>

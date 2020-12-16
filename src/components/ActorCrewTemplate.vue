@@ -19,7 +19,7 @@
           <img
             v-if="crew.poster_path && crew.poster_path !== ''"
             class="actor-crew-template__poster"
-            :src="`${globalImgAddress}1280${crew.poster_path}`"
+            :src="`${globalImgAddress}154${crew.poster_path}`"
           />
           <img
             v-else
