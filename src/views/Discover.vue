@@ -3,9 +3,9 @@
     <div class="discover__container">
       <form @submit.prevent="searchRequest">
         <div class="discover__form">
-          <div class="discover__form-field">
+          <div class="discover__form-field-container">
             <div>Media type</div>
-            <select v-model="mediatype">
+            <select class="discover__form-field" v-model="mediatype">
               <option
                 v-for="s in mediatypeOptions"
                 :value="s.value"
@@ -14,9 +14,9 @@
               >
             </select>
           </div>
-          <div class="discover__form-field">
+          <div class="discover__form-field-container">
             <div>Sort</div>
-            <select v-model="sortType">
+            <select class="discover__form-field" v-model="sortType">
               <option
                 v-for="s in sortOptions"
                 :value="s.value"
@@ -25,16 +25,17 @@
               >
             </select>
           </div>
-          <div class="discover__form-field">
+          <div class="discover__form-field-container">
             <div>Min average vote</div>
             <input
+              class="discover__form-field"
               type="number"
               v-model="vote"
               placeholder="min average vote"
             />
           </div>
-          <div class="discover__form-field">
-            <div>Type involved actor</div>
+          <div class="discover__form-field-container">
+            <div>Involved actor</div>
             <autocomplete
               :search="search"
               :get-result-value="getResultValue"
@@ -42,16 +43,16 @@
               auto-select
             />
           </div>
-          <div class="discover__form-field">
+          <div class="discover__form-field-container">
             <div>Genre</div>
-            <select v-model="genre">
+            <select class="discover__form-field" v-model="genre">
               <option value=""></option>
               <option v-for="g in genres" :key="g.id">{{ g.name }}</option>
             </select>
           </div>
-          <div class="discover__form-field">
+          <div class="discover__form-field-container">
             <div>Year</div>
-            <input type="number" v-model="year" placeholder="year" />
+            <input class="discover__form-field" type="number" v-model="year" placeholder="year" />
           </div>
         </div>
         <div class="discover__form-button-container">
@@ -290,9 +291,14 @@ export default {
   display: flex;
   justify-content: space-between;
 }
-.discover__form-field {
+.discover__form-field-container {
   display: flex;
   flex-direction: column;
+}
+.discover__form-field {
+  outline: none;
+  border: none;
+  margin-top: 1px;
 }
 .discover__form-button-container {
   display: flex;

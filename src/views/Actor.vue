@@ -167,6 +167,7 @@ export default {
 .actor__buttons {
   display: flex;
   justify-content: center;
+  padding: 2rem 0;
 }
 .actor__switch-button {
   background: none;
@@ -222,8 +223,10 @@ export default {
   font-weight: bold;
   letter-spacing: 0.4rem;
   outline: none;
-  padding: 30px 100px;
-  margin: 25px 10px 0;
+  /* padding: 30px 100px; */
+  width: 300px;
+  height: 80px;
+  margin: 0 10px;
   text-transform: uppercase;
 }
 .actor__title {

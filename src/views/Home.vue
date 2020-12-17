@@ -68,10 +68,19 @@ export default {
   margin: 0 auto;
   max-width: 80%;
 }
-.home__buttons {
-  display: flex;
-  justify-content: center;
+/* @media (max-width: 640px) {
+  .home__buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 }
+@media (min-width: 641px) { */
+  .home__buttons {
+    display: flex;
+    justify-content: center;
+  }
+/* } */
 .home__switch-button {
   background: none;
   border: none;
@@ -126,7 +135,9 @@ export default {
   font-weight: bold;
   letter-spacing: 0.4rem;
   outline: none;
-  padding: 30px 100px;
+  /* padding: 30px 100px; */
+  width: 300px;
+  height: 80px;
   margin: 0 10px;
   text-transform: uppercase;
 }

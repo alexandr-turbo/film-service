@@ -42,10 +42,19 @@ export default {
   position: relative;
 }
 .search-bar-template__home-link {
-  position: absolute;
-  height: 40px;
-  left: 10%;
-  top: calc(50% - (40px / 2));
+    position: absolute;
+    height: 40px;
+    top: calc(50% - (40px / 2));
+  }
+@media (max-width: 539px) {
+  .search-bar-template__home-link {
+    left: 5%;
+  }
+}
+@media (min-width: 540px) {
+  .search-bar-template__home-link {
+    left: 10%;
+  }
 }
 .search-bar-template__form {
   display: flex;
@@ -75,9 +84,18 @@ export default {
   height: 16px;
 }
 .search-bar-template__discover-link {
-  position: absolute;
-  height: 40px;
-  right: 10%;
-  top: calc(50% - (40px / 2));
+    position: absolute;
+    height: 40px;
+    top: calc(50% - (40px / 2));
+  }
+@media (max-width: 539px) {
+  .search-bar-template__discover-link {
+    right: 5%;
+  }
+}
+@media (min-width: 540px) {
+  .search-bar-template__discover-link {
+    right: 10%;
+  }
 }
 </style>

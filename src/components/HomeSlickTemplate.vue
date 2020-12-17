@@ -1,8 +1,8 @@
 <template>
   <div v-if="type1.length">
-    <h3 class="home-slick-template-title">
+    <div class="home-slick-template-title">
       {{ type | replaceLodashToSpace }}
-    </h3>
+    </div>
     <slick class="slick" ref="slick" :options="slickOptions">
       <div v-for="item in type1" :key="item.id">
         <HomeCoverTemplate :item="item" :genres="genres" :filmType="filmType" />
@@ -104,6 +104,7 @@ export default {
 </script>
 <style scoped>
 .home-slick-template-title {
+  margin-top: 50px;
   text-transform: uppercase;
 }
 </style>

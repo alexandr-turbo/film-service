@@ -1,0 +1,19 @@
+.autocomplete-input {
+  border: none;
+  outline: none;
+  margin: 0;
+}
+.autocomplete-input:focus,
+.autocomplete-input[aria-expanded="true"] {
+  background-color: #fff;
+}
+.autocomplete-result-list {
+  margin: 0;
+  padding: 0;
+  background: #fff;
+  list-style: none;
+}
+.autocomplete-result {
+  color: black;
+  padding: 1px 2px;
+}

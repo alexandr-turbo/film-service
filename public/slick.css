@@ -56,11 +56,21 @@
     opacity: .75;
     color: #eb4e7a;
 }
-.slick-prev {
-  left: -50px;
+@media (max-width: 539px) {
+  .slick-prev {
+    left: -30px;
+  }
+  .slick-next {
+    right: -30px;
+  }
 }
-.slick-next {
-  right: -55px;
+@media (min-width: 540px) {
+  .slick-prev {
+    left: -50px;
+  }
+  .slick-next {
+    right: -50px;
+  }
 }
 .slick-prev:before
 {

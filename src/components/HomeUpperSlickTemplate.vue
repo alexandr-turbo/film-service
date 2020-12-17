@@ -98,8 +98,8 @@ export default {
 }
 .home-upper-slick-template__bio {
   position: absolute;
-  left: 100px;
-  bottom: 100px;
+  left: 10%;
+  bottom: 10%;
   color: white;
   /* margin-left: 100px;
   margin-top: -250px;
