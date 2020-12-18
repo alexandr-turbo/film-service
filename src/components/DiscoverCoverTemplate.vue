@@ -41,6 +41,11 @@ export default {
   height: 246px;
   margin: 36px auto 12px;
 }
+@media (max-width: 479px) {
+  .discover-cover-template__poster {
+    height: 400px;
+  }
+}
 .discover-cover-template__film-title {
   width: 80%;
   margin: 0 auto;

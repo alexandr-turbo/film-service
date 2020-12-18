@@ -164,6 +164,11 @@ export default {
   margin: 0 auto;
   max-width: 80%;
 }
+@media (max-width: 479px) {
+  .actor__container {
+    max-width: 90%;
+  }
+}
 .actor__buttons {
   display: flex;
   justify-content: center;
@@ -223,7 +228,6 @@ export default {
   font-weight: bold;
   letter-spacing: 0.4rem;
   outline: none;
-  /* padding: 30px 100px; */
   width: 300px;
   height: 80px;
   margin: 0 10px;
@@ -231,5 +235,10 @@ export default {
 }
 .actor__title {
   font-size: 32px;
+}
+@media (max-width: 539px) {
+  .actor__title {
+    text-align: center;
+  }
 }
 </style>

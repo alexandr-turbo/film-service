@@ -14,7 +14,7 @@
             {{ getPrettyDate(actor.birthday) }} ({{ getAge(actor.birthday) }}
             y/o),
           </div>
-          <div v-if="actor.place_of_birth">in {{ actor.place_of_birth }}</div>
+          <div v-if="actor.place_of_birth">Born in {{ actor.place_of_birth }}</div>
           <div>
             {{ getGender(actor.gender) }} | {{ actor.known_for_department }}
           </div>
@@ -78,20 +78,52 @@ export default {
   border-radius: 10px;
   border: #eb4e7a 1px solid;
 }
-.actor-info-template__bio {
-  display: flex;
-  justify-content: center;
+@media (max-width: 539px) {
+  .actor-info-template__bio {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 }
-.actor-info-template__actor-photo {
-  border-radius: 5px;
-  height: 240px;
-  width: auto;
-  margin-right: 16px;
+@media (min-width: 540px) {
+  .actor-info-template__bio {
+    display: flex;
+    justify-content: center;
+  }
 }
-.actor-info-template__actor-description {
-  margin: auto 0;
+@media (max-width: 539px) {
+  .actor-info-template__actor-photo {
+    border-radius: 5px;
+    height: 240px;
+    width: auto;
+  }
+}
+@media (min-width: 540px) {
+  .actor-info-template__actor-photo {
+    border-radius: 5px;
+    height: 240px;
+    width: auto;
+    margin-right: 16px;
+  }
+}
+@media (max-width: 539px) {
+  .actor-info-template__actor-description {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+  }
+}
+@media (min-width: 540px) {
+  .actor-info-template__actor-description {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+  }
 }
 .actor-info-template__biography {
   text-align: justify;
+  margin-top: 25px;
 }
 </style>

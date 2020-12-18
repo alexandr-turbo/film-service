@@ -107,4 +107,9 @@ export default {
   margin-top: 50px;
   text-transform: uppercase;
 }
+@media (max-width: 539px) {
+  .home-slick-template-title {
+    text-align: center;
+  }
+}
 </style>

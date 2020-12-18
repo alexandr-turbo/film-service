@@ -59,6 +59,11 @@ export default {
   height: 246px;
   margin: 36px auto 12px;
 }
+@media (max-width: 479px) {
+  .film-image {
+    height: 400px;
+  }
+}
 .film-title {
   width: 80%;
   margin: 0 auto;

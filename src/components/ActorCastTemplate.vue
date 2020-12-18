@@ -95,16 +95,48 @@ export default {
   padding: 20px;
   border-left: 5px solid white;
 }
-.actor-cast-template__bio {
-  display: flex;
+@media (max-width: 539px) {
+  .actor-cast-template__bio {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 }
-.actor-cast-template__poster {
-  border-radius: 5px;
-  height: 240px;
-  width: auto;
+@media (min-width: 540px) {
+  .actor-cast-template__bio {
+    display: flex;
+  }
 }
-.actor-cast-template__film-description {
-  margin: auto 20px;
+@media (max-width: 539px) {
+  .actor-cast-template__poster {
+    border-radius: 5px;
+    height: 240px;
+    width: auto;
+  }
+}
+@media (min-width: 540px) {
+  .actor-cast-template__poster {
+    border-radius: 5px;
+    height: 240px;
+    width: auto;
+    margin-right: 16px;
+  }
+}
+@media (max-width: 539px) {
+  .actor-cast-template__film-description {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+  }
+}
+@media (min-width: 540px) {
+  .actor-cast-template__film-description {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+  }
 }
 .actor-cast-template__media-type {
   display: flex;

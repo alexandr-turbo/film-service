@@ -21,7 +21,7 @@
         <div v-if="trailers.length">
           <FilmTrailersSlickTemplate :trailers="trailers" />
         </div>
-        <div v-if="reviews && reviews.length">
+        <div class="film__title" v-if="reviews && reviews.length">
           REVIEWS
         </div>
         <div v-for="(review, index) in reviews" :key="review.id">
@@ -110,8 +110,6 @@ export default {
   max-width: 100vw;
 }
 .film__poster {
-  /* margin: 0;
-  padding: 0; */
   height: 100%;
   width: 100%;
 }
@@ -119,5 +117,19 @@ export default {
   padding: 2rem 0;
   margin: 0 auto;
   max-width: 80%;
+}
+@media (max-width: 479px) {
+  .film__container {
+    max-width: 90%;
+  }
+}
+.film__title {
+  margin-top: 50px;
+  text-transform: uppercase;
+}
+@media (max-width: 539px) {
+  .film__title {
+    text-align: center;
+  }
 }
 </style>

@@ -21,6 +21,7 @@ export default {
 .film-trailer-cover-template__trailer-container {
   display: flex;
   justify-content: center;
+  margin: 20px auto 0;
 }
 @media (max-width: 539px) {
   .film-trailer-cover-template__trailer {

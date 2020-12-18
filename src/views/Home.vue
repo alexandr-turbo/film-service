@@ -68,6 +68,11 @@ export default {
   margin: 0 auto;
   max-width: 80%;
 }
+@media (max-width: 479px) {
+  .home__container {
+    max-width: 90%;
+  }
+}
 /* @media (max-width: 640px) {
   .home__buttons {
     display: flex;

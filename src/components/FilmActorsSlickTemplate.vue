@@ -80,6 +80,12 @@ export default {
 </script>
 <style scoped>
 .film-actors-slick-template__title {
+  margin-top: 50px;
   text-transform: uppercase;
+}
+@media (max-width: 539px) {
+  .film-actors-slick-template__title {
+    text-align: center;
+  }
 }
 </style>

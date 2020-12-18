@@ -283,18 +283,52 @@ export default {
   background-color: #111617;
 }
 .discover__container {
-  padding: 2rem 4rem;
+  padding: 2rem 0;
   margin: 0 auto;
   max-width: 80%;
 }
+@media (max-width: 479px) {
+  .discover__container {
+    max-width: 90%;
+  }
+}
 .discover__form {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+  flex-wrap: wrap;
 }
-.discover__form-field-container {
-  display: flex;
-  flex-direction: column;
+@media (min-width: 640px) {
+  .discover__form-field-container {
+    display: flex;
+    flex-direction: column;
+    width: 150px;
+    margin: 10px;
+  }
 }
+@media (min-width: 480px) and (max-width: 639px) {
+  .discover__form-field-container {
+    display: flex;
+    flex-direction: column;
+    width: 170px;
+    margin: 10px;
+  }
+}
+@media (max-width: 479px) {
+  .discover__form-field-container {
+    display: flex;
+    flex-direction: column;
+    width: 280px;
+    margin: 10px;
+  }
+}
+/* @media (max-width: 1279px) {
+  .discover__form-field-container {
+    display: flex;
+    flex-direction: column;
+    width: 150px;
+  }
+} */
+
 .discover__form-field {
   outline: none;
   border: none;
@@ -312,7 +346,7 @@ export default {
   color: #fff;
   cursor: pointer;
   font-family: "Alegreya Sans", sans-serif;
-  font-size: 1.1rem;
+  font-size: 1rem;
   letter-spacing: 0.1rem;
   margin: 2rem auto;
   outline: none;
@@ -326,11 +360,45 @@ export default {
   display: flex;
   flex-wrap: wrap;
 }
-.discover__result {
-  display: flex;
-  flex-direction: column;
-  width: 20%;
-  height: auto;
+@media (min-width: 1280px) {
+  .discover__result {
+    display: flex;
+    flex-direction: column;
+    width: 20%;
+    height: auto;
+  }
+}
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .discover__result {
+    display: flex;
+    flex-direction: column;
+    width: 25%;
+    height: auto;
+  }
+}
+@media (min-width: 768px) and (max-width: 1023px) {
+  .discover__result {
+    display: flex;
+    flex-direction: column;
+    width: 33%;
+    height: auto;
+  }
+}
+@media (min-width: 480px) and (max-width: 767px) {
+  .discover__result {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    height: auto;
+  }
+}
+@media (max-width: 479px) {
+  .discover__result {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: auto;
+  }
 }
 .discover__results-title {
   display: flex;

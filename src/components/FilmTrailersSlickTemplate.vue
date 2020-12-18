@@ -55,6 +55,12 @@ export default {
 </script>
 <style scoped>
 .film-trailers-slick-template__title {
+  margin-top: 50px;
   text-transform: uppercase;
+}
+@media (max-width: 539px) {
+  .film-trailers-slick-template__title {
+    text-align: center;
+  }
 }
 </style>

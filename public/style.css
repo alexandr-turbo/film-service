@@ -1,7 +1,26 @@
-.autocomplete-input {
-  border: none;
-  outline: none;
-  margin: 0;
+@media (min-width: 640px) {
+  .autocomplete-input {
+    border: none;
+    outline: none;
+    margin: 0;
+    width: 146px;
+  }
+}
+@media (min-width: 480px) and (max-width: 639px) {
+  .autocomplete-input {
+    border: none;
+    outline: none;
+    margin: 0;
+    width: 166px;
+  }
+}
+@media (max-width: 479px) {
+  .autocomplete-input {
+    border: none;
+    outline: none;
+    margin: 0;
+    width: 276px;
+  }
 }
 .autocomplete-input:focus,
 .autocomplete-input[aria-expanded="true"] {

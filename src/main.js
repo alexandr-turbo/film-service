@@ -7,7 +7,6 @@ import replaceAllToDash from '@/filters/replaceAllToDash'
 import replaceDashToSpace from '@/filters/replaceDashToSpace'
 import filmGenresMixin from "@/mixins/filmGenresMixin";
 import Autocomplete from '@trevoreyre/autocomplete-vue'
-// import '@trevoreyre/autocomplete-vue/dist/style.css'
 
 Vue.use(Autocomplete)
 Vue.config.productionTip = false
