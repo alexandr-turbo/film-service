@@ -66,11 +66,22 @@ export default {
   },
   methods: {
     onScroll() {
+      this.scrollHeight = Math.max(
+        document.body.scrollHeight,
+        document.documentElement.scrollHeight,
+        document.body.offsetHeight,
+        document.documentElement.offsetHeight,
+        document.body.clientHeight,
+        document.documentElement.clientHeight
+      );
+      console.log(this.scrollHeight -
+          document.documentElement.clientHeight -
+          window.pageYOffset)
       if (
         this.scrollHeight -
           document.documentElement.clientHeight -
           window.pageYOffset <
-          100 &&
+          175 &&
         this.cast === true
       ) {
         for (; this.i < this.roles.length; ) {
@@ -83,7 +94,7 @@ export default {
         this.scrollHeight -
           document.documentElement.clientHeight -
           window.pageYOffset <
-          100 &&
+          175 &&
         this.cast === false
       ) {
         for (; this.j < this.crews.length; ) {
@@ -95,14 +106,6 @@ export default {
     },
   },
   async created() {
-    this.scrollHeight = Math.max(
-      document.body.scrollHeight,
-      document.documentElement.scrollHeight,
-      document.body.offsetHeight,
-      document.documentElement.offsetHeight,
-      document.body.clientHeight,
-      document.documentElement.clientHeight
-    );
     axios
       .get(
         `https://api.themoviedb.org/3${this.$route.path}?api_key=f943d3d10cc39fd734122d69efabbacb`
@@ -121,29 +124,13 @@ export default {
           if (response.data.crew) {
             this.crews = response.data.crew;
           }
-          if (
-            this.scrollHeight -
-              document.documentElement.clientHeight -
-              window.pageYOffset <
-            100
-          ) {
-            for (; this.i < this.roles.length; ) {
-              this.roles1.push(this.roles[this.i]);
-              this.i++;
-              return;
-            }
+          for (; this.i < 1; ) {
+            this.roles1.push(this.roles[this.i]);
+            this.i++;
           }
-          if (
-            this.scrollHeight -
-              document.documentElement.clientHeight -
-              window.pageYOffset <
-            100
-          ) {
-            for (; this.j < this.crews.length; ) {
-              this.crews1.push(this.crews[this.j]);
-              this.j++;
-              return;
-            }
+          for (; this.j < 1; ) {
+            this.crews1.push(this.crews[this.j]);
+            this.j++;
           }
         });
     this.movieGenres = this.$store.state.MovieGenres;

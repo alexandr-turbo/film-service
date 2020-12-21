@@ -51,11 +51,6 @@ button.pretty {
   background: none;
   margin: 0 10px;
 }
-/* .container {
-  padding: 2rem 0;
-  margin: 0 auto;
-  max-width: 80%;
-} */
 img.main-imgs {
   border-radius: 5px;
   height: 190px;
@@ -72,12 +67,6 @@ img.main-imgs:hover {
 .left-text {
   text-align: left;
 }
-/* img.upper-imgs {
-  margin: 0;
-  padding: 0;
-  height: auto;
-  width: 100%;
-} */
 .preloader {
   position: fixed;
   left: 0;
