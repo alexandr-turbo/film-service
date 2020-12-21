@@ -1,4 +1,7 @@
 # film-service
+```
+https://alexandr-turbo.github.io/film-service
+```
 
 ## Project setup
 ```
