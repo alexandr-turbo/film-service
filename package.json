@@ -7,7 +7,7 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "deploymac": "git push origin --delete gh-pages && rm -rf dist && npm run build && git add . && git subtree push --prefix dist origin gh-pages",
-    "deploywin": "rm -r dist && npm run build && git add . && git push origin --delete gh-pages && git subtree push --prefix dist origin gh-pages"
+    "deploywin": "git push origin --delete gh-pages && rm -r dist && npm run build && git add . && git subtree push --prefix dist origin gh-pages"
   },
   "dependencies": {
     "@inotom/vue-go-top": "^1.3.0",
