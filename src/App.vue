@@ -33,40 +33,6 @@ body {
     margin: 0 !important;
   font-family: sans-serif;
 }
-button.button {
-  border: none;
-  background-image: none;
-  background-color: transparent;
-  -webkit-box-shadow: none;
-  -moz-box-shadow: none;
-  box-shadow: none;
-  margin: 10px auto;
-  outline: none;
-  cursor: pointer;
-}
-button.pretty {
-  padding: 10px 50px;
-  border-radius: 10px;
-  outline: none;
-  background: none;
-  margin: 0 10px;
-}
-img.main-imgs {
-  border-radius: 5px;
-  height: 190px;
-  width: auto;
-  filter: brightness(0.8);
-}
-img.main-imgs:hover {
-  transform: scale(1.1);
-  filter: brightness(1);
-}
-.uppercase {
-  text-transform: uppercase;
-}
-.left-text {
-  text-align: left;
-}
 .preloader {
   position: fixed;
   left: 0;
