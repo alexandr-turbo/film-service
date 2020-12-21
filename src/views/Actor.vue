@@ -9,7 +9,7 @@
         </div>
         <template v-if="cast">
           <div class="actor__title">Cast</div>
-          <div v-for="(role, index) in roles1" :key="index">
+          <div v-for="(role, index) in lazyRoles" :key="index">
             <ActorCastTemplate
               :role="role"
               :index="index"
@@ -19,7 +19,7 @@
         </template>
         <template v-if="!cast">
           <div class="actor__title">Crew</div>
-          <div v-for="(crew, index) in crews1" :key="index">
+          <div v-for="(crew, index) in lazyCrews" :key="index">
             <ActorCrewTemplate
               :crew="crew"
               :index="index"
@@ -46,10 +46,9 @@ export default {
     tvshowGenres: null,
     roles: [],
     crews: [],
-    roles1: [],
-    crews1: [],
+    lazyRoles: [],
+    lazyCrews: [],
     scrollHeight: 0,
-    interval: null,
     i: 0,
     j: 0,
   }),
@@ -74,9 +73,6 @@ export default {
         document.body.clientHeight,
         document.documentElement.clientHeight
       );
-      console.log(this.scrollHeight -
-          document.documentElement.clientHeight -
-          window.pageYOffset)
       if (
         this.scrollHeight -
           document.documentElement.clientHeight -
@@ -85,7 +81,7 @@ export default {
         this.cast === true
       ) {
         for (; this.i < this.roles.length; ) {
-          this.roles1.push(this.roles[this.i]);
+          this.lazyRoles.push(this.roles[this.i]);
           this.i++;
           return;
         }
@@ -98,7 +94,7 @@ export default {
         this.cast === false
       ) {
         for (; this.j < this.crews.length; ) {
-          this.crews1.push(this.crews[this.j]);
+          this.lazyCrews.push(this.crews[this.j]);
           this.j++;
           return;
         }
@@ -125,11 +121,11 @@ export default {
             this.crews = response.data.crew;
           }
           for (; this.i < 5; ) {
-            this.roles1.push(this.roles[this.i]);
+            this.lazyRoles.push(this.roles[this.i]);
             this.i++;
           }
           for (; this.j < 5; ) {
-            this.crews1.push(this.crews[this.j]);
+            this.lazyCrews.push(this.crews[this.j]);
             this.j++;
           }
         });
