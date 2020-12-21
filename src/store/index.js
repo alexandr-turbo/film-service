@@ -25,7 +25,7 @@ export default new Vuex.Store({
         `https://api.themoviedb.org/3/genre/movie/list?api_key=f943d3d10cc39fd734122d69efabbacb`
       )
       .then((response) => {
-        genres = response.data.genres;
+        genres = response.data.genres;  // по моему тут можно сделать прям так commit('setMovieGenres', response.data.genres); (и так везде. лишнее действие делаешь и используешь переменную.) но это как хочешь можно и так
       });
       commit('setMovieGenres', genres)
     },
@@ -43,11 +43,11 @@ export default new Vuex.Store({
   },
   getters: {
     movieGenresNames(state) {
-      let b = state.MovieGenres.map(item => {return item.name})
+      let b = state.MovieGenres.map(item => {return item.name}) // неинформативное имя
       return b
     },
     tvshowGenresNames(state) {
-      let b = state.TVShowGenres.map(item => {return item.name})
+      let b = state.TVShowGenres.map(item => {return item.name})// неинформативное имя
       return b
     }
   }

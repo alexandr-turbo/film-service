@@ -33,7 +33,7 @@ const routes = [
     component: () => import(/* webpackChunkName: "search" */ '../views/Discover.vue'),
     props: true
   },
-]
+] // я бы добавил еще страницу с ошибкой, если нет такой страницы или введен непрваильный путь. например опечатка в /dicover
 
 const router = new VueRouter({
   routes,
