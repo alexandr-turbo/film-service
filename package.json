@@ -6,7 +6,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "deploymac": "rm -rf dist && npm run build && git add . && git subtree push --prefix dist origin gh-pages",
+    "deploymac": "git push origin --delete gh-pages && rm -rf dist && npm run build && git add . && git subtree push --prefix dist origin gh-pages",
     "deploywin": "git push origin --delete gh-pages && rm -r dist && npm run build && git add . && git subtree push --prefix dist origin gh-pages"
   },
   "dependencies": {

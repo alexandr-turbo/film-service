@@ -124,11 +124,11 @@ export default {
           if (response.data.crew) {
             this.crews = response.data.crew;
           }
-          for (; this.i < 1; ) {
+          for (; this.i < 5; ) {
             this.roles1.push(this.roles[this.i]);
             this.i++;
           }
-          for (; this.j < 1; ) {
+          for (; this.j < 5; ) {
             this.crews1.push(this.crews[this.j]);
             this.j++;
           }
