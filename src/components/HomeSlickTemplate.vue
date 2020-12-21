@@ -1,6 +1,6 @@
 <template>
   <div v-if="type1.length">
-    <div class="home-slick-template-title">
+    <div class="home-slick-template__title">
       {{ type | replaceLodashToSpace }}
     </div>
     <slick class="slick" ref="slick" :options="slickOptions">
@@ -103,12 +103,12 @@ export default {
 };
 </script>
 <style scoped>
-.home-slick-template-title {
+.home-slick-template__title {
   margin-top: 50px;
   text-transform: uppercase;
 }
 @media (max-width: 539px) {
-  .home-slick-template-title {
+  .home-slick-template__title {
     text-align: center;
   }
 }

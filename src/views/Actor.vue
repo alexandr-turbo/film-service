@@ -66,14 +66,14 @@ export default {
   },
   methods: {
     onScroll() {
-      this.scrollHeight = Math.max(
-        document.body.scrollHeight,
-        document.documentElement.scrollHeight,
-        document.body.offsetHeight,
-        document.documentElement.offsetHeight,
-        document.body.clientHeight,
-        document.documentElement.clientHeight
-      );
+      // this.scrollHeight = Math.max(
+      //   document.body.scrollHeight,
+      //   document.documentElement.scrollHeight,
+      //   document.body.offsetHeight,
+      //   document.documentElement.offsetHeight,
+      //   document.body.clientHeight,
+      //   document.documentElement.clientHeight
+      // );
       if (
         this.scrollHeight -
           document.documentElement.clientHeight -
@@ -103,6 +103,14 @@ export default {
     },
   },
   async created() {
+    this.scrollHeight = Math.max(
+      document.body.scrollHeight,
+      document.documentElement.scrollHeight,
+      document.body.offsetHeight,
+      document.documentElement.offsetHeight,
+      document.body.clientHeight,
+      document.documentElement.clientHeight
+    );
     axios
       .get(
         `https://api.themoviedb.org/3${this.$route.path}?api_key=f943d3d10cc39fd734122d69efabbacb`
