@@ -33,7 +33,7 @@ body {
     margin: 0 !important;
   font-family: sans-serif;
 }
-.preloader {
+.preloader { /* это точно должно быть тут? а не в своем копмоненте или в общем css файле*/
   position: fixed;
   left: 0;
   top: 0;
@@ -45,7 +45,7 @@ body {
   animation-name: animation;
   animation-duration: 2s;
 }
-.loader {
+.loader {/* это точно должно быть тут? а не в своем копмоненте или в общем css файле*/
   width: 75px;
   height: 75px;
   border: 10px solid white;

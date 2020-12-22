@@ -93,7 +93,7 @@ export default {
           175 &&
         this.cast === false
       ) {
-        for (; this.j < this.crews.length; ) {
+        for (; this.j < this.crews.length; ) { // неинформативные переменные. больше не буду их отмечать. поменяй имена везде
           this.lazyCrews.push(this.crews[this.j]);
           this.j++;
           return;
@@ -104,7 +104,7 @@ export default {
   async created() {
     axios
       .get(
-        `https://api.themoviedb.org/3${this.$route.path}?api_key=f943d3d10cc39fd734122d69efabbacb`
+        `https://api.themoviedb.org/3${this.$route.path}?api_key=f943d3d10cc39fd734122d69efabbacb` // https://api.themoviedb.org/ это тоже можешь вынести в свою миксину, где у тебя globalImgAddress
       )
       .then((response) => {
         this.actor = response.data;
@@ -120,7 +120,7 @@ export default {
           if (response.data.crew) {
             this.crews = response.data.crew;
           }
-          for (; this.i < 5; ) {
+          for (; this.i < 5; ) {  // магические числа записывай в константы и юзай тут уже константу напр: const ROLES_MAX_COUNT = 5;
             this.lazyRoles.push(this.roles[this.i]);
             this.i++;
           }

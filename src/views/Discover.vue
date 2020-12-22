@@ -7,7 +7,7 @@
             <div>Media type</div>
             <select class="discover__form-field" v-model="mediatype">
               <option
-                v-for="s in mediatypeOptions"
+                v-for="s in mediatypeOptions" // не информативная переменная
                 :value="s.value"
                 :key="s.value"
                 >{{ s.title }}</option
@@ -47,7 +47,7 @@
             <div>Genre</div>
             <select class="discover__form-field" v-model="genre">
               <option value=""></option>
-              <option v-for="g in genres" :key="g.id">{{ g.name }}</option>
+              <option v-for="g in genres" :key="g.id">{{ g.name }}</option> // не информативная переменная
             </select>
           </div>
           <div class="discover__form-field-container">
@@ -205,12 +205,12 @@ export default {
       let a = [];
       await axios
         .get(
-          `https://api.themoviedb.org/3/search/person?api_key=f943d3d10cc39fd734122d69efabbacb&language=en-US&query=${input}&include_adult=false&page=1`
+          `https://api.themoviedb.org/3/search/person?api_key=f943d3d10cc39fd734122d69efabbacb&language=en-US&query=${input}&include_adult=false&page=1` //хардкод апи-ключа - плохо. можно хранить в отдельном файле и использовать тут как переменную. (помоему такое даже не отправляют на github в смысле игнорят этот файл, но это не точно) вообще длинна некоторых ссылок слишком большая. кажется что их можно сократить. у нас в проекте под это есть отдельный файл который формирует ссылки (это так, для общей информации. тебе оно тут не надо)
         )
         .then((response) => {
           a = response.data.results;
           a.filter((actor) => {
-            return actor.name.toLowerCase().includes(input.toLowerCase());
+            return actor.name.toLowerCase().includes(input.toLowerCase()); 
           });
         });
       return a;

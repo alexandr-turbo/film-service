@@ -6,7 +6,7 @@ export default {
       if (genre_ids) {
         var genre_container = [];
         var k = 0;
-        for (var i = 0; i < genre_ids.length; i++) {
+        for (var i = 0; i < genre_ids.length; i++) { // не используй не информативные названия переменных
           for (var j = 0; j < genres.length; j++) {
             if (genre_ids[i] === genres[j].id) {
               genre_container[k] = genres[j].name;

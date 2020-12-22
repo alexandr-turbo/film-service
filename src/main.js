@@ -31,5 +31,5 @@ const app = new Vue({
 
 router.afterEach(() => {
   app.loading = true
-  setTimeout(() => app.loading = false, 1500)
+  setTimeout(() => app.loading = false, 1500) // лоадер должен пропадать после загрузки данных страницы,а не через фиксированный промежуток времеми
 })
