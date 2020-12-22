@@ -74,13 +74,13 @@ export default {
         });
     },
     next() {
-      this.$refs.slick.next();
+      this.$refs.slick.next(); // по моему эти функции ни где не используются
     },
     prev() {
-      this.$refs.slick.prev();
+      this.$refs.slick.prev();// по моему эти функции ни где не используются
     },
     reInit() {
-      this.$refs.slick.reSlick();
+      this.$refs.slick.reSlick();// по моему эти функции ни где не используются
     },
   },
 };
