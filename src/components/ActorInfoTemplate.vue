@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div> 
     <div class="actor-info-template">
       <div class="actor-info-template__bio">
         <img

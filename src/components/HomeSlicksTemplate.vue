@@ -14,5 +14,5 @@ export default {
   components: {
     HomeSlickTemplate,
   },
-};
+};// тоже не понятно зачем этот компонент существует
 </script>

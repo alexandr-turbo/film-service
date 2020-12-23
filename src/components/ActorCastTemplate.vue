@@ -11,7 +11,7 @@
       <div
         :class="
           index % 2 === 0
-            ? 'actor-cast-template__right-border'
+            ? 'actor-cast-template__right-border' // БЕМ, Е - елемент. right-border - не елемент. не могу сказать как правильно, но точно не так. может модификатор
             : 'actor-cast-template__left-border'
         "
       >
@@ -48,7 +48,7 @@
               <div
                 :class="
                   role.media_type === 'movie'
-                    ? 'actor-cast-template__media-type--capitalize'
+                    ? 'actor-cast-template__media-type--capitalize' // классный пример
                     : 'actor-cast-template__media-type--uppercase'
                 "
               >
@@ -95,42 +95,18 @@ export default {
   padding: 20px;
   border-left: 5px solid white;
 }
-@media (max-width: 539px) {
-  .actor-cast-template__bio {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-}
 @media (min-width: 540px) {
   .actor-cast-template__bio {
     display: flex;
   }
-}
-@media (max-width: 539px) {
-  .actor-cast-template__poster {
-    border-radius: 5px;
-    height: 240px;
-    width: auto;
-  }
-}
-@media (min-width: 540px) {
+
   .actor-cast-template__poster {
     border-radius: 5px;
     height: 240px;
     width: auto;
     margin-right: 16px;
   }
-}
-@media (max-width: 539px) {
-  .actor-cast-template__film-description {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 10px;
-  }
-}
-@media (min-width: 540px) {
+
   .actor-cast-template__film-description {
     display: flex;
     flex-direction: column;
@@ -138,6 +114,28 @@ export default {
     justify-content: center;
   }
 }
+
+@media (max-width: 539px) {
+  .actor-cast-template__poster {
+    border-radius: 5px;
+    height: 240px;
+    width: auto;
+  }
+
+  .actor-cast-template__bio {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .actor-cast-template__film-description {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+  }
+}
+
 .actor-cast-template__media-type {
   display: flex;
 }
