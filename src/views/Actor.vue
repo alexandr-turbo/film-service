@@ -37,7 +37,8 @@ import axios from "axios";
 import ActorInfoTemplate from "../components/ActorInfoTemplate.vue";
 import ActorCastTemplate from "../components/ActorCastTemplate.vue";
 import ActorCrewTemplate from "../components/ActorCrewTemplate.vue";
-
+const ROLES_ONLOAD_COUNT = 5
+const CREWS_ONLOAD_COUNT = 5
 export default {
   data: () => ({
     cast: true,
@@ -49,8 +50,9 @@ export default {
     lazyRoles: [],
     lazyCrews: [],
     scrollHeight: 0,
-    i: 0,
-    j: 0,
+    rolesLoadedCount: 0,
+    crewsLoadedCount: 0,
+    key: process.env.VUE_APP_MOVIEDB,
   }),
   components: {
     ActorInfoTemplate,
@@ -80,9 +82,9 @@ export default {
           175 &&
         this.cast === true
       ) {
-        for (; this.i < this.roles.length; ) {
-          this.lazyRoles.push(this.roles[this.i]);
-          this.i++;
+        for (; this.rolesLoadedCount < this.roles.length; ) {
+          this.lazyRoles.push(this.roles[this.rolesLoadedCount]);
+          this.rolesLoadedCount++;
           return;
         }
       }
@@ -93,9 +95,9 @@ export default {
           175 &&
         this.cast === false
       ) {
-        for (; this.j < this.crews.length; ) { // неинформативные переменные. больше не буду их отмечать. поменяй имена везде
-          this.lazyCrews.push(this.crews[this.j]);
-          this.j++;
+        for (; this.crewsLoadedCount < this.crews.length; ) {
+          this.lazyCrews.push(this.crews[this.crewsLoadedCount]);
+          this.crewsLoadedCount++;
           return;
         }
       }
@@ -104,31 +106,31 @@ export default {
   async created() {
     axios
       .get(
-        `https://api.themoviedb.org/3${this.$route.path}?api_key=f943d3d10cc39fd734122d69efabbacb` // https://api.themoviedb.org/ это тоже можешь вынести в свою миксину, где у тебя globalImgAddress
+        `${this.globalAPIMovieDBAddress}/3${this.$route.path}?api_key=${this.key}`
       )
       .then((response) => {
         this.actor = response.data;
       }),
-      axios
-        .get(
-          `https://api.themoviedb.org/3${this.$route.path}/combined_credits?api_key=f943d3d10cc39fd734122d69efabbacb`
-        )
-        .then((response) => {
-          if (response.data.cast) {
-            this.roles = response.data.cast;
-          }
-          if (response.data.crew) {
-            this.crews = response.data.crew;
-          }
-          for (; this.i < 5; ) {  // магические числа записывай в константы и юзай тут уже константу напр: const ROLES_MAX_COUNT = 5;
-            this.lazyRoles.push(this.roles[this.i]);
-            this.i++;
-          }
-          for (; this.j < 5; ) {
-            this.lazyCrews.push(this.crews[this.j]);
-            this.j++;
-          }
-        });
+    axios
+      .get(
+        `${this.globalAPIMovieDBAddress}/3${this.$route.path}/combined_credits?api_key=${this.key}`
+      )
+      .then((response) => {
+        if (response.data.cast) {
+          this.roles = response.data.cast;
+        }
+        if (response.data.crew) {
+          this.crews = response.data.crew;
+        }
+        for (; this.rolesLoadedCount < ROLES_ONLOAD_COUNT; ) {
+          this.lazyRoles.push(this.roles[this.rolesLoadedCount]);
+          this.rolesLoadedCount++;
+        }
+        for (; this.crewsLoadedCount < CREWS_ONLOAD_COUNT; ) {
+          this.lazyCrews.push(this.crews[this.crewsLoadedCount]);
+          this.crewsLoadedCount++;
+        }
+      });
     this.movieGenres = this.$store.state.MovieGenres;
     this.tvshowGenres = this.$store.state.TVShowGenres;
   },

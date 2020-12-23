@@ -47,7 +47,7 @@
             <div>Genre</div>
             <select class="discover__form-field" v-model="genre">
               <option value=""></option>
-              <option v-for="genre in genres" :key="genre.id">{{ genre.name }}</option> // не информативная переменная
+              <option v-for="genre in genres" :key="genre.id">{{ genre.name }}</option>
             </select>
           </div>
           <div class="discover__form-field-container">
@@ -144,7 +144,8 @@ export default {
       routeActor: '',
       routeGenre: '',
       routeYear: '',
-      page: ''
+      page: '',
+      key: process.env.VUE_APP_MOVIEDB,
     };
   },
   components: {
@@ -205,7 +206,7 @@ export default {
       let a = [];
       await axios
         .get(
-          `https://api.themoviedb.org/3/search/person?api_key=f943d3d10cc39fd734122d69efabbacb&language=en-US&query=${input}&include_adult=false&page=1` //хардкод апи-ключа - плохо. можно хранить в отдельном файле и использовать тут как переменную. (помоему такое даже не отправляют на github в смысле игнорят этот файл, но это не точно) вообще длинна некоторых ссылок слишком большая. кажется что их можно сократить. у нас в проекте под это есть отдельный файл который формирует ссылки (это так, для общей информации. тебе оно тут не надо)
+          `${this.globalAPIMovieDBAddress}/3/search/person?api_key=${this.key}&language=en-US&query=${input}&include_adult=false&page=1`
         )
         .then((response) => {
           a = response.data.results;
@@ -258,7 +259,7 @@ export default {
     ) {
       axios
         .get(
-          `https://api.themoviedb.org/3/discover/${routeMediatype}?api_key=12a5356516535d4d67654a936a088c1b&language=en-US&${routeSortBy}&include_adult=false&include_video=false&${routeVote}&${routeActor}&${routeGenre}&${routeYear}&page=${page}`
+          `${this.globalAPIMovieDBAddress}/3/discover/${routeMediatype}?api_key=12a5356516535d4d67654a936a088c1b&language=en-US&${routeSortBy}&include_adult=false&include_video=false&${routeVote}&${routeActor}&${routeGenre}&${routeYear}&page=${page}`
         )
         .then((response) => {
           this.searchResultPage = response.data;

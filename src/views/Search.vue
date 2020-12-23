@@ -54,6 +54,7 @@ export default {
       genres: [],
       searchQuery: "",
       pageNumber: "",
+      key: process.env.VUE_APP_MOVIEDB
     };
   },
   components: {
@@ -86,7 +87,7 @@ export default {
     getPageSearchResults(query, page) {
       axios
         .get(
-          `https://api.themoviedb.org/3/search/multi?api_key=f943d3d10cc39fd734122d69efabbacb&query=${query}&page=${page}&include_adult=false`
+          `${this.globalAPIMovieDBAddress}/3/search/multi?api_key=${this.key}&query=${query}&page=${page}&include_adult=false`
         )
         .then((response) => {
           this.searchResultPage = response.data;
@@ -97,7 +98,7 @@ export default {
       this.pageNumber = ++this.$route.fullPath.split("=")[1];
       axios
         .get(
-          `https://api.themoviedb.org/3/search/multi?api_key=f943d3d10cc39fd734122d69efabbacb&query=${this.searchQuery}&page=${this.pageNumber}&include_adult=false`
+          `${this.globalAPIMovieDBAddress}/3/search/multi?api_key=${this.key}&query=${this.searchQuery}&page=${this.pageNumber}&include_adult=false`
         )
         .then((response) => {
           this.searchResultPage = response.data;
@@ -111,7 +112,7 @@ export default {
       this.pageNumber = --this.$route.fullPath.split("=")[1];
       axios
         .get(
-          `https://api.themoviedb.org/3/search/multi?api_key=f943d3d10cc39fd734122d69efabbacb&query=${this.searchQuery}&page=${this.pageNumber}&include_adult=false`
+          `${this.globalAPIMovieDBAddress}/3/search/multi?api_key=${this.key}&query=${this.searchQuery}&page=${this.pageNumber}&include_adult=false`
         )
         .then((response) => {
           this.searchResultPage = response.data;

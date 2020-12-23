@@ -39,6 +39,7 @@ export default {
   data() {
     return {
       popular: [],
+      key: process.env.VUE_APP_MOVIEDB,
       slickOptionsUpper: {
         slidesToShow: 1,
         infinite: true,
@@ -67,20 +68,11 @@ export default {
     async getPopularFilms() {
       await axios
         .get(
-          `https://api.themoviedb.org/3/${this.filmType}/popular?api_key=f943d3d10cc39fd734122d69efabbacb`
+          `${this.globalAPIMovieDBAddress}/3/${this.filmType}/popular?api_key=${this.key}`
         )
         .then((response) => {
           this.popular = response.data.results;
         });
-    },
-    next() {
-      this.$refs.slick.next(); // по моему эти функции ни где не используются
-    },
-    prev() {
-      this.$refs.slick.prev();// по моему эти функции ни где не используются
-    },
-    reInit() {
-      this.$refs.slick.reSlick();// по моему эти функции ни где не используются
     },
   },
 };

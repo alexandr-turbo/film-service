@@ -20,6 +20,7 @@ export default {
   data() {
     return {
       type1: [],
+      key: process.env.VUE_APP_MOVIEDB,
       slickOptions: {
         slidesToShow: 7,
         infinite: true,
@@ -84,20 +85,11 @@ export default {
     async getFilms() {
       await axios
         .get(
-          `https://api.themoviedb.org/3/${this.filmType}/${this.type}?api_key=f943d3d10cc39fd734122d69efabbacb`
+          `${this.globalAPIMovieDBAddress}/3/${this.filmType}/${this.type}?api_key=${this.key}`
         )
         .then((response) => {
           this.type1 = response.data.results;
         });
-    },
-    next() {
-      this.$refs.slick.next();
-    },
-    prev() {
-      this.$refs.slick.prev();
-    },
-    reInit() {
-      this.$refs.slick.reSlick();
     },
   },
 };

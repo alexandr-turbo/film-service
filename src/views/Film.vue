@@ -1,8 +1,7 @@
 <template>
   <div class="film">
     <div v-if="currentfilm && cast && trailers">
-      <div class="film__poster-container"
-      >
+      <div class="film__poster-container">
         <img
           v-if="currentfilm.backdrop_path"
           class="film__poster"
@@ -40,6 +39,7 @@ import FilmReviewTemplate from "../components/FilmReviewTemplate.vue";
 export default {
   data() {
     return {
+      key: process.env.VUE_APP_MOVIEDB,
       genres: null,
       currentfilm: null,
       cast: null,
@@ -57,7 +57,7 @@ export default {
   created() {
     axios
       .get(
-        `https://api.themoviedb.org/3/${this.filmType}/${this.filmID}?api_key=f943d3d10cc39fd734122d69efabbacb`
+        `${this.globalAPIMovieDBAddress}/3/${this.filmType}/${this.filmID}?api_key=${this.key}`
       )
       .then((response) => {
         this.currentfilm = response.data;
@@ -65,14 +65,14 @@ export default {
       });
     axios
       .get(
-        `https://api.themoviedb.org/3/${this.filmType}/${this.filmID}/credits?api_key=f943d3d10cc39fd734122d69efabbacb`
+        `${this.globalAPIMovieDBAddress}/3/${this.filmType}/${this.filmID}/credits?api_key=${this.key}`
       )
       .then((response) => {
         this.cast = response.data.cast;
         for (let i = 0; i < this.cast.length; i++) {
           axios
             .get(
-              `https://api.themoviedb.org/3/person/${this.cast[i].id}?api_key=f943d3d10cc39fd734122d69efabbacb`
+              `${this.globalAPIMovieDBAddress}/3/person/${this.cast[i].id}?api_key=${this.key}`
             )
             .then((response) => {
               this.cast[i].bio = response.data.biography;
@@ -81,14 +81,14 @@ export default {
       });
     axios
       .get(
-        `https://api.themoviedb.org/3/${this.filmType}/${this.filmID}/videos?api_key=f943d3d10cc39fd734122d69efabbacb`
+        `${this.globalAPIMovieDBAddress}/3/${this.filmType}/${this.filmID}/videos?api_key=${this.key}`
       )
       .then((response) => {
         this.trailers = response.data.results;
       });
     axios
       .get(
-        `https://api.themoviedb.org/3/${this.filmType}/${this.filmID}/reviews?api_key=f943d3d10cc39fd734122d69efabbacb&language=en-US`
+        `${this.globalAPIMovieDBAddress}/3/${this.filmType}/${this.filmID}/reviews?api_key=${this.key}&language=en-US`
       )
       .then((response) => {
         this.reviews = response.data.results;

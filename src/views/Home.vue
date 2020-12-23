@@ -10,18 +10,16 @@
           TV Shows
         </button>
       </div>
-      <HomeSlicksTemplate
-        :filmSlickArr="filmSlickArr"
-        :filmType="filmType"
-        :genres="genres"
-      />
+      <div v-for="filmSlick in filmSlickArr" :key="filmSlick.id">
+        <HomeSlickTemplate :type="filmSlick" :filmType="filmType" :genres="genres" />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import HomeUpperSlickTemplate from "../components/HomeUpperSlickTemplate.vue";
-import HomeSlicksTemplate from "../components/HomeSlicksTemplate.vue";
+import HomeSlickTemplate from "../components/HomeSlickTemplate.vue";
 
 export default {
   data() {
@@ -35,7 +33,7 @@ export default {
   },
   components: {
     HomeUpperSlickTemplate,
-    HomeSlicksTemplate,
+    HomeSlickTemplate,
   },
   created() {
     this.genres = this.$store.state.MovieGenres;

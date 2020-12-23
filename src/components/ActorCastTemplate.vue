@@ -11,8 +11,8 @@
       <div
         :class="
           index % 2 === 0
-            ? 'actor-cast-template__right-border' // БЕМ, Е - елемент. right-border - не елемент. не могу сказать как правильно, но точно не так. может модификатор
-            : 'actor-cast-template__left-border'
+            ? 'actor-cast-template__bio--right-border'
+            : 'actor-cast-template__bio--left-border'
         "
       >
         <div class="actor-cast-template__bio">
@@ -48,7 +48,7 @@
               <div
                 :class="
                   role.media_type === 'movie'
-                    ? 'actor-cast-template__media-type--capitalize' // классный пример
+                    ? 'actor-cast-template__media-type--capitalize'
                     : 'actor-cast-template__media-type--uppercase'
                 "
               >
@@ -81,14 +81,14 @@ export default {
   margin: 25px 0;
   border-radius: 10px;
 }
-.actor-cast-template__right-border {
+.actor-cast-template__bio--right-border {
   display: flex;
   background: #1c262b;
   padding: 20px;
   border-right: 5px solid white;
   flex-direction: column;
 }
-.actor-cast-template__left-border {
+.actor-cast-template__bio--left-border {
   display: flex;
   background: #1c262b;
   flex-direction: column;

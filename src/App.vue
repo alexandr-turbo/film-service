@@ -1,6 +1,8 @@
 <template>
   <div id="app">
-    <Preloader v-if="$root.loading" />
+    <div id="page-preloader" class="preloader" v-if="$root.loading">
+      <div class="loader"></div>
+    </div>
     <SearchBarTemplate /> 
     <router-view />
     <FooterTemplate />
@@ -11,12 +13,10 @@
 import SearchBarTemplate from "./components/SearchBarTemplate.vue";
 import FooterTemplate from "./components/FooterTemplate.vue";
 import GoTop from '@inotom/vue-go-top';
-import Preloader from "./components/Preloader.vue";
 export default {
   components: {
     SearchBarTemplate,
     FooterTemplate,
-    Preloader,
     GoTop
   },
   created() {
@@ -30,7 +30,7 @@ export default {
     margin-top: 0 !important;
 }
 body {
-    margin: 0 !important;
+  margin: 0 !important;
   font-family: sans-serif;
 }
 .preloader { /* это точно должно быть тут? а не в своем копмоненте или в общем css файле*/

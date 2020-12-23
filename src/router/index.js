@@ -1,9 +1,14 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import NotFound from '@/views/NotFound'
 
 Vue.use(VueRouter)
 
 const routes = [
+  {
+    path: '*',
+    component: NotFound
+  },
   {
     path: '/',
     name: 'home',
@@ -33,7 +38,7 @@ const routes = [
     component: () => import(/* webpackChunkName: "search" */ '../views/Discover.vue'),
     props: true
   },
-] // я бы добавил еще страницу с ошибкой, если нет такой страницы или введен непрваильный путь. например опечатка в /dicover
+]
 
 const router = new VueRouter({
   routes,

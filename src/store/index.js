@@ -1,13 +1,15 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import axios from "axios";
+import axios from "axios"
 
 Vue.use(Vuex)
+const key = process.env.VUE_APP_MOVIEDB
 
 export default new Vuex.Store({
   state: {
     MovieGenres: [],
-    TVShowGenres: []
+    TVShowGenres: [],
+    loading: true
   },
   mutations: {
     setMovieGenres (state, genres) {
@@ -16,39 +18,31 @@ export default new Vuex.Store({
     setTVShowGenres (state, genres) {
       state.TVShowGenres = genres
     },
+    setLoadingTrue (state) {
+      state.loading = true
+    },
+    setLoadingFalse (state) {
+      state.loading = false
+    }
   },
   actions: {
     async loadMovieGenres ({ commit }) {
-      let genres = []
       await axios
       .get(
-        `https://api.themoviedb.org/3/genre/movie/list?api_key=f943d3d10cc39fd734122d69efabbacb`
+        `https://api.themoviedb.org/3/genre/movie/list?api_key=${key}`
       )
       .then((response) => {
-        genres = response.data.genres;  // по моему тут можно сделать прям так commit('setMovieGenres', response.data.genres); (и так везде. лишнее действие делаешь и используешь переменную.) но это как хочешь можно и так
+        commit('setMovieGenres', response.data.genres)
       });
-      commit('setMovieGenres', genres)
     },
     async loadTVShowsGenres ({ commit }) {
-      let genres = []
       await axios
       .get(
-        `https://api.themoviedb.org/3/genre/tv/list?api_key=f943d3d10cc39fd734122d69efabbacb`
+        `https://api.themoviedb.org/3/genre/tv/list?api_key=${key}`
       )
       .then((response) => {
-        genres = response.data.genres;
+        commit('setTVShowGenres', response.data.genres)
       });
-      commit('setTVShowGenres', genres)
-    }
-  },
-  getters: {
-    movieGenresNames(state) {
-      let b = state.MovieGenres.map(item => {return item.name}) // неинформативное имя
-      return b
-    },
-    tvshowGenresNames(state) {
-      let b = state.TVShowGenres.map(item => {return item.name})// неинформативное имя
-      return b
     }
   }
 })

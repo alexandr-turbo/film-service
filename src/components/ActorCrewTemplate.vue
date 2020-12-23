@@ -1,4 +1,4 @@
-<template> // этот и actorCastTemplate компонент - очень, очень похожи. даже стили идентичны. можно обозвать компонент более универсально, и использовать в двух местах его, просто разные данные передавать
+<template>
   <div>
     <router-link
       tag="div"
@@ -11,8 +11,8 @@
       <div
         :class="
           index % 2 === 0
-            ? 'actor-crew-template__right-border'
-            : 'actor-crew-template__left-border'
+            ? 'actor-crew-template__bio--right-border'
+            : 'actor-crew-template__bio--left-border'
         "
       >
         <div class="actor-crew-template__bio">
@@ -82,14 +82,14 @@ export default {
   margin: 25px 0;
   border-radius: 10px;
 }
-.actor-crew-template__right-border {
+.actor-crew-template__bio--right-border {
   display: flex;
   background: #1c262b;
   padding: 20px;
   border-right: 5px solid white;
   flex-direction: column;
 }
-.actor-crew-template__left-border {
+.actor-crew-template__bio--left-border {
   display: flex;
   background: #1c262b;
   flex-direction: column;

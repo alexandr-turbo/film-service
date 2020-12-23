@@ -40,17 +40,6 @@ export default {
     Slick, FilmTrailerCoverTemplate
   },
   props: ["trailers"],
-  methods: {
-    next() {
-      this.$refs.slick.next();
-    },
-    prev() {
-      this.$refs.slick.prev();
-    },
-    reInit() {
-      this.$refs.slick.reSlick();
-    },
-  },
 };
 </script>
 <style scoped>
