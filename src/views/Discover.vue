@@ -7,10 +7,10 @@
             <div>Media type</div>
             <select class="discover__form-field" v-model="mediatype">
               <option
-                v-for="s in mediatypeOptions" // не информативная переменная
-                :value="s.value"
-                :key="s.value"
-                >{{ s.title }}</option
+                v-for="mediatype in mediatypeOptions"
+                :value="mediatype.value"
+                :key="mediatype.value"
+                >{{ mediatype.title }}</option
               >
             </select>
           </div>
@@ -18,10 +18,10 @@
             <div>Sort</div>
             <select class="discover__form-field" v-model="sortType">
               <option
-                v-for="s in sortOptions"
-                :value="s.value"
-                :key="s.value"
-                >{{ s.title }}</option
+                v-for="sort in sortOptions"
+                :value="sort.value"
+                :key="sort.value"
+                >{{ sort.title }}</option
               >
             </select>
           </div>
@@ -47,7 +47,7 @@
             <div>Genre</div>
             <select class="discover__form-field" v-model="genre">
               <option value=""></option>
-              <option v-for="g in genres" :key="g.id">{{ g.name }}</option> // не информативная переменная
+              <option v-for="genre in genres" :key="genre.id">{{ genre.name }}</option> // не информативная переменная
             </select>
           </div>
           <div class="discover__form-field-container">
