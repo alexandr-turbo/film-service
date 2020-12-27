@@ -1,7 +1,7 @@
 export default {
   methods: {
     getCurrentMediaTypeGenresNames(genres, genreIDs) {
-      if (genreIDs) {
+      if (genres && genreIDs) {
         let genreContainer = [];
         let genreContainerPosition = 0;
         for (let genreIDPosition = 0; genreIDPosition < genreIDs.length; genreIDPosition++) {

@@ -104,14 +104,7 @@ export default {
     },
   },
   async created() {
-    axios
-      .get(
-        `${this.globalAPIMovieDBAddress}/3${this.$route.path}?api_key=${this.key}`
-      )
-      .then((response) => {
-        this.actor = response.data;
-      }),
-    axios
+    let p1 = await axios
       .get(
         `${this.globalAPIMovieDBAddress}/3${this.$route.path}/combined_credits?api_key=${this.key}`
       )
@@ -131,8 +124,16 @@ export default {
           this.crewsLoadedCount++;
         }
       });
+    let p2 = await axios
+      .get(
+        `${this.globalAPIMovieDBAddress}/3${this.$route.path}?api_key=${this.key}`
+      )
+      .then((response) => {
+        this.actor = response.data;
+      });
     this.movieGenres = this.$store.state.MovieGenres;
     this.tvshowGenres = this.$store.state.TVShowGenres;
+    Promise.all([p1, p2]).then(this.$root.loading = false)
   },
 };
 </script>

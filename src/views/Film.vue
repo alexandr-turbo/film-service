@@ -54,8 +54,8 @@ export default {
     FilmReviewTemplate,
   },
   props: ["filmID", "filmType"],
-  created() {
-    axios
+  async created() {
+    let p1 = await axios
       .get(
         `${this.globalAPIMovieDBAddress}/3/${this.filmType}/${this.filmID}?api_key=${this.key}`
       )
@@ -63,7 +63,8 @@ export default {
         this.currentfilm = response.data;
         this.genres = this.currentfilm.genres.map((el) => el.name).join("/");
       });
-    axios
+    // console.log(this.genres)
+    let p2 = await axios
       .get(
         `${this.globalAPIMovieDBAddress}/3/${this.filmType}/${this.filmID}/credits?api_key=${this.key}`
       )
@@ -79,20 +80,27 @@ export default {
             });
         }
       });
-    axios
+    // console.log(this.cast)
+    let p3 = await axios
       .get(
         `${this.globalAPIMovieDBAddress}/3/${this.filmType}/${this.filmID}/videos?api_key=${this.key}`
       )
       .then((response) => {
         this.trailers = response.data.results;
       });
-    axios
+    // console.log(this.trailers)
+    let p4 = await axios
       .get(
         `${this.globalAPIMovieDBAddress}/3/${this.filmType}/${this.filmID}/reviews?api_key=${this.key}&language=en-US`
       )
       .then((response) => {
         this.reviews = response.data.results;
       });
+    // console.log(this.reviews)
+    // console.log(this.$root.loading)
+    // this.$root.loading = false
+    // console.log(this.$root.loading)
+    Promise.all([p1, p2, p3, p4]).then(this.$root.loading = false)
   },
 };
 </script>

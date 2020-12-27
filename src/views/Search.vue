@@ -74,7 +74,7 @@ export default {
       }
     },
   },
-  async created() {
+  created() {
     if (this.$route.fullPath.indexOf("?") !== -1) {
       this.searchQuery = this.$route.fullPath.split("?")[1].split("&")[0];
       this.pageNumber = this.$route.fullPath.split("=")[1];
@@ -82,21 +82,23 @@ export default {
     }
     this.movieGenres = this.$store.state.MovieGenres;
     this.tvshowGenres = this.$store.state.TVShowGenres;
+    // Promise.all([p1, p2]).then(this.$root.loading = false)
   },
   methods: {
-    getPageSearchResults(query, page) {
-      axios
+    async getPageSearchResults(query, page) {
+      await axios
         .get(
           `${this.globalAPIMovieDBAddress}/3/search/multi?api_key=${this.key}&query=${query}&page=${page}&include_adult=false`
         )
         .then((response) => {
           this.searchResultPage = response.data;
         });
+      this.$root.loading = false
     },
-    getNextPageSearchResults() {
+    async getNextPageSearchResults() {
       this.searchQuery = this.$route.fullPath.split("?")[1].split("&")[0];
       this.pageNumber = ++this.$route.fullPath.split("=")[1];
-      axios
+      await axios
         .get(
           `${this.globalAPIMovieDBAddress}/3/search/multi?api_key=${this.key}&query=${this.searchQuery}&page=${this.pageNumber}&include_adult=false`
         )
@@ -106,11 +108,12 @@ export default {
             `${this.$route.path}?${this.searchQuery}&page=${this.pageNumber}`
           );
         });
+      this.$root.loading = false
     },
-    getPreviousPageSearchResults() {
+    async getPreviousPageSearchResults() {
       this.searchQuery = this.$route.fullPath.split("?")[1].split("&")[0];
       this.pageNumber = --this.$route.fullPath.split("=")[1];
-      axios
+      await axios
         .get(
           `${this.globalAPIMovieDBAddress}/3/search/multi?api_key=${this.key}&query=${this.searchQuery}&page=${this.pageNumber}&include_adult=false`
         )
@@ -120,6 +123,7 @@ export default {
             `${this.$route.path}?${this.searchQuery}&page=${this.pageNumber}`
           );
         });
+      this.$root.loading = false
     },
   },
 };

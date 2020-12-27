@@ -214,6 +214,7 @@ export default {
             return actor.name.toLowerCase().includes(input.toLowerCase()); 
           });
         });
+      this.$root.loading = false
       return a;
     },
     getResultValue(result) {
@@ -248,7 +249,7 @@ export default {
         `${this.$route.path}?${this.mediatype}${this.sortType}${this.selectedVote}${this.selectedActor}${this.selectedGenreIDString}${this.selectedYear}&page=1`
       );
     },
-    getPageSearchResults(
+    async getPageSearchResults(
       routeMediatype,
       routeSortBy,
       routeVote,
@@ -257,13 +258,14 @@ export default {
       routeYear,
       page
     ) {
-      axios
+      await axios
         .get(
           `${this.globalAPIMovieDBAddress}/3/discover/${routeMediatype}?api_key=12a5356516535d4d67654a936a088c1b&language=en-US&${routeSortBy}&include_adult=false&include_video=false&${routeVote}&${routeActor}&${routeGenre}&${routeYear}&page=${page}`
         )
         .then((response) => {
           this.searchResultPage = response.data;
         });
+      this.$root.loading = false
     },
     getNextPageSearchResults() {
       this.fullPath = this.$route.fullPath.split("page=")[0];

@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <HomeUpperSlickTemplate :filmType="filmType" :genres="genres" />
+    <HomeUpperSlickTemplate :filmType="filmType" :genres="genres" :popular="popular" />
     <div class="home__container">
       <div class="home__buttons">
         <button class="home__switch-button" @click="switchType('movie')">
@@ -10,8 +10,8 @@
           TV Shows
         </button>
       </div>
-      <div v-for="filmSlick in filmSlickArr" :key="filmSlick.id">
-        <HomeSlickTemplate :type="filmSlick" :filmType="filmType" :genres="genres" />
+      <div v-for="(filmSlick, index) in filmSlickArr" :key="filmSlick.id">
+        <HomeSlickTemplate :type1="type1[index]" :type="filmSlick" :filmType="filmType" :genres="genres" />
       </div>
     </div>
   </div>
@@ -20,10 +20,14 @@
 <script>
 import HomeUpperSlickTemplate from "../components/HomeUpperSlickTemplate.vue";
 import HomeSlickTemplate from "../components/HomeSlickTemplate.vue";
+import axios from "axios";
 
 export default {
   data() {
     return {
+      type1: [],
+      popular: [],
+      key: process.env.VUE_APP_MOVIEDB,
       filmType: "movie",
       genres: [],
       tvshowSlickArr: ["airing_today", "popular", "on_the_air", "top_rated"],
@@ -35,11 +39,42 @@ export default {
     HomeUpperSlickTemplate,
     HomeSlickTemplate,
   },
-  created() {
+  async created() {
     this.genres = this.$store.state.MovieGenres;
     this.filmSlickArr = this.movieSlickArr;
+    let p1 = await this.getPopularFilms();
+    let p2 = await this.getFilms();
+    Promise.all([p1, p2]).then(this.$root.loading = false)
+  },
+  watch: {
+    filmType() {
+      this.popular = [];
+      this.getPopularFilms();
+      this.type1 = [];
+      this.getFilms();
+    },
   },
   methods: {
+    async getPopularFilms() {
+      await axios
+        .get(
+          `${this.globalAPIMovieDBAddress}/3/${this.filmType}/popular?api_key=${this.key}`
+        )
+        .then((response) => {
+          this.popular = response.data.results;
+        });
+    },
+    async getFilms() {
+      for (let i = 0; i < this.filmSlickArr.length; i++) {
+        await axios
+          .get(
+            `${this.globalAPIMovieDBAddress}/3/${this.filmType}/${this.filmSlickArr[i]}?api_key=${this.key}`
+          )
+          .then((response) => {
+            this.type1.push(response.data.results);
+          });
+      }
+    },
     switchType(type) {
       this.filmType = type;
       if (type === "tv") {

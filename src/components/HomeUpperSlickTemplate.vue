@@ -32,14 +32,15 @@
 </template>
 
 <script>
-import axios from "axios";
+// import axios from "axios";
 import Slick from "vue-slick";
 
 export default {
   data() {
     return {
-      popular: [],
-      key: process.env.VUE_APP_MOVIEDB,
+      // popular: [],
+      // key: process.env.VUE_APP_MOVIEDB,
+      // upperSlickReady: false,
       slickOptionsUpper: {
         slidesToShow: 1,
         infinite: true,
@@ -51,30 +52,32 @@ export default {
       },
     };
   },
-  props: ["filmType", "genres"],
+  props: ["filmType", "genres", "popular"],
   components: {
     Slick,
   },
-  watch: {
-    filmType() {
-      this.popular = [];
-      this.getPopularFilms();
-    },
-  },
-  created() {
-    this.getPopularFilms();
-  },
-  methods: {
-    async getPopularFilms() {
-      await axios
-        .get(
-          `${this.globalAPIMovieDBAddress}/3/${this.filmType}/popular?api_key=${this.key}`
-        )
-        .then((response) => {
-          this.popular = response.data.results;
-        });
-    },
-  },
+  // watch: {
+  //   filmType() {
+  //     this.popular = [];
+  //     this.getPopularFilms();
+  //   },
+  // },
+  // async created() {
+  //   await this.getPopularFilms();
+  //   this.upperSlickReady = true
+  //   this.$emit('ready', this.upperSlickReady)
+  // },
+  // methods: {
+  //   async getPopularFilms() {
+  //     await axios
+  //       .get(
+  //         `${this.globalAPIMovieDBAddress}/3/${this.filmType}/popular?api_key=${this.key}`
+  //       )
+  //       .then((response) => {
+  //         this.popular = response.data.results;
+  //       });
+  //   },
+  // },
 };
 </script>
 <style scoped>

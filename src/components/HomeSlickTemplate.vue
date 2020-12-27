@@ -1,5 +1,5 @@
 <template>
-  <div v-if="type1.length">
+  <div v-if="type1 && type1.length">
     <div class="home-slick-template__title">
       {{ type | replaceLodashToSpace }}
     </div>
@@ -12,15 +12,12 @@
 </template>
 
 <script>
-import axios from "axios";
 import Slick from "vue-slick";
 import HomeCoverTemplate from "../components/HomeCoverTemplate.vue";
 
 export default {
   data() {
     return {
-      type1: [],
-      key: process.env.VUE_APP_MOVIEDB,
       slickOptions: {
         slidesToShow: 7,
         infinite: true,
@@ -71,27 +68,7 @@ export default {
     HomeCoverTemplate,
     Slick,
   },
-  props: ["type", "genres", "filmType"],
-  created() {
-    this.getFilms();
-  },
-  watch: {
-    filmType() {
-      this.type1 = [];
-      this.getFilms();
-    },
-  },
-  methods: {
-    async getFilms() {
-      await axios
-        .get(
-          `${this.globalAPIMovieDBAddress}/3/${this.filmType}/${this.type}?api_key=${this.key}`
-        )
-        .then((response) => {
-          this.type1 = response.data.results;
-        });
-    },
-  },
+  props: ["type", "genres", "filmType", "type1"],
 };
 </script>
 <style scoped>
