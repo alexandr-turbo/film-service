@@ -10,8 +10,8 @@
         <template v-if="cast">
           <div class="actor__title">Cast</div>
           <div v-for="(role, index) in lazyRoles" :key="index">
-            <ActorCastTemplate
-              :role="role"
+            <ActorCastCrewTemplate
+              :arr="role"
               :index="index"
               :genres="role.media_type === 'movie' ? movieGenres : tvshowGenres"
             />
@@ -20,8 +20,8 @@
         <template v-if="!cast">
           <div class="actor__title">Crew</div>
           <div v-for="(crew, index) in lazyCrews" :key="index">
-            <ActorCrewTemplate
-              :crew="crew"
+            <ActorCastCrewTemplate
+              :arr="crew"
               :index="index"
               :genres="crew.media_type === 'movie' ? movieGenres : tvshowGenres"
             />
@@ -35,8 +35,8 @@
 <script>
 import axios from "axios";
 import ActorInfoTemplate from "../components/ActorInfoTemplate.vue";
-import ActorCastTemplate from "../components/ActorCastTemplate.vue";
-import ActorCrewTemplate from "../components/ActorCrewTemplate.vue";
+import ActorCastCrewTemplate from "../components/ActorCastCrewTemplate.vue";
+
 const ROLES_ONLOAD_COUNT = 5
 const CREWS_ONLOAD_COUNT = 5
 export default {
@@ -56,8 +56,7 @@ export default {
   }),
   components: {
     ActorInfoTemplate,
-    ActorCastTemplate,
-    ActorCrewTemplate,
+    ActorCastCrewTemplate
   },
   mounted() {
     window.addEventListener("scroll", this.onScroll);

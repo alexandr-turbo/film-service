@@ -32,6 +32,4 @@ const app = new Vue({
 
 router.afterEach(() => {
   app.loading = true
-
-  // setTimeout(() => app.loading = false, 10000)
 })

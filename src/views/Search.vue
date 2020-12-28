@@ -82,7 +82,6 @@ export default {
     }
     this.movieGenres = this.$store.state.MovieGenres;
     this.tvshowGenres = this.$store.state.TVShowGenres;
-    // Promise.all([p1, p2]).then(this.$root.loading = false)
   },
   methods: {
     async getPageSearchResults(query, page) {

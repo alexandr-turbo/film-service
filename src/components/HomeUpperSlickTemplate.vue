@@ -32,15 +32,11 @@
 </template>
 
 <script>
-// import axios from "axios";
 import Slick from "vue-slick";
 
 export default {
   data() {
     return {
-      // popular: [],
-      // key: process.env.VUE_APP_MOVIEDB,
-      // upperSlickReady: false,
       slickOptionsUpper: {
         slidesToShow: 1,
         infinite: true,
@@ -56,28 +52,6 @@ export default {
   components: {
     Slick,
   },
-  // watch: {
-  //   filmType() {
-  //     this.popular = [];
-  //     this.getPopularFilms();
-  //   },
-  // },
-  // async created() {
-  //   await this.getPopularFilms();
-  //   this.upperSlickReady = true
-  //   this.$emit('ready', this.upperSlickReady)
-  // },
-  // methods: {
-  //   async getPopularFilms() {
-  //     await axios
-  //       .get(
-  //         `${this.globalAPIMovieDBAddress}/3/${this.filmType}/popular?api_key=${this.key}`
-  //       )
-  //       .then((response) => {
-  //         this.popular = response.data.results;
-  //       });
-  //   },
-  // },
 };
 </script>
 <style scoped>
@@ -96,9 +70,6 @@ export default {
   left: 10%;
   bottom: 10%;
   color: white;
-  /* margin-left: 100px;
-  margin-top: -250px;
-  padding-bottom: 250px; */
 }
 .home-upper-slick-template__title {
   text-transform: uppercase;
