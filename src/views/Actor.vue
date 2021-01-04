@@ -1,7 +1,7 @@
 <template>
   <div class="actor">
     <div v-if="actor !== null">
-      <div class="actor__container">
+      <div class="container">
         <ActorInfoTemplate :actor="actor" />
         <div class="actor__buttons">
           <button class="actor__switch-button" v-if="roles.length" @click="cast = true">Cast</button>
@@ -138,21 +138,10 @@ export default {
 </script>
 
 <style scoped>
+/* @import '../../public/style.css'; */
 .actor {
-  background: -webkit-linear-gradient(285deg, #251431 0%, #161130 22%);
-  background: -o-linear-gradient(285deg, #251431 0%, #161130 22%);
-  background: linear-gradient(165deg, #251431 0%, #161130 22%);
-  color: #fff;
-}
-.actor__container {
-  padding: 2rem 0;
-  margin: 0 auto;
-  max-width: 80%;
-}
-@media (max-width: 479px) {
-  .actor__container {
-    max-width: 90%;
-  }
+  background: var(--main-bg);
+  /* color: var(--main-text-color); */
 }
 .actor__buttons {
   display: flex;
@@ -206,7 +195,7 @@ export default {
   background-position: 0 0, 0 100%;
   background-repeat: no-repeat;
   background-size: 100% 3px;
-  color: #fff;
+  /* color: var(--main-text-color); */
   cursor: pointer;
   display: block;
   font-family: "Alegreya Sans", sans-serif;

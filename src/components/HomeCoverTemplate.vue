@@ -64,6 +64,6 @@ export default {
 .home-cover-template__title,
 .home-cover-template__genres {
   text-align: center;
-  color: white;
+  /* color: var(--main-text-color); */
 }
 </style>

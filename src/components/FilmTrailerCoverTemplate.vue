@@ -38,6 +38,6 @@ export default {
 .film-trailer-cover-template__trailer-title {
   text-align: center;
   margin: 10px auto 0;
-  /* width: 300px; */
+  /* color: var(--main-text-color); */
 }
 </style>

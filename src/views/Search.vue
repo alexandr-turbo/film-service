@@ -1,6 +1,6 @@
 <template>
   <div class="search">
-    <div class="search__container">
+    <div class="container">
       <div class="search__results-title" v-if="searchResultPage.page">
         Search results for {{ searchQuery | replaceDashToSpace }}
       </div>
@@ -128,21 +128,10 @@ export default {
 };
 </script>
 <style scoped>
+/* @import '../../public/style.css'; */
 .search {
-  background: -webkit-linear-gradient(285deg, #251431 0%, #161130 22%);
-  background: -o-linear-gradient(285deg, #251431 0%, #161130 22%);
-  background: linear-gradient(165deg, #251431 0%, #161130 22%);
-  color: white;
-}
-.search__container {
-  padding: 2rem 0;
-  margin: 0 auto;
-  max-width: 80%;
-}
-@media (max-width: 479px) {
-  .search__container {
-    max-width: 90%;
-  }
+  background: var(--main-bg);
+  /* color: var(--main-text-color); */
 }
 .search__results-title {
   text-align: center;
@@ -198,9 +187,8 @@ export default {
 }
 .search__page-button {
   background: none;
-  border: 2px solid #fff;
+  border: 2px solid var(--main-text-color);
   border-radius: 20px;
-  color: #fff;
   cursor: pointer;
   font-family: "Alegreya Sans", sans-serif;
   font-size: 1rem;

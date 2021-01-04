@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <HomeUpperSlickTemplate :filmType="filmType" :genres="genres" :popular="popular" />
-    <div class="home__container">
+    <div class="container">
       <div class="home__buttons">
         <button class="home__switch-button" @click="switchType('movie')">
           Movies
@@ -90,21 +90,10 @@ export default {
 </script>
 
 <style scoped>
+/* @import '../../public/style.css'; */
 .home {
-  background: -webkit-linear-gradient(285deg, #251431 0%, #161130 22%);
-  background: -o-linear-gradient(285deg, #251431 0%, #161130 22%);
-  background: linear-gradient(165deg, #251431 0%, #161130 22%);
-  color: #fff;
-}
-.home__container {
-  padding: 2rem 0;
-  margin: 0 auto;
-  max-width: 80%;
-}
-@media (max-width: 479px) {
-  .home__container {
-    max-width: 90%;
-  }
+  background: var(--main-bg);
+  /* color: var(--main-text-color); */
 }
 /* @media (max-width: 640px) {
   .home__buttons {
@@ -166,7 +155,7 @@ export default {
   background-position: 0 0, 0 100%;
   background-repeat: no-repeat;
   background-size: 100% 3px;
-  color: #fff;
+  /* color: var(--main-text-color); */
   cursor: pointer;
   display: block;
   font-family: "Alegreya Sans", sans-serif;

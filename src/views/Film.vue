@@ -8,7 +8,7 @@
           :src="`${globalImgAddress}1280${currentfilm.backdrop_path}`"
         />
       </div>
-      <div class="film__container">
+      <div class="container">
         <div>Genres: {{ genres }}</div>
         <div v-if="currentfilm.overview">
           <div>SUMMARY</div>
@@ -99,11 +99,10 @@ export default {
 </script>
 
 <style scoped>
+/* @import '../../public/style.css'; */
 .film {
-  background: -webkit-linear-gradient(285deg, #251431 0%, #161130 22%);
-  background: -o-linear-gradient(285deg, #251431 0%, #161130 22%);
-  background: linear-gradient(165deg, #251431 0%, #161130 22%);
-  color: #fff;
+  background: var(--main-bg);
+  /* color: var(--main-text-color); */
 }
 .film__poster-container {
   overflow: hidden;
@@ -113,16 +112,6 @@ export default {
 .film__poster {
   height: 100%;
   width: 100%;
-}
-.film__container {
-  padding: 2rem 0;
-  margin: 0 auto;
-  max-width: 80%;
-}
-@media (max-width: 479px) {
-  .film__container {
-    max-width: 90%;
-  }
 }
 .film__title {
   margin-top: 50px;

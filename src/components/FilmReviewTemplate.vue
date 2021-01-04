@@ -30,24 +30,23 @@ export default {
 </script>
 
 <style>
-.film-review-template__right-border {
+.film-review-template__right-border,
+.film-review-template__left-border {
   display: flex;
-  background: #1c262b;
+  background: var(--third-bg);
   padding: 20px;
-  border-right: 5px solid white;
   flex-direction: column;
   margin: 25px 0;
 }
+.film-review-template__right-border {
+  border-right: 5px solid var(--accent-color);
+}
 .film-review-template__left-border {
-  display: flex;
-  background: #1c262b;
-  flex-direction: column;
-  padding: 20px;
-  border-left: 5px solid white;
-  margin: 25px 0;
+  border-left: 5px solid var(--accent-color);
 }
 .film-review-template__bio {
   margin: auto 20px;
+  /* color: var(--main-text-color); */
 }
 .film-review-template__full-review {
   text-decoration: none;

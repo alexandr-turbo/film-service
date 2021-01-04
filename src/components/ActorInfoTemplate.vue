@@ -76,7 +76,7 @@ export default {
 .actor-info-template {
   padding: 20px;
   border-radius: 10px;
-  border: #eb4e7a 1px solid;
+  border: var(--accent-color) 1px solid;
 }
 @media (max-width: 539px) {
   .actor-info-template__bio {

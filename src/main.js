@@ -14,6 +14,8 @@ Vue.filter('replaceLodashToSpace', replaceLodashToSpace)
 Vue.filter('replaceAllToDash', replaceAllToDash)
 Vue.filter('replaceDashToSpace', replaceDashToSpace)
 
+export const Bus = new Vue();
+
 Vue.mixin({
   data() {
     return {

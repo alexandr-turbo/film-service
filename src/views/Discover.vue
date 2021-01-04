@@ -1,6 +1,6 @@
 <template>
   <div class="discover">
-    <div class="discover__container">
+    <div class="container">
       <form @submit.prevent="searchRequest">
         <div class="discover__form">
           <div class="discover__form-field-container">
@@ -131,7 +131,6 @@ export default {
       searchQuery: "",
       pageNumber: "",
       fullPath: "",
-      animals: ["first animal", "second animal"],
       selectedActorFromList: "",
       selectedYear: "&year=",
       selectedGenreID: "",
@@ -197,6 +196,7 @@ export default {
       this.routeGenre = this.$route.fullPath.split("?")[1].split("&")[4];
       this.routeYear = this.$route.fullPath.split("?")[1].split("&")[5];
       this.page = this.$route.fullPath.split("page=")[1];
+      console.log(this.routeMediatype + ' ' + this.routeSortBy + ' ' + this.routeVote + ' ' + this.routeActor + ' ' + this.routeGenre + ' ' + this.routeYear + ' ' + this.page)
     },
     async search(input) {
       if (input.length < 1) {
@@ -245,6 +245,7 @@ export default {
       if (this.vote) {
         this.selectedVote += this.vote;
       }
+      console.log(this.mediatype)
       this.$router.push(
         `${this.$route.path}?${this.mediatype}${this.sortType}${this.selectedVote}${this.selectedActor}${this.selectedGenreIDString}${this.selectedYear}&page=1`
       );
@@ -260,10 +261,11 @@ export default {
     ) {
       await axios
         .get(
-          `${this.globalAPIMovieDBAddress}/3/discover/${routeMediatype}?api_key=12a5356516535d4d67654a936a088c1b&language=en-US&${routeSortBy}&include_adult=false&include_video=false&${routeVote}&${routeActor}&${routeGenre}&${routeYear}&page=${page}`
+          `${this.globalAPIMovieDBAddress}/3/discover/${routeMediatype}?api_key=${this.key}&language=en-US&include_adult=false&include_video=false&${routeActor}&page=${page}`
         )
         .then((response) => {
           this.searchResultPage = response.data;
+          console.log(this.searchResultPage)
         });
       this.$root.loading = false
     },
@@ -281,19 +283,10 @@ export default {
 };
 </script>
 <style scoped>
+/* @import '../../public/style.css'; */
 .discover {
-  color: #fff;
-  background-color: #111617;
-}
-.discover__container {
-  padding: 2rem 0;
-  margin: 0 auto;
-  max-width: 80%;
-}
-@media (max-width: 479px) {
-  .discover__container {
-    max-width: 90%;
-  }
+  background: var(--main-bg);
+  /* color: var(--main-text-color); */
 }
 .discover__form {
   display: flex;
@@ -344,9 +337,8 @@ export default {
 .discover__form-button,
 .discover__page-button {
   background: none;
-  border: 2px solid #fff;
+  border: 2px solid var(--main-text-color);
   border-radius: 20px;
-  color: #fff;
   cursor: pointer;
   font-family: "Alegreya Sans", sans-serif;
   font-size: 1rem;

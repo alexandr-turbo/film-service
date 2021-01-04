@@ -5,33 +5,56 @@
     </div>
     <SearchBarTemplate /> 
     <router-view />
+    <div class="app__go-to-top-button-container" id='backToTop' @click="goToTop">
+      <img class="app__go-to-top-button" src="./assets/arrow.svg">
+    </div>
     <FooterTemplate />
-    <GoTop :right="30" :bottom="30" :has-outline="false" bg-color="#eb4e7a" />
   </div>
 </template>
 <script>
 import SearchBarTemplate from "./components/SearchBarTemplate.vue";
 import FooterTemplate from "./components/FooterTemplate.vue";
-import GoTop from '@inotom/vue-go-top';
 export default {
+  data: () => ({
+    pageOffset: 0
+  }),
   components: {
     SearchBarTemplate,
-    FooterTemplate,
-    GoTop
+    FooterTemplate
   },
   created() {
     this.$store.dispatch('loadMovieGenres')
     this.$store.dispatch('loadTVShowsGenres')
+  },
+  mounted() {
+    window.addEventListener("scroll", this.onScroll);
+  },
+  beforeDestroy() {
+    window.removeEventListener("scroll", this.onScroll);
+  },
+  methods: {
+    onScroll() {
+      if (pageYOffset >= 100) {
+        document.getElementById('backToTop').classList.add("appearing")
+      } else if (pageYOffset < 100) {
+        document.getElementById('backToTop').classList.remove("appearing")
+      }
+    },
+    goToTop() {
+      document.getElementById('app').scrollIntoView({behavior: "smooth"});
+    }
   }
 };
 </script>
 <style>
+@import '../public/style.css';
 #app {
     margin-top: 0 !important;
 }
 body {
   margin: 0 !important;
   font-family: sans-serif;
+  color: var(--main-text-color);
 }
 .preloader { /* это точно должно быть тут? а не в своем копмоненте или в общем css файле*/
   position: fixed;
@@ -70,5 +93,27 @@ body {
 @keyframes animation {
     0%     {background:black; opacity: 1;}
     100.0%  {background:black; opacity: 0;}
+}
+.app__go-to-top-button-container {
+  position: fixed;
+  height: 70px;
+  width: 70px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--accent-color);
+  border-radius: 50%;
+  bottom: 30px;
+  right: 30px;
+  cursor: pointer;
+  transition: .5s all;
+  opacity: 0;
+}
+.appearing {
+  transition: .5s all;
+  opacity: 1;
+}
+.app__go-to-top-button {
+  height: 30px;
 }
 </style>

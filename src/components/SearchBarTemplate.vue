@@ -14,6 +14,7 @@
     >
       <img class="search-bar-template__discover-link" src="@/assets/discover.png" />
     </router-link>
+    <button class="toggle-theme" />
   </div>
 </template>
 <script>
@@ -22,6 +23,7 @@ export default {
   data() {
     return {
       query: "",
+      imgSrc: ""
     };
   },
   methods: {
@@ -29,6 +31,22 @@ export default {
       this.$router.push(`/search?${replaceAllToDash(query)}&page=1`);
       this.query = "";
     },
+  },
+  mounted() {
+    const toggleTheme = document.querySelector(".toggle-theme")
+    let el = document.documentElement
+    toggleTheme.addEventListener('click', () => {
+      if(el.hasAttribute('data-theme')) {
+        el.removeAttribute('data-theme')
+        localStorage.removeItem('theme')
+      } else {
+        el.setAttribute('data-theme', 'light')
+        localStorage.setItem('theme', 'light')
+      }
+    })
+    if(localStorage.getItem('theme') !== null) {
+      el.setAttribute('data-theme', 'light')
+    }
   },
 };
 </script>
@@ -38,7 +56,7 @@ export default {
   justify-content: center;
   align-items: center;
   height: 80px;
-  background: #1c262b;
+  background: var(--secondary-bg);
   position: relative;
 }
 .search-bar-template__home-link {
@@ -74,7 +92,7 @@ export default {
   border-radius: 20px;
   outline: none;
   padding: 9px 30px;
-  background: #eb4e7a;
+  background: var(--accent-color);
   border: 0;
   margin-left: -76px;
   display: flex;
@@ -96,6 +114,29 @@ export default {
 @media (min-width: 540px) {
   .search-bar-template__discover-link {
     right: 10%;
+  }
+}
+.toggle-theme {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    outline: none;
+    background-color: transparent;
+    background-image: var(--toggle-btn-img);
+    background-size: contain;
+    position: absolute;
+    top: calc(50% - (40px / 2));
+  }
+@media (max-width: 539px) {
+  .toggle-theme {
+    right: 10%;
+  }
+}
+@media (min-width: 540px) {
+  .toggle-theme {
+    right: 15%;
   }
 }
 </style>

@@ -83,19 +83,18 @@ export default {
   margin: 25px 0;
   border-radius: 10px;
 }
-.actor-cast-crew-template__bio--right-border {
-  display: flex;
-  background: #1c262b;
-  padding: 20px;
-  border-right: 5px solid white;
-  flex-direction: column;
-}
+.actor-cast-crew-template__bio--right-border,
 .actor-cast-crew-template__bio--left-border {
   display: flex;
-  background: #1c262b;
-  flex-direction: column;
+  background: var(--third-bg);
   padding: 20px;
-  border-left: 5px solid white;
+  flex-direction: column;
+}
+.actor-cast-crew-template__bio--right-border {
+  border-right: 5px solid var(--accent-color);
+}
+.actor-cast-crew-template__bio--left-border {
+  border-left: 5px solid var(--accent-color);
 }
 @media (min-width: 540px) {
   .actor-cast-crew-template__bio {
@@ -114,6 +113,7 @@ export default {
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
+    /* color: green; */
   }
 }
 

@@ -53,6 +53,6 @@ export default {
 }
 .film-actor-cover-template__actor-name {
   text-align: center;
-  color: white;
+  /* color: var(--main-text-color); */
 }
 </style>

@@ -31,7 +31,7 @@ export default {};
 </script>
 <style scoped>
 .footer-template {
-  background: #1c262b;
+  background: var(--secondary-bg);
   color: white;
 }
 .footer-template__container {
