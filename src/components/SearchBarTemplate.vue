@@ -10,7 +10,7 @@
       </button>
     </form>
     <router-link
-      to="/discover?movie&sort_by=popularity.desc&vote_average.gte=&with_people=&with_genres=&year=&page=1"
+      to="/discover?mediatype=movie&sort_by=popularity.desc&vote_average.gte=&with_people=&with_genres=&year=&page=1"
     >
       <img class="search-bar-template__discover-link" src="@/assets/discover.png" />
     </router-link>

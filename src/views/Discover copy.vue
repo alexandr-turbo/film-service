@@ -34,46 +34,25 @@
               placeholder="min average vote"
             />
           </div>
-          <div
-            v-if="mediatype === 'movie'"
-            class="discover__form-field-container"
-          >
+          <div v-if="mediatype === 'movie'" class="discover__form-field-container">
             <div>Involved actor</div>
             <autocomplete
-              v-if="!a"
               :search="search"
               :get-result-value="getResultValue"
               @submit="onSubmit"
               auto-select
-            />
-            <input
-              v-else-if="a"
-              class="discover__form-field"
-              :value="a"
-              @focus="a = null"
             />
           </div>
           <div class="discover__form-field-container">
             <div>Genre</div>
             <select class="discover__form-field" v-model="genre">
               <option value=""></option>
-              <option
-                v-for="genre1 in genres"
-                :key="genre1.id"
-                >{{ genre1.name }}</option
-              >
+              <option v-for="genre in genres" :key="genre.id">{{ genre.name }}</option>
             </select>
           </div>
           <div class="discover__form-field-container">
-            <div>
-              {{ mediatype === "movie" ? "Year" : "First airing date" }}
-            </div>
-            <input
-              class="discover__form-field"
-              type="number"
-              v-model="year"
-              placeholder="year"
-            />
+            <div> {{ mediatype === 'movie' ?  'Year' : 'First airing date'}} </div>
+            <input class="discover__form-field" type="number" v-model="year" placeholder="year" />
           </div>
         </div>
         <div class="discover__form-button-container">
@@ -120,22 +99,22 @@ export default {
   data() {
     return {
       movieSortOptions: [
-        { title: "Popularity descending", value: "popularity.desc" },
-        { title: "Popularity ascending", value: "popularity.asc" },
-        { title: "Release date descending", value: "release_date.desc" },
-        { title: "Release date ascending", value: "release_date.asc" },
-        { title: "Revenue descending", value: "revenue.desc" },
-        { title: "Revenue ascending", value: "revenue.asc" },
-        { title: "Vote average descending", value: "vote_average.desc" },
-        { title: "Vote average ascending", value: "vote_average.asc" },
+        { title: "Popularity descending", value: "&sort_by=popularity.desc" },
+        { title: "Popularity ascending", value: "&sort_by=popularity.asc" },
+        { title: "Release date descending", value: "&sort_by=release_date.desc" },
+        { title: "Release date ascending", value: "&sort_by=release_date.asc" },
+        { title: "Revenue descending", value: "&sort_by=revenue.desc" },
+        { title: "Revenue ascending", value: "&sort_by=revenue.asc" },
+        { title: "Vote average descending", value: "&sort_by=vote_average.desc" },
+        { title: "Vote average ascending", value: "&sort_by=vote_average.asc" },
       ],
       tvSortOptions: [
-        { title: "Popularity descending", value: "popularity.desc" },
-        { title: "Popularity ascending", value: "popularity.asc" },
-        { title: "First air date descending", value: "first_air_date.desc" },
-        { title: "First air date ascending", value: "first_air_date.asc" },
-        { title: "Vote average descending", value: "vote_average.desc" },
-        { title: "Vote average ascending", value: "vote_average.asc" },
+        { title: "Popularity descending", value: "&sort_by=popularity.desc" },
+        { title: "Popularity ascending", value: "&sort_by=popularity.asc" },
+        { title: "First air date descending", value: "&sort_by=first_air_date.desc" },
+        { title: "First air date ascending", value: "&sort_by=first_air_date.asc" },
+        { title: "Vote average descending", value: "&sort_by=vote_average.desc" },
+        { title: "Vote average ascending", value: "&sort_by=vote_average.asc" },
       ],
       mediatypeOptions: [
         { title: "Movie", value: "movie" },
@@ -145,8 +124,7 @@ export default {
       genre: "",
       people: "",
       vote: "",
-      sortType: "",
-      // mediatype: "",
+      sortType: "&sort_by=popularity.desc",
       mediatype: "movie",
       searchResultPage: {},
       filteredSearchResults: {},
@@ -156,28 +134,19 @@ export default {
       pageNumber: "",
       fullPath: "",
       selectedActorFromList: "",
-      selectedYear: "",
+      selectedYear: "&year=",
       selectedGenreID: "",
-      selectedGenreIDString: "",
-      selectedGenreID1: "",
-      selectedActor: "",
-      selectedVote: "",
-      routeMediatype: "",
-      routeSortBy: "",
-      routeVote: "",
-      routeActor: "",
-      routeGenre: "",
-      routeYear: "",
-      page: "",
-      routeMediatype1: "",
-      routeSortBy1: "",
-      routeVote1: "",
-      routeActor1: "",
-      routeGenre1: "",
-      routeYear1: "",
-      routePage1: "",
+      selectedGenreIDString: "&with_genres=",
+      selectedActor: "&with_people=",
+      selectedVote: "&vote_average.gte=",
+      routeMediatype: '',
+      routeSortBy: '',
+      routeVote: '',
+      routeActor: '',
+      routeGenre: '',
+      routeYear: '',
+      page: '',
       key: process.env.VUE_APP_MOVIEDB,
-      a: "",
     };
   },
   components: {
@@ -189,83 +158,56 @@ export default {
       return this.mediatype === "movie" ? this.movieGenres : this.tvshowGenres;
     },
     sortOptions() {
-      return this.mediatype === "movie"
-        ? this.movieSortOptions
-        : this.tvSortOptions;
-    },
+      return this.mediatype === "movie" ? this.movieSortOptions : this.tvSortOptions;
+    }
   },
   watch: {
     mediatype() {
-      this.genre = this.routeGenre1 = this.selectedGenreIDString = this.a = this.selectedActorFromList = this.routeActor1 = "";
-      this.routeSortBy1 = this.sortType = "popularity.desc";
-      // this.a = this.selectedActorFromList = this.routeActor1 = "";
-      // this.routeSortBy1 = this.sortType = "popularity.desc";
+      this.genre = "";
     },
     $route() {
-      this.getRoutePaths1();
-      this.getPageSearchResults1(
-        this.routeMediatype1,
-        this.routeSortBy1,
-        this.routeVote1,
-        this.routeActor1,
-        this.routeGenre1,
-        this.routeYear1,
-        this.routePage1
+      this.getRoutePaths()
+      this.getPageSearchResults(
+        this.routeMediatype,
+        this.routeSortBy,
+        this.routeVote,
+        this.routeActor,
+        this.routeGenre,
+        this.routeYear,
+        this.page
       );
     },
   },
-  async created() {
-    this.getRoutePaths1();
-
-    // this.mediatype = this.routeMediatype1;
-    this.vote = this.routeVote1;
-    this.year = this.routeYear1;
-    this.sortType = this.routeSortBy1;
-    if (this.routeActor1) {
-      await axios
-        .get(
-          `${this.globalAPIMovieDBAddress}/3/person/${this.routeActor1}?api_key=${this.key}&language=en-US`
-        )
-        .then((response) => {
-          this.a = response.data.name;
-        });
-    }
-    this.getPageSearchResults1(
-      this.routeMediatype1,
-      this.routeSortBy1,
-      this.routeVote1,
-      this.routeActor1,
-      this.routeGenre1,
-      this.routeYear1,
-      this.routePage1
+  created() {
+    this.getRoutePaths()
+    this.getPageSearchResults(
+      this.routeMediatype,
+      this.routeSortBy,
+      this.routeVote,
+      this.routeActor,
+      this.routeGenre,
+      this.routeYear,
+      this.page
     );
     this.movieGenres = this.$store.state.MovieGenres;
     this.tvshowGenres = this.$store.state.TVShowGenres;
-    if (this.routeGenre1) {
-      this.selectedGenreID1 = this.genres.find(
-        (name) => name.id === +this.routeGenre1
-      );
-      this.genre = this.selectedGenreID1.name;
-    }
-    // console.log(this.genre);
   },
   methods: {
-    getRoutePaths1() {
-      let a = this.$route.fullPath.split("?")[1];
-      let b = a.split("&");
-      this.routeMediatype1 = b[0].split("=")[1];
-      this.routeSortBy1 = b[1].split("=")[1];
-      this.routeVote1 = b[2].split("=")[1];
-      if (this.routeMediatype1 === "movie") {
-        this.routeActor1 = b[3].split("=")[1];
-        this.routeGenre1 = b[4].split("=")[1];
-        this.routeYear1 = b[5].split("=")[1];
-      } else if (this.routeMediatype1 === "tv") {
-        this.routeActor1 = "";
-        this.routeGenre1 = b[3].split("=")[1];
-        this.routeYear1 = b[4].split("=")[1];
+    getRoutePaths() {
+      this.routeMediatype = this.$route.fullPath.split("?")[1].split("&")[0];
+      this.routeSortBy = this.$route.fullPath.split("?")[1].split("&")[1];
+      this.routeVote = this.$route.fullPath.split("?")[1].split("&")[2];
+      if (this.routeMediatype === 'movie') {
+        this.routeActor = this.$route.fullPath.split("?")[1].split("&")[3];
+        this.routeGenre = this.$route.fullPath.split("?")[1].split("&")[4];
+        this.routeYear = this.$route.fullPath.split("?")[1].split("&")[5];
+      } else if(this.routeMediatype === 'tv') {
+        this.routeActor = "";
+        this.routeGenre = this.$route.fullPath.split("?")[1].split("&")[3];
+        this.routeYear = this.$route.fullPath.split("?")[1].split("&")[4];
       }
-      this.routePage1 = b[b.length - 1].split("=")[1];
+      this.page = this.$route.fullPath.split("page=")[1];
+      // console.log(this.routeMediatype + ' ' + this.routeSortBy + ' ' + this.routeVote + ' ' + this.routeActor + ' ' + this.routeGenre + ' ' + this.routeYear + ' ' + this.page)
     },
     async search(input) {
       if (input.length < 1) {
@@ -280,10 +222,10 @@ export default {
         .then((response) => {
           a = response.data.results;
           a.filter((actor) => {
-            return actor.name.toLowerCase().includes(input.toLowerCase());
+            return actor.name.toLowerCase().includes(input.toLowerCase()); 
           });
         });
-      this.$root.loading = false;
+      this.$root.loading = false
       return a;
     },
     getResultValue(result) {
@@ -295,58 +237,62 @@ export default {
       }
     },
     searchRequest() {
-      // this.selectedGenreIDString = "&with_genres=";
+      if(this.mediatype === 'movie') {
+        this.selectedYear = "&year=";
+        this.selectedActor = "&with_people=";
+      } else if(this.mediatype === 'tv') {
+        this.selectedYear = "&first_air_date_year=";
+        this.selectedActor = "";
+      }
+      this.selectedGenreIDString = "&with_genres=";
+      // this.selectedActor = "&with_people=";
+      this.selectedVote = "&vote_average.gte=";
+      if (this.year) {
+        this.selectedYear += this.year;
+      }
       if (this.genre) {
         this.selectedGenreID = this.genres.find(
           (name) => name.name === this.genre
         );
-        this.selectedGenreIDString = this.selectedGenreID.id;
-      } else if (!this.genre) {
-        this.selectedGenreIDString = "";
-      }
-      if (this.mediatype === "tv") {
-        this.selectedActor = "";
+        this.selectedGenreIDString += this.selectedGenreID.id;
       }
       if (this.selectedActorFromList) {
-        this.selectedActor = this.selectedActorFromList;
+        this.selectedActor += this.selectedActorFromList;
       }
-      if (this.mediatype === "movie") {
-        this.$router.push(
-          `${this.$route.path}?mediatype=${this.mediatype}&sort_by=${this.sortType}&vote_average.gte=${this.vote}&with_people=${this.selectedActor}&with_genres=${this.selectedGenreIDString}&year=${this.year}&page=1`
-        );
-      } else if (this.mediatype === "tv") {
-        this.$router.push(
-          `${this.$route.path}?mediatype=${this.mediatype}&sort_by=${this.sortType}&vote_average.gte=${this.vote}&with_genres=${this.selectedGenreIDString}&first_air_date_year=${this.year}&page=1`
-        );
+      if (this.vote) {
+        this.selectedVote += this.vote;
       }
+      // if(this.mediatype === 'movie') {
+      //   this.$router.push(
+      //     `${this.$route.path}?${this.mediatype}${this.sortType}${this.selectedVote}${this.selectedActor}${this.selectedGenreIDString}${this.selectedYear}&page=1`
+      //   );
+      // } else if(this.mediatype === 'tv') {
+      //   this.$router.push(
+      //     `${this.$route.path}?${this.mediatype}${this.sortType}${this.selectedVote}${this.selectedGenreIDString}${this.selectedYear}&page=1`
+      //   );
+      // }
+      this.$router.push(
+          `${this.$route.path}?${this.mediatype}${this.sortType}${this.selectedVote}${this.selectedActor}${this.selectedGenreIDString}${this.selectedYear}&page=1`
+        );
     },
-    async getPageSearchResults1(
-      routeMediatype1,
-      routeSortBy1,
-      routeVote1,
-      routeActor1,
-      routeGenre1,
-      routeYear1,
-      routePage1
+    async getPageSearchResults(
+      routeMediatype,
+      routeSortBy,
+      routeVote,
+      routeActor,
+      routeGenre,
+      routeYear,
+      page
     ) {
-      if (routeMediatype1 === "movie") {
-        await axios
-          .get(
-            `${this.globalAPIMovieDBAddress}/3/discover/${routeMediatype1}?api_key=${this.key}&language=en-US&sort_by=${routeSortBy1}&include_adult=false&include_video=false&vote_average.gte=${routeVote1}&with_people=${routeActor1}&with_genres=${routeGenre1}&year=${routeYear1}&page=${routePage1}`
-          )
-          .then((response) => {
-            this.searchResultPage = response.data;
-          });
-      } else if (routeMediatype1 === "tv") {
-        await axios
-          .get(
-            `${this.globalAPIMovieDBAddress}/3/discover/${routeMediatype1}?api_key=${this.key}&language=en-US&sort_by=${routeSortBy1}&include_adult=false&include_video=false&vote_average.gte=${routeVote1}&with_genres=${routeGenre1}&first_air_date_year=${routeYear1}&page=${routePage1}`
-          )
-          .then((response) => {
-            this.searchResultPage = response.data;
-          });
-      }
-      this.$root.loading = false;
+      await axios
+        .get(
+          `${this.globalAPIMovieDBAddress}/3/discover/${routeMediatype}?api_key=${this.key}&language=en-US&${routeSortBy}&include_adult=false&include_video=false&${routeVote}&${routeActor}&${routeGenre}&${routeYear}&page=${page}`
+        )
+        .then((response) => {
+          this.searchResultPage = response.data;
+          // console.log(this.searchResultPage)
+        });
+      this.$root.loading = false
     },
     getNextPageSearchResults() {
       this.fullPath = this.$route.fullPath.split("page=")[0];

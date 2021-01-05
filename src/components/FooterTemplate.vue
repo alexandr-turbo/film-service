@@ -11,7 +11,7 @@
               </router-link>
               <router-link
                 class="footer-template__link"
-                to="/discover?movie&sort_by=popularity.desc&vote_average.gte=&with_people=&with_genres=&year=&page=1"
+                to="/discover?mediatype=movie&sort_by=popularity.desc&vote_average.gte=&with_people=&with_genres=&year=&page=1"
               >
                 <div>Discover</div>
               </router-link>
