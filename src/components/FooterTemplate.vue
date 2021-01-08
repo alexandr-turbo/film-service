@@ -1,7 +1,99 @@
 <template>
   <div class="footer-template">
-    <div class="footer-template__container">
-      <div class="footer-template__bio">
+    <div class="container">
+      <div class="footer-template__links-row">
+        <div class="footer-template__links-column">
+          <div class="footer-template__links-title">
+            <img class="footer-template__link-img" src="../assets/explore.svg">
+            <div>Explore</div>
+          </div>
+          <router-link
+            to="/"
+            tag="div"
+          >
+            <div class="footer-template__link-title">Home</div>
+          </router-link>
+          <router-link
+            to="/discover?mediatype=movie&sort_by=popularity.desc&vote_average.gte=&with_people=&with_genres=&year=&page=1"
+            tag="div"
+          >
+            <div class="footer-template__link-title">Discover</div>
+          </router-link>
+        </div>
+        <div class="footer-template__links-column">
+          <div class="footer-template__links-title">
+            <img class="footer-template__link-img" src="../assets/movies.svg">
+            <div>Movies</div>
+          </div>
+          <router-link
+            to="/search?top_rated_movies&page=1"
+            tag="div"
+          >
+            <div class="footer-template__link-title">Top rated movies</div>
+          </router-link>
+          <router-link
+            to="/search?upcoming_movies&page=1"
+            tag="div"
+          >
+            <div class="footer-template__link-title">Upcoming movies</div>
+          </router-link>
+          <router-link
+            to="/search?now_playing_movies&page=1"
+            tag="div"
+          >
+            <div class="footer-template__link-title">Now playing movies</div>
+          </router-link>
+          <router-link
+            to="/search?popular_movies&page=1"
+            tag="div"
+          >
+            <div class="footer-template__link-title">Popular movies</div>
+          </router-link>
+        </div>
+        <div class="footer-template__links-column">
+          <div class="footer-template__links-title">
+            <img class="footer-template__link-img" src="../assets/tv.svg">
+            <div>TV</div>
+          </div>
+          <router-link
+            to="/search?popular_tv_shows&page=1"
+            tag="div"
+          >
+            <div class="footer-template__link-title">Popular TV shows</div>
+          </router-link>
+          <router-link
+            to="/search?top_rated_tv_shows&page=1"
+            tag="div"
+          >
+            <div class="footer-template__link-title">Top rated TV shows</div>
+          </router-link>
+          <router-link
+            to="/search?on_the_air_tv_shows&page=1"
+            tag="div"
+          >
+            <div class="footer-template__link-title">On the air TV shows</div>
+          </router-link>
+          <router-link
+            to="/search?airing_today_tv_shows&page=1"
+            tag="div"
+          >
+            <div class="footer-template__link-title">Airing today TV shows</div>
+          </router-link>
+        </div>
+        <div class="footer-template__links-column">
+          <div class="footer-template__links-title">
+            <img class="footer-template__link-img" src="../assets/people.svg">
+            <div>People</div>
+          </div>
+          <router-link
+            to="/search?popular_people&page=1"
+            tag="div"
+          >
+            <div class="footer-template__link-title">Popular people</div>
+          </router-link>
+        </div>
+      </div>
+      <!-- <div class="footer-template__bio">
         <div>
           <div class="footer-template__header">
             <div class="footer-template__title">Film cloud</div>
@@ -22,7 +114,7 @@
           </div>
         </div>
         <img class="footer-template__db-image" src="@/assets/TMDB.png" />
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -34,16 +126,27 @@ export default {};
   background: var(--secondary-bg);
   color: white;
 }
-.footer-template__container {
-  padding: 2rem 0;
-  margin: 0 auto;
-  max-width: 80%;
+
+.footer-template__links-row {
+  display: flex;
+  justify-content: space-between;
 }
-@media (max-width: 479px) {
-  .footer-template__container {
-    max-width: 90%;
-  }
+.footer-template__links-column {
+  display: flex;
+  flex-direction: column;
 }
+.footer-template__links-title {
+  display: flex;
+  align-items: center;
+}
+.footer-template__link-img {
+  height: 30px;
+}
+.footer-template__link-title {
+  cursor: pointer;
+}
+
+
 @media (max-width: 683px) {
   .footer-template__bio {
     display: flex;

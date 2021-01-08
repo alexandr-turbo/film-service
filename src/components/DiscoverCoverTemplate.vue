@@ -34,6 +34,7 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
+  cursor: pointer;
 }
 .discover-cover-template__poster {
   object-fit: fill;

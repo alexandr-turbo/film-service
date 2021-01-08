@@ -22,12 +22,8 @@
         class="home-cover-template__poster"
         src="@/assets/no-image.png"
       />
-      <div class="home-cover-template__title" v-if="item.original_title || item.original_name">
-        {{
-          filmType === "movie"
-            ? item.original_title
-            : item.original_name
-        }}
+      <div class="home-cover-template__title" v-if="item.title || item.name || item.original_title || item.original_name">
+        {{ item.title || item.name || item.original_title || item.original_name }}
       </div>
       <div class="home-cover-template__genres">
         {{ getCurrentMediaTypeGenresNames(genres, item.genre_ids) }}

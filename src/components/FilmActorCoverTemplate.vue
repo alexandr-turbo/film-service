@@ -14,7 +14,7 @@
         v-if="item.profile_path && item.profile_path !== ''"
         class="film-actor-cover-template__actor-photo"
         :title="item.bio"
-        :src="`${globalImgAddress}92${item.profile_path}`"
+        :src="`${globalImgAddress}154${item.profile_path}`"
       />
       <img
         v-else

@@ -16,12 +16,8 @@
           />
           <div class="home-upper-slick-template__bio">
             <div class="home-upper-slick-template__title">popular</div>
-            <div>
-              {{
-                filmType === "movie"
-                  ? item.original_title
-                  : item.original_name
-              }}
+            <div v-if="item.title || item.name || item.original_title || item.original_name">
+              {{ item.title || item.name || item.original_title || item.original_name }}
             </div>
             <div>{{ getCurrentMediaTypeGenresNames(genres, item.genre_ids) }}</div>
           </div>

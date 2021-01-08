@@ -1,43 +1,65 @@
 <template>
   <div>
     <router-link
+      v-if="searchQuery !== 'popular_people'"
       tag="div"
       class="classas"
       :to="{
         name: 'film',
-        params: { filmID: film.id, filmType: film.media_type },
+        params: { filmID: item.id, filmType: item.media_type },
       }"
     >
       <img
-        v-if="film.poster_path && film.poster_path !== ''"
+        v-if="item.poster_path && item.poster_path !== ''"
         class="film-image"
-        :src="`${globalImgAddress}154${film.poster_path}`"
-        :title="film.overview"
+        :src="`${globalImgAddress}154${item.poster_path}`"
+        :title="item.overview"
       />
-      <img v-else class="film-image" :title="film.overview" src="@/assets/no-image.png" />
-      <div v-if="film.title && film.title !== ''" class="film-title">
-        {{ film.title }}
-      </div>
-      <div
-        v-else-if="film.original_title && film.original_title !== ''"
-        class="film-title"
-      >
-        {{ film.original_title }}
+      <img v-else class="film-image" :title="item.overview" src="@/assets/no-image.png" />
+      <div v-if="item.title || item.name || item.original_title || item.original_name" class="film-title">
+        {{ item.title || item.name || item.original_title || item.original_name }}
       </div>
       <div v-else class="film-title">
         DB thinks that search keyword is included
       </div>
-      <div v-if="film.genre_ids && film.genre_ids !== ''" class="film-title">
-        {{ getCurrentMediaTypeGenresNames(genres, film.genre_ids) }}
+      <div v-if="item.genre_ids && item.genre_ids !== ''" class="film-title">
+        {{ getCurrentMediaTypeGenresNames(genres, item.genre_ids) }}
       </div>
       <div v-else class="film-title">Genres are not provided</div>
+    </router-link>
+    <router-link
+      v-else-if="searchQuery === 'popular_people'"
+      tag="div"
+      class="classas"
+      :to="{
+        name: 'actor',
+        params: {
+          actorID: item.id,
+        },
+      }"
+    >
+      <img
+        v-if="item.profile_path && item.profile_path !== ''"
+        class="film-image"
+        :src="`${globalImgAddress}154${item.profile_path}`"
+        :title="item.bio"
+      />
+      <img
+        v-else
+        class="film-image"
+        src="@/assets/no-image.png"
+      />
+      <div class="film-title">{{ item.name }}</div>
     </router-link>
   </div>
 </template>
 <script>
 
 export default {
-  props: ["film", "genres"],
+  props: ["item", "genres", "searchQuery"],
+  // created() {
+  //   console.log(this.item)
+  // }
 };
 </script>
 <style scoped>
@@ -85,5 +107,6 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
+  cursor: pointer;
 }
 </style>

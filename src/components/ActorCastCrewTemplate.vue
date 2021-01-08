@@ -32,11 +32,7 @@
             </div>
             <div v-if="arr.original_title || arr.original_name">
               Original title:
-              {{
-                arr.media_type === "movie"
-                  ? arr.original_title
-                  : arr.original_name
-              }}
+              {{ arr.original_title || arr.original_name }}
             </div>
             <div v-if="arr.character">Character: {{ arr.character }}</div>
             <div v-if="arr.job">Job: {{ arr.job }}</div>

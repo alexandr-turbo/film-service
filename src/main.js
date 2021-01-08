@@ -2,17 +2,15 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import replaceLodashToSpace from '@/filters/replaceLodashToSpace'
+import replaceAllToSpace from '@/filters/replaceAllToSpace'
 import replaceAllToDash from '@/filters/replaceAllToDash'
-import replaceDashToSpace from '@/filters/replaceDashToSpace'
 import filmGenresMixin from "@/mixins/filmGenresMixin";
 import Autocomplete from '@trevoreyre/autocomplete-vue'
 
 Vue.use(Autocomplete)
 Vue.config.productionTip = false
-Vue.filter('replaceLodashToSpace', replaceLodashToSpace)
+Vue.filter('replaceAllToSpace', replaceAllToSpace)
 Vue.filter('replaceAllToDash', replaceAllToDash)
-Vue.filter('replaceDashToSpace', replaceDashToSpace)
 
 export const Bus = new Vue();
 
