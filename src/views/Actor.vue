@@ -138,10 +138,8 @@ export default {
 </script>
 
 <style scoped>
-/* @import '../../public/style.css'; */
 .actor {
   background: var(--main-bg);
-  /* color: var(--main-text-color); */
 }
 .actor__buttons {
   display: flex;
@@ -195,7 +193,6 @@ export default {
   background-position: 0 0, 0 100%;
   background-repeat: no-repeat;
   background-size: 100% 3px;
-  /* color: var(--main-text-color); */
   cursor: pointer;
   display: block;
   font-family: "Alegreya Sans", sans-serif;

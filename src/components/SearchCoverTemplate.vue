@@ -58,26 +58,15 @@
 export default {
   props: ["item", "genres", "searchQuery"],
   // created() {
-  //   console.log(this.item)
+  //   debugger
+  //   console.log(this.item.bio)
   // }
 };
 </script>
 <style scoped>
-.flex {
-  display: flex;
-  flex-wrap: wrap;
-}
-.flex-col {
-  display: flex;
-  flex-direction: column;
-  width: 20%;
-  height: auto;
-}
 .film-image {
   object-fit: fill;
   border-radius: 5px;
-  /* width: 80%; */
-  /* height: auto; */
   height: 246px;
   margin: 36px auto 12px;
 }
@@ -90,18 +79,6 @@ export default {
   width: 80%;
   margin: 0 auto;
   text-align: center;
-}
-/* .container {
-  padding: 2rem 4rem;
-  margin: 0 auto;
-  max-width: 80%;
-} */
-.center {
-  display: flex;
-  justify-content: center;
-}
-.mt {
-  margin-top: 36px;
 }
 .classas {
   display: flex;

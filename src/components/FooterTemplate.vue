@@ -93,11 +93,11 @@
           </router-link>
         </div>
       </div>
-      <!-- <div class="footer-template__bio">
+      <div class="footer-template__bio">
         <div>
           <div class="footer-template__header">
             <div class="footer-template__title">Film cloud</div>
-            <div class="footer-template__links">
+            <!-- <div class="footer-template__links">
               <router-link class="footer-template__link" to="/">
                 <div>Home</div>
               </router-link>
@@ -107,14 +107,14 @@
               >
                 <div>Discover</div>
               </router-link>
-            </div>
+            </div> -->
           </div>
           <div>
             Code and design by Aleksandr Savostian
           </div>
         </div>
         <img class="footer-template__db-image" src="@/assets/TMDB.png" />
-      </div> -->
+      </div>
     </div>
   </div>
 </template>
@@ -129,21 +129,51 @@ export default {};
 
 .footer-template__links-row {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
 }
-.footer-template__links-column {
-  display: flex;
-  flex-direction: column;
+@media (min-width: 1024px) {
+  .footer-template__links-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 25%;
+  }
 }
+@media (min-width: 480px) and (max-width: 1023px) {
+  .footer-template__links-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+    width: 50%;
+  }
+}
+@media (max-width: 479px) {
+  .footer-template__links-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+    width: 100%;
+  }
+}
+
+
+
+
 .footer-template__links-title {
   display: flex;
   align-items: center;
+  margin-bottom: 20px;
 }
 .footer-template__link-img {
   height: 30px;
+  margin-right: 10px;
 }
 .footer-template__link-title {
   cursor: pointer;
+  margin-bottom: 10px;
 }
 
 

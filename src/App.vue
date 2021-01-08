@@ -15,9 +15,6 @@
 import SearchBarTemplate from "./components/SearchBarTemplate.vue";
 import FooterTemplate from "./components/FooterTemplate.vue";
 export default {
-  data: () => ({
-    pageOffset: 0
-  }),
   components: {
     SearchBarTemplate,
     FooterTemplate
@@ -56,7 +53,7 @@ body {
   font-family: sans-serif;
   color: var(--main-text-color);
 }
-.preloader { /* это точно должно быть тут? а не в своем копмоненте или в общем css файле*/
+.preloader {
   position: fixed;
   left: 0;/*две строчки общих коментариев:*/
   top: 0; /* много где на сайте не использован cursor: pointer; кажется что элементы не кликабельны, а они кликабельны. например фильмы на странице актера; розовая кнопка поиска*/
@@ -68,7 +65,7 @@ body {
   animation-name: animation;
   animation-duration: 2s;
 }
-.loader {/* это точно должно быть тут? а не в своем копмоненте или в общем css файле*/
+.loader {
   width: 75px;
   height: 75px;
   border: 10px solid white;
