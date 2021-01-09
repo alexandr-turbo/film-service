@@ -167,6 +167,7 @@ export default {
       routePage: "",
       key: process.env.VUE_APP_MOVIEDB,
       a: "",
+      someVar: true
     };
   },
   components: {
@@ -184,14 +185,13 @@ export default {
     },
   },
   watch: {
-    sortType() {
-      console.log(this.sortType)
-    },
-    genre() {
-      console.log(this.genre)
-    },
     media_type() {
-      this.genre = this.routeGenreID = this.selectedGenreID = this.a = this.selectedActorFromList = this.routeActor = "";
+      if(this.someVar) {
+        this.someVar = false
+        return
+      }
+      this.genre = this.routeGenreID = this.selectedGenreID = "";
+      this.a = this.selectedActorFromList = this.routeActor = "";
       this.routeSortBy = this.sortType = "popularity.desc";
       // this.a = this.selectedActorFromList = this.routeActor = "";
       // this.routeSortBy = this.sortType = "popularity.desc";
@@ -212,12 +212,9 @@ export default {
   async created() {
     this.getRoutePaths();
     this.media_type = this.routeMediatype
-    // console.log(this.media_type)
     this.vote = this.routeVote;
     this.year = this.routeYear;
     this.sortType = this.routeSortBy;
-    // console.log(this.sortType)
-    
     this.getPageSearchResults(
       this.routeMediatype,
       this.routeSortBy,
@@ -233,7 +230,6 @@ export default {
       this.selectedGenre = this.genres.find(
         (name) => name.id === +this.routeGenreID
       );
-      // console.log(this.selectedGenre.name)
       this.genre = this.selectedGenre.name;
     }
     if (this.routeActor) {
@@ -245,16 +241,13 @@ export default {
           this.a = response.data.name;
         });
     }
-    // console.log(this.sortType)
   },
   methods: {
     getRoutePaths() {
       let a = this.$route.fullPath.split("?")[1];
       let b = a.split("&");
       this.routeMediatype = b[0].split("=")[1];
-      // console.log(this.routeMediatype)
       this.routeSortBy = b[1].split("=")[1];
-      // console.log(this.routeSortBy)
       this.routeVote = b[2].split("=")[1];
       if (this.routeMediatype === "movie") {
         this.routeActor = b[3].split("=")[1];
@@ -384,28 +377,24 @@ export default {
   justify-content: center;
   flex-wrap: wrap;
 }
-@media (min-width: 640px) {
-  .discover__form-field-container {
+.discover__form-field-container {
     display: flex;
     flex-direction: column;
-    width: 150px;
     margin: 10px;
+  }
+@media (min-width: 640px) {
+  .discover__form-field-container {
+    width: 150px;
   }
 }
 @media (min-width: 480px) and (max-width: 639px) {
   .discover__form-field-container {
-    display: flex;
-    flex-direction: column;
     width: 170px;
-    margin: 10px;
   }
 }
 @media (max-width: 479px) {
   .discover__form-field-container {
-    display: flex;
-    flex-direction: column;
     width: 280px;
-    margin: 10px;
   }
 }
 .discover__form-field {

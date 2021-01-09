@@ -59,9 +59,6 @@
 
 export default {
   props: ["item", "genres", "searchQuery"],
-  created() {
-    console.log(this.item)
-  }
 };
 </script>
 <style scoped>

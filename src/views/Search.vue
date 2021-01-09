@@ -118,7 +118,7 @@ export default {
               `${this.globalAPIMovieDBAddress}/3/person/${this.searchResultPage.results[i].id}?api_key=${this.key}`
             )
             .then((response) => {
-              this.searchResultPage.results[i].bio = response.data.biography;
+              this.$set(this.searchResultPage.results[i], 'bio', response.data.biography)
             });
         }
         });
