@@ -35,9 +35,9 @@ const routes = [
   {
     path: '/discover',
     name: 'discover',
-    component: () => import(/* webpackChunkName: "search" */ '../views/Discover.vue'),
+    component: () => import(/* webpackChunkName: "discover" */ '../views/Discover.vue'),
     props: true
-  },
+  }
 ]
 
 const router = new VueRouter({

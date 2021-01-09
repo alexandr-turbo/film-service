@@ -1,7 +1,7 @@
 <template>
   <div>
     <router-link
-      v-if="searchQuery !== 'popular_people'"
+      v-if="searchQuery !== 'popular_people' && item.media_type"
       tag="div"
       class="search-cover-template"
       :title="item.overview"
@@ -59,9 +59,9 @@
 
 export default {
   props: ["item", "genres", "searchQuery"],
-  // created() {
-  //   console.log(this.item)
-  // }
+  created() {
+    console.log(this.item)
+  }
 };
 </script>
 <style scoped>
