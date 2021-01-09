@@ -3,20 +3,20 @@
     <router-link
       tag="div"
       class="discover-cover-template"
+      :title="item.overview"
       :to="{
         name: 'film',
-        params: { filmID: film.id, filmType: filmType },
+        params: { filmID: item.id, filmType: filmType },
       }"
     >
       <img
-        v-if="film.poster_path && film.poster_path !== ''"
+        v-if="item.poster_path && item.poster_path !== ''"
         class="discover-cover-template__poster"
-        :title="film.overview"
-        :src="`${globalImgAddress}154${film.poster_path}`"
+        :src="`${globalImgAddress}154${item.poster_path}`"
       />
-      <img v-else class="discover-cover-template__poster" :title="film.overview" src="@/assets/no-image.png" />
-      <div v-if="film.title || film.name" class="discover-cover-template__film-title">
-        {{ film.title || film.name }}
+      <img v-else class="discover-cover-template__poster" src="@/assets/no-image.png" />
+      <div v-if="item.title || item.name" class="discover-cover-template__film-title">
+        {{ item.title || item.name }}
       </div>
       <div v-else class="discover-cover-template__film-title">
         DB thinks that search keyword is included
@@ -26,7 +26,10 @@
 </template>
 <script>
 export default {
-  props: ["film", "filmType"],
+  props: ["item", "filmType"],
+  // created() {
+  //   console.log(this.item)
+  // }
 };
 </script>
 <style scoped>

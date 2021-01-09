@@ -216,9 +216,6 @@ export default {
   margin: 2rem auto;
   outline: none;
   padding: 0.7rem;
-  -webkit-transition: background 0.5s;
-  -o-transition: background 0.5s;
-  transition: background 0.5s;
   width: 180px;
 }
 .search__page-button--previous::before {

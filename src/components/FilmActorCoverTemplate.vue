@@ -3,6 +3,7 @@
     <router-link
       tag="div"
       class="film-actor-cover-template"
+      :title="item.bio"
       :to="{
         name: 'actor',
         params: {
@@ -13,7 +14,6 @@
       <img
         v-if="item.profile_path && item.profile_path !== ''"
         class="film-actor-cover-template__actor-photo"
-        :title="item.bio"
         :src="`${globalImgAddress}154${item.profile_path}`"
       />
       <img

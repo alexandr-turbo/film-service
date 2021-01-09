@@ -32,9 +32,9 @@ export default {
   methods: {
     onScroll() {
       if (pageYOffset >= 100) {
-        document.getElementById('backToTop').classList.add("appearing")
+        document.getElementById('backToTop').classList.add("app__go-to-top-button-visibility")
       } else if (pageYOffset < 100) {
-        document.getElementById('backToTop').classList.remove("appearing")
+        document.getElementById('backToTop').classList.remove("app__go-to-top-button-visibility")
       }
     },
     goToTop() {
@@ -55,9 +55,9 @@ body {
 }
 .preloader {
   position: fixed;
-  left: 0;/*две строчки общих коментариев:*/
-  top: 0; /* много где на сайте не использован cursor: pointer; кажется что элементы не кликабельны, а они кликабельны. например фильмы на странице актера; розовая кнопка поиска*/
-  width: 100%;/*очень маленькие окна трейлеров*/
+  left: 0;
+  top: 0;
+  width: 100%;
   height: 100%;
   z-index: 1000;
   transition: 1s all;
@@ -106,11 +106,11 @@ body {
   transition: .5s all;
   opacity: 0;
 }
-.appearing {
-  transition: .5s all;
-  opacity: 1;
-}
 .app__go-to-top-button {
   height: 30px;
+}
+.app__go-to-top-button-visibility {
+  transition: .5s all;
+  opacity: 1;
 }
 </style>

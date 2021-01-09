@@ -5,7 +5,7 @@
         <div class="discover__form">
           <div class="discover__form-field-container">
             <div>Media type</div>
-            <select class="discover__form-field" v-model="mediatype">
+            <select class="discover__form-field" v-model="media_type">
               <option
                 v-for="mediatype in mediatypeOptions"
                 :value="mediatype.value"
@@ -35,7 +35,7 @@
             />
           </div>
           <div
-            v-if="mediatype === 'movie'"
+            v-if="media_type === 'movie'"
             class="discover__form-field-container"
           >
             <div>Involved actor</div>
@@ -66,7 +66,7 @@
           </div>
           <div class="discover__form-field-container">
             <div>
-              {{ mediatype === "movie" ? "Year" : "First airing date" }}
+              {{ media_type === "movie" ? "Year" : "First airing date" }}
             </div>
             <input
               class="discover__form-field"
@@ -83,10 +83,10 @@
       <div class="discover__results" v-if="searchResultPage.total_results">
         <div
           class="discover__result"
-          v-for="film in searchResultPage.results"
-          :key="film.id"
+          v-for="item in searchResultPage.results"
+          :key="item.id"
         >
-          <DiscoverCoverTemplate :film="film" :filmType="mediatype" />
+          <DiscoverCoverTemplate :item="item" :filmType="media_type" />
         </div>
       </div>
       <div class="discover__results-title" v-else>
@@ -146,7 +146,7 @@ export default {
       people: "",
       vote: "",
       sortType: "",
-      mediatype: "movie",
+      media_type: "movie",
       searchResultPage: {},
       movieGenres: null,
       tvshowGenres: null,
@@ -175,16 +175,16 @@ export default {
   },
   computed: {
     genres() {
-      return this.mediatype === "movie" ? this.movieGenres : this.tvshowGenres;
+      return this.media_type === "movie" ? this.movieGenres : this.tvshowGenres;
     },
     sortOptions() {
-      return this.mediatype === "movie"
+      return this.media_type === "movie"
         ? this.movieSortOptions
         : this.tvSortOptions;
     },
   },
   watch: {
-    mediatype() {
+    media_type() {
       this.genre = this.routeGenreID = this.selectedGenreID = this.a = this.selectedActorFromList = this.routeActor = "";
       this.routeSortBy = this.sortType = "popularity.desc";
       // this.a = this.selectedActorFromList = this.routeActor = "";
@@ -290,19 +290,19 @@ export default {
       } else if (!this.genre) {
         this.selectedGenreID = "";
       }
-      if (this.mediatype === "tv") {
+      if (this.media_type === "tv") {
         this.selectedActor = "";
       }
       if (this.selectedActorFromList) {
         this.selectedActor = this.selectedActorFromList;
       }
-      if (this.mediatype === "movie") {
+      if (this.media_type === "movie") {
         this.$router.push(
-          `${this.$route.path}?mediatype=${this.mediatype}&sort_by=${this.sortType}&vote_average.gte=${this.vote}&with_people=${this.selectedActor}&with_genres=${this.selectedGenreID}&year=${this.year}&page=1`
+          `${this.$route.path}?mediatype=${this.media_type}&sort_by=${this.sortType}&vote_average.gte=${this.vote}&with_people=${this.selectedActor}&with_genres=${this.selectedGenreID}&year=${this.year}&page=1`
         );
-      } else if (this.mediatype === "tv") {
+      } else if (this.media_type === "tv") {
         this.$router.push(
-          `${this.$route.path}?mediatype=${this.mediatype}&sort_by=${this.sortType}&vote_average.gte=${this.vote}&with_genres=${this.selectedGenreID}&first_air_date_year=${this.year}&page=1`
+          `${this.$route.path}?mediatype=${this.media_type}&sort_by=${this.sortType}&vote_average.gte=${this.vote}&with_genres=${this.selectedGenreID}&first_air_date_year=${this.year}&page=1`
         );
       }
     },
@@ -322,6 +322,7 @@ export default {
           )
           .then((response) => {
             this.searchResultPage = response.data;
+
           });
       } else if (routeMediatype === "tv") {
         await axios
@@ -401,53 +402,40 @@ export default {
   margin: 2rem auto;
   outline: none;
   padding: 0.7rem;
-  -webkit-transition: background 0.5s;
-  -o-transition: background 0.5s;
-  transition: background 0.5s;
   width: 180px;
 }
 .discover__results {
   display: flex;
   flex-wrap: wrap;
 }
-@media (min-width: 1280px) {
-  .discover__result {
+.discover__result {
     display: flex;
     flex-direction: column;
-    width: 20%;
     height: auto;
+  }
+@media (min-width: 1280px) {
+  .discover__result {
+    width: 20%;
   }
 }
 @media (min-width: 1024px) and (max-width: 1279px) {
   .discover__result {
-    display: flex;
-    flex-direction: column;
     width: 25%;
-    height: auto;
   }
 }
 @media (min-width: 768px) and (max-width: 1023px) {
   .discover__result {
-    display: flex;
-    flex-direction: column;
     width: 33%;
-    height: auto;
   }
 }
 @media (min-width: 480px) and (max-width: 767px) {
   .discover__result {
-    display: flex;
-    flex-direction: column;
     width: 50%;
-    height: auto;
   }
 }
 @media (max-width: 479px) {
   .discover__result {
-    display: flex;
-    flex-direction: column;
     width: 100%;
-    height: auto;
   }
 }
 .discover__results-title {

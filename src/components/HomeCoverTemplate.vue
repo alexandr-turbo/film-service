@@ -3,6 +3,7 @@
     <router-link
       tag="div"
       class="home-cover-template"
+      :title="item.overview"
       :to="{
         name: 'film',
         params: {
@@ -13,7 +14,6 @@
     >
       <img
         v-if="item.poster_path && item.poster_path !== ''"
-        :title="item.overview"
         class="home-cover-template__poster"
         :src="`${globalImgAddress}154${item.poster_path}`"
       />

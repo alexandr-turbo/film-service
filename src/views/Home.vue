@@ -1,6 +1,10 @@
 <template>
   <div class="home">
-    <HomeUpperSlickTemplate :filmType="filmType" :genres="genres" :popular="popular" />
+    <HomeUpperSlickTemplate
+      :filmType="filmType"
+      :genres="genres"
+      :popular="popular"
+    />
     <div class="container">
       <div class="home__buttons">
         <button class="home__switch-button" @click="switchType('movie')">
@@ -11,7 +15,12 @@
         </button>
       </div>
       <div v-for="(filmSlick, index) in filmSlickArr" :key="filmSlick.id">
-        <HomeSlickTemplate :type1="type1[index]" :type="filmSlick" :filmType="filmType" :genres="genres" />
+        <HomeSlickTemplate
+          :type1="type1[index]"
+          :type="filmSlick"
+          :filmType="filmType"
+          :genres="genres"
+        />
       </div>
     </div>
   </div>
@@ -44,7 +53,7 @@ export default {
     this.filmSlickArr = this.movieSlickArr;
     let p1 = await this.getPopularFilms();
     let p2 = await this.getFilms();
-    Promise.all([p1, p2]).then(this.$root.loading = false)
+    Promise.all([p1, p2]).then((this.$root.loading = false));
   },
   watch: {
     filmType() {
@@ -90,24 +99,13 @@ export default {
 </script>
 
 <style scoped>
-/* @import '../../public/style.css'; */
 .home {
   background: var(--main-bg);
-  /* color: var(--main-text-color); */
 }
-/* @media (max-width: 640px) {
-  .home__buttons {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
+.home__buttons {
+  display: flex;
+  justify-content: center;
 }
-@media (min-width: 641px) { */
-  .home__buttons {
-    display: flex;
-    justify-content: center;
-  }
-/* } */
 .home__switch-button {
   background: none;
   border: none;
@@ -155,14 +153,12 @@ export default {
   background-position: 0 0, 0 100%;
   background-repeat: no-repeat;
   background-size: 100% 3px;
-  /* color: var(--main-text-color); */
   cursor: pointer;
   display: block;
   font-family: "Alegreya Sans", sans-serif;
   font-weight: bold;
   letter-spacing: 0.4rem;
   outline: none;
-  /* padding: 30px 100px; */
   width: 300px;
   height: 80px;
   margin: 0 10px;
