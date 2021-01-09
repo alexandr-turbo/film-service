@@ -6,7 +6,7 @@
       :title="item.overview"
       :to="{
         name: 'film',
-        params: { filmID: item.id, filmType: filmType },
+        params: { filmID: item.id, filmType: item.media_type },
       }"
     >
       <img
@@ -26,7 +26,7 @@
 </template>
 <script>
 export default {
-  props: ["item", "filmType"],
+  props: ["item"],
   // created() {
   //   console.log(this.item)
   // }

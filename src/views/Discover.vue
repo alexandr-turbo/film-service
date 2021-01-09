@@ -86,7 +86,7 @@
           v-for="item in searchResultPage.results"
           :key="item.id"
         >
-          <DiscoverCoverTemplate :item="item" :filmType="media_type" />
+          <DiscoverCoverTemplate :item="item" />
         </div>
       </div>
       <div class="discover__results-title" v-else>
@@ -146,7 +146,7 @@ export default {
       people: "",
       vote: "",
       sortType: "",
-      media_type: "movie",
+      media_type: "",
       searchResultPage: {},
       movieGenres: null,
       tvshowGenres: null,
@@ -184,6 +184,12 @@ export default {
     },
   },
   watch: {
+    sortType() {
+      console.log(this.sortType)
+    },
+    genre() {
+      console.log(this.genre)
+    },
     media_type() {
       this.genre = this.routeGenreID = this.selectedGenreID = this.a = this.selectedActorFromList = this.routeActor = "";
       this.routeSortBy = this.sortType = "popularity.desc";
@@ -205,18 +211,13 @@ export default {
   },
   async created() {
     this.getRoutePaths();
+    this.media_type = this.routeMediatype
+    // console.log(this.media_type)
     this.vote = this.routeVote;
     this.year = this.routeYear;
     this.sortType = this.routeSortBy;
-    if (this.routeActor) {
-      await axios
-        .get(
-          `${this.globalAPIMovieDBAddress}/3/person/${this.routeActor}?api_key=${this.key}&language=en-US`
-        )
-        .then((response) => {
-          this.a = response.data.name;
-        });
-    }
+    // console.log(this.sortType)
+    
     this.getPageSearchResults(
       this.routeMediatype,
       this.routeSortBy,
@@ -232,15 +233,28 @@ export default {
       this.selectedGenre = this.genres.find(
         (name) => name.id === +this.routeGenreID
       );
+      // console.log(this.selectedGenre.name)
       this.genre = this.selectedGenre.name;
     }
+    if (this.routeActor) {
+      await axios
+        .get(
+          `${this.globalAPIMovieDBAddress}/3/person/${this.routeActor}?api_key=${this.key}&language=en-US`
+        )
+        .then((response) => {
+          this.a = response.data.name;
+        });
+    }
+    // console.log(this.sortType)
   },
   methods: {
     getRoutePaths() {
       let a = this.$route.fullPath.split("?")[1];
       let b = a.split("&");
       this.routeMediatype = b[0].split("=")[1];
+      // console.log(this.routeMediatype)
       this.routeSortBy = b[1].split("=")[1];
+      // console.log(this.routeSortBy)
       this.routeVote = b[2].split("=")[1];
       if (this.routeMediatype === "movie") {
         this.routeActor = b[3].split("=")[1];
@@ -322,7 +336,13 @@ export default {
           )
           .then((response) => {
             this.searchResultPage = response.data;
-
+            if(this.searchResultPage.results.length) {
+              for (let i = 0; i < this.searchResultPage.results.length; i++) {
+                // this.searchResultPage.results[i].media_type = routeMediatype;
+                this.$set(this.searchResultPage.results[i], 'media_type', routeMediatype)
+                // this.searchResultPage.results[i] = Object.assign({}, this.searchResultPage.results[i], { media_type: routeMediatype })
+              }
+            }
           });
       } else if (routeMediatype === "tv") {
         await axios
@@ -331,6 +351,13 @@ export default {
           )
           .then((response) => {
             this.searchResultPage = response.data;
+            if(this.searchResultPage.results.length) {
+              for (let i = 0; i < this.searchResultPage.results.length; i++) {
+                // this.searchResultPage.results[i].media_type = routeMediatype;
+                this.$set(this.searchResultPage.results[i], 'media_type', routeMediatype)
+                // this.searchResultPage.results[i] = Object.assign({}, this.searchResultPage.results[i], { media_type: routeMediatype })
+              }
+            }
           });
       }
       this.$root.loading = false;
