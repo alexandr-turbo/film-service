@@ -86,7 +86,7 @@
           v-for="item in searchResultPage.results"
           :key="item.id"
         >
-          <DiscoverCoverTemplate :item="item" />
+          <CoverTemplate1 :item="item" />
         </div>
       </div>
       <div class="discover__results-title" v-else>
@@ -113,7 +113,7 @@
 </template>
 <script>
 import axios from "axios";
-import DiscoverCoverTemplate from "../components/DiscoverCoverTemplate.vue";
+import CoverTemplate1 from "../components/CoverTemplate1.vue";
 import Autocomplete from "@trevoreyre/autocomplete-vue";
 
 export default {
@@ -171,7 +171,7 @@ export default {
     };
   },
   components: {
-    DiscoverCoverTemplate,
+    CoverTemplate1,
     Autocomplete,
   },
   computed: {

@@ -10,7 +10,7 @@
           v-for="item in searchResultPage.results"
           :key="item.id"
         >
-          <SearchCoverTemplate
+          <CoverTemplate1
             :searchQuery="searchQuery"
             :item="item"
             :genres="
@@ -43,7 +43,7 @@
 </template>
 <script>
 import axios from "axios";
-import SearchCoverTemplate from "../components/SearchCoverTemplate.vue";
+import CoverTemplate1 from "../components/CoverTemplate1.vue";
 
 export default {
   data() {
@@ -59,7 +59,7 @@ export default {
     };
   },
   components: {
-    SearchCoverTemplate,
+    CoverTemplate1,
   },
   watch: {
     $route() {
