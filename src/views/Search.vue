@@ -63,28 +63,42 @@ export default {
   },
   watch: {
     $route() {
-      if (
-        (this.$route.fullPath.indexOf("?") !== -1) &
-        (this.searchResultPage.page !== 0)
-      ) {
-        this.searchQuery = this.$route.fullPath.split("?")[1].split("&")[0];
-        this.pageNumber = this.$route.fullPath.split("=")[1];
+      this.$root.loading = true;
+      // if (
+      //   (this.$route.fullPath.indexOf("?") !== -1) &
+      //   (this.searchResultPage.page !== 0)
+      // ) {
+        this.getSearchQuery();
+        this.getPageNumber();
         this.getPageSearchResults(this.searchQuery, this.pageNumber);
-      } else {
-        this.searchResultPage.page = 0;
-      }
+      // } else {
+      //   this.searchResultPage.page = 0;
+      // }
+      
     },
   },
   created() {
     if (this.$route.fullPath.indexOf("?") !== -1) {
-      this.searchQuery = this.$route.fullPath.split("?")[1].split("&")[0];
-      this.pageNumber = this.$route.fullPath.split("=")[1];
+      this.getSearchQuery();
+      this.getPageNumber();
       this.getPageSearchResults(this.searchQuery, this.pageNumber);
     }
     this.movieGenres = this.$store.state.MovieGenres;
     this.tvshowGenres = this.$store.state.TVShowGenres;
   },
   methods: {
+    getSearchQuery() {
+      this.searchQuery = this.$route.fullPath.split("?")[1].split("&")[0];
+    },
+    getPageNumber() {
+      this.pageNumber = this.$route.fullPath.split("page=")[1];
+    },
+    increasePageNumber() {
+      this.pageNumber = ++this.$route.fullPath.split("page=")[1];
+    },
+    decreasePageNumber() {
+      this.pageNumber = --this.$route.fullPath.split("page=")[1];
+    },
     async getFilmsList(query, page) {
       let a, b
       if (query.includes('movies')) {
@@ -140,21 +154,18 @@ export default {
       this.$root.loading = false
     },
     async getNextPageSearchResults() {
-      this.searchQuery = this.$route.fullPath.split("?")[1].split("&")[0];
-      this.pageNumber = ++this.$route.fullPath.split("=")[1];
+      this.getSearchQuery();
+      this.increasePageNumber();
       this.$router.push(
             `${this.$route.path}?${this.searchQuery}&page=${this.pageNumber}`
           );
-      this.$root.loading = false
     },
     async getPreviousPageSearchResults() {
-      this.searchQuery = this.$route.fullPath.split("?")[1].split("&")[0];
-      this.pageNumber = --this.$route.fullPath.split("=")[1];
+      this.getSearchQuery();
+      this.decreasePageNumber();
       this.$router.push(
             `${this.$route.path}?${this.searchQuery}&page=${this.pageNumber}`
           );
-
-      this.$root.loading = false
     },
   },
 };

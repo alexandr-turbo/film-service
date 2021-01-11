@@ -57,11 +57,9 @@
             <div>Genre</div>
             <select class="discover__form-field" v-model="genre">
               <option value=""></option>
-              <option
-                v-for="genre in genres"
-                :key="genre.id"
-                >{{ genre.name }}</option
-              >
+              <option v-for="genre in genres" :key="genre.id">{{
+                genre.name
+              }}</option>
             </select>
           </div>
           <div class="discover__form-field-container">
@@ -167,7 +165,7 @@ export default {
       routePage: "",
       key: process.env.VUE_APP_MOVIEDB,
       a: "",
-      someVar: true
+      preventOnCreatedUpdate: true,
     };
   },
   components: {
@@ -186,32 +184,38 @@ export default {
   },
   watch: {
     media_type() {
-      if(this.someVar) {
-        this.someVar = false
-        return
+      if (this.preventOnCreatedUpdate) {
+        this.preventOnCreatedUpdate = false;
+        return;
       }
       this.genre = this.routeGenreID = this.selectedGenreID = "";
       this.a = this.selectedActorFromList = this.routeActor = "";
       this.routeSortBy = this.sortType = "popularity.desc";
-      // this.a = this.selectedActorFromList = this.routeActor = "";
-      // this.routeSortBy = this.sortType = "popularity.desc";
     },
     $route() {
-      this.getRoutePaths();
-      this.getPageSearchResults(
-        this.routeMediatype,
-        this.routeSortBy,
-        this.routeVote,
-        this.routeActor,
-        this.routeGenreID,
-        this.routeYear,
-        this.routePage
-      );
+      this.$root.loading = true;
+      // if (
+      //   (this.$route.fullPath.indexOf("?") !== -1) &
+      //   (this.searchResultPage.page !== 0)
+      // ) {
+        this.getRoutePaths();
+        this.getPageSearchResults(
+          this.routeMediatype,
+          this.routeSortBy,
+          this.routeVote,
+          this.routeActor,
+          this.routeGenreID,
+          this.routeYear,
+          this.routePage
+        );
+      // } else {
+      //   this.searchResultPage.page = 0;
+      // }
     },
   },
   async created() {
     this.getRoutePaths();
-    this.media_type = this.routeMediatype
+    this.media_type = this.routeMediatype;
     this.vote = this.routeVote;
     this.year = this.routeYear;
     this.sortType = this.routeSortBy;
@@ -243,6 +247,15 @@ export default {
     }
   },
   methods: {
+    getFullPath() {
+      this.fullPath = this.$route.fullPath.split("page=")[0];
+    },
+    increasePageNumber() {
+      this.pageNumber = ++this.$route.fullPath.split("page=")[1];
+    },
+    decreasePageNumber() {
+      this.pageNumber = --this.$route.fullPath.split("page=")[1];
+    },
     getRoutePaths() {
       let a = this.$route.fullPath.split("?")[1];
       let b = a.split("&");
@@ -288,7 +301,6 @@ export default {
       }
     },
     searchRequest() {
-      // this.selectedGenreID = "&with_genres=";
       if (this.genre) {
         this.selectedGenre = this.genres.find(
           (name) => name.name === this.genre
@@ -329,11 +341,13 @@ export default {
           )
           .then((response) => {
             this.searchResultPage = response.data;
-            if(this.searchResultPage.results.length) {
+            if (this.searchResultPage.results.length) {
               for (let i = 0; i < this.searchResultPage.results.length; i++) {
-                // this.searchResultPage.results[i].media_type = routeMediatype;
-                this.$set(this.searchResultPage.results[i], 'media_type', routeMediatype)
-                // this.searchResultPage.results[i] = Object.assign({}, this.searchResultPage.results[i], { media_type: routeMediatype })
+                this.$set(
+                  this.searchResultPage.results[i],
+                  "media_type",
+                  routeMediatype
+                );
               }
             }
           });
@@ -344,11 +358,13 @@ export default {
           )
           .then((response) => {
             this.searchResultPage = response.data;
-            if(this.searchResultPage.results.length) {
+            if (this.searchResultPage.results.length) {
               for (let i = 0; i < this.searchResultPage.results.length; i++) {
-                // this.searchResultPage.results[i].media_type = routeMediatype;
-                this.$set(this.searchResultPage.results[i], 'media_type', routeMediatype)
-                // this.searchResultPage.results[i] = Object.assign({}, this.searchResultPage.results[i], { media_type: routeMediatype })
+                this.$set(
+                  this.searchResultPage.results[i],
+                  "media_type",
+                  routeMediatype
+                );
               }
             }
           });
@@ -356,13 +372,13 @@ export default {
       this.$root.loading = false;
     },
     getNextPageSearchResults() {
-      this.fullPath = this.$route.fullPath.split("page=")[0];
-      this.pageNumber = ++this.$route.fullPath.split("page=")[1];
+      this.getFullPath();
+      this.increasePageNumber();
       this.$router.push(`${this.fullPath}&page=${this.pageNumber}`);
     },
     getPreviousPageSearchResults() {
-      this.fullPath = this.$route.fullPath.split("page=")[0];
-      this.pageNumber = --this.$route.fullPath.split("page=")[1];
+      this.getFullPath();
+      this.decreasePageNumber();
       this.$router.push(`${this.fullPath}&page=${this.pageNumber}`);
     },
   },
@@ -378,10 +394,10 @@ export default {
   flex-wrap: wrap;
 }
 .discover__form-field-container {
-    display: flex;
-    flex-direction: column;
-    margin: 10px;
-  }
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
+}
 @media (min-width: 640px) {
   .discover__form-field-container {
     width: 150px;
@@ -425,10 +441,10 @@ export default {
   flex-wrap: wrap;
 }
 .discover__result {
-    display: flex;
-    flex-direction: column;
-    height: auto;
-  }
+  display: flex;
+  flex-direction: column;
+  height: auto;
+}
 @media (min-width: 1280px) {
   .discover__result {
     width: 20%;
