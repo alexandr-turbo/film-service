@@ -99,10 +99,8 @@ export default {
 </script>
 
 <style scoped>
-/* @import '../../public/style.css'; */
 .film {
   background: var(--main-bg);
-  /* color: var(--main-text-color); */
 }
 .film__poster-container {
   overflow: hidden;

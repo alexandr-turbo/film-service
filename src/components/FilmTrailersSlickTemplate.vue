@@ -2,7 +2,7 @@
   <div>
     <div class="film-trailers-slick-template__title">trailers</div>
     <slick class="slick" ref="slick" :options="slickOptions_trailers">
-      <div v-for="item in trailers" v-bind:key="item.id">
+      <div v-for="item in trailers" :key="item.id">
         <FilmTrailerCoverTemplate :item="item" />
       </div>
     </slick>

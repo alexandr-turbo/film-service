@@ -3,7 +3,7 @@
     <router-link
       v-if="!searchQuery"
       tag="div"
-      class="search-cover-template"
+      class="cover-template1"
       :title="item.overview"
       :to="{
         name: 'film',
@@ -12,21 +12,21 @@
     >
       <img
         v-if="item.poster_path && item.poster_path !== ''"
-        class="search-cover-template__poster"
+        class="cover-template1__poster"
         :src="`${globalImgAddress}154${item.poster_path}`"
       />
-      <img v-else class="search-cover-template__poster" src="@/assets/no-image.png" />
-      <div v-if="item.title || item.name" class="search-cover-template__film-title">
+      <img v-else class="cover-template1__poster" src="@/assets/no-image.png" />
+      <div v-if="item.title || item.name" class="cover-template1__film-title">
         {{ item.title || item.name }}
       </div>
-      <div v-else class="search-cover-template__film-title">
+      <div v-else class="cover-template1__film-title">
         DB thinks that search keyword is included
       </div>
     </router-link>
     <router-link
       v-else-if="searchQuery !== 'popular_people' && item.media_type"
       tag="div"
-      class="search-cover-template"
+      class="cover-template1"
       :title="item.overview"
       :to="{
         name: 'film',
@@ -35,26 +35,26 @@
     >
       <img
         v-if="item.poster_path && item.poster_path !== ''"
-        class="search-cover-template__poster"
+        class="cover-template1__poster"
         :src="`${globalImgAddress}154${item.poster_path}`"
         
       />
-      <img v-else class="search-cover-template__poster" src="@/assets/no-image.png" />
-      <div v-if="item.title || item.name || item.original_title || item.original_name" class="search-cover-template__film-title">
+      <img v-else class="cover-template1__poster" src="@/assets/no-image.png" />
+      <div v-if="item.title || item.name || item.original_title || item.original_name" class="cover-template1__film-title">
         {{ item.title || item.name || item.original_title || item.original_name }}
       </div>
-      <div v-else class="search-cover-template__film-title">
+      <div v-else class="cover-template1__film-title">
         DB thinks that search keyword is included
       </div>
-      <div v-if="item.genre_ids && item.genre_ids !== '' && item.genre_ids.length" class="search-cover-template__film-title">
+      <div v-if="item.genre_ids && item.genre_ids !== '' && item.genre_ids.length" class="cover-template1__film-title">
         {{ getCurrentMediaTypeGenresNames(genres, item.genre_ids) }}
       </div>
-      <div v-else class="search-cover-template__film-title">Genres are not provided</div>
+      <div v-else class="cover-template1__film-title">Genres are not provided</div>
     </router-link>
     <router-link
       v-else-if="searchQuery === 'popular_people'"
       tag="div"
-      class="search-cover-template"
+      class="cover-template1"
       :title="item.bio"
       :to="{
         name: 'actor',
@@ -65,16 +65,16 @@
     >
       <img
         v-if="item.profile_path && item.profile_path !== ''"
-        class="search-cover-template__poster"
+        class="cover-template1__poster"
         :src="`${globalImgAddress}154${item.profile_path}`"
         
       />
       <img
         v-else
-        class="search-cover-template__poster"
+        class="cover-template1__poster"
         src="@/assets/no-image.png"
       />
-      <div class="search-cover-template__film-title">{{ item.name }}</div>
+      <div class="cover-template1__film-title">{{ item.name }}</div>
     </router-link>
   </div>
 </template>
@@ -85,24 +85,24 @@ export default {
 };
 </script>
 <style scoped>
-.search-cover-template {
+.cover-template1 {
   display: flex;
   flex-direction: column;
   align-items: center;
   cursor: pointer;
 }
-.search-cover-template__poster {
+.cover-template1__poster {
   object-fit: fill;
   border-radius: 5px;
   height: 246px;
   margin: 36px auto 12px;
 }
 @media (max-width: 479px) {
-  .search-cover-template__poster {
+  .cover-template1__poster {
     height: 400px;
   }
 }
-.search-cover-template__film-title {
+.cover-template1__film-title {
   width: 80%;
   margin: 0 auto;
   text-align: center;
