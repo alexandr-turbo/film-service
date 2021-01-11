@@ -1,6 +1,6 @@
 <template>
   <div> 
-    <div class="actor-info-template">
+    <div class="actor-info-template" v-if="actor.profile_path && actor.profile_path !== '' || actor.name || actor.birthday || actor.place_of_birth || actor.gender || actor.known_for_department || actor.biography">
       <div class="actor-info-template__bio">
         <img
           v-if="actor.profile_path && actor.profile_path !== ''"
@@ -22,6 +22,11 @@
       </div>
       <div class="actor-info-template__biography" v-if="actor.biography">
         <div>{{ actor.biography }}</div>
+      </div>
+    </div>
+    <div class="actor-info-template" v-else>
+      <div class="actor-info-template__bio">
+        No info about actor =(
       </div>
     </div>
   </div>

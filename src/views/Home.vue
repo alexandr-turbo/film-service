@@ -14,7 +14,7 @@
         </button>
       </div>
       <div v-for="(filmSlick, index) in filmSlickArr" :key="filmSlick.id">
-        <HomeSlickTemplate
+        <SlickTemplate
           :type1="type1[index]"
           :type="filmSlick"
           :genres="genres"
@@ -26,7 +26,7 @@
 
 <script>
 import HomeUpperSlickTemplate from "../components/HomeUpperSlickTemplate.vue";
-import HomeSlickTemplate from "../components/HomeSlickTemplate.vue";
+import SlickTemplate from "../components/SlickTemplate.vue";
 import axios from "axios";
 
 export default {
@@ -45,7 +45,7 @@ export default {
   },
   components: {
     HomeUpperSlickTemplate,
-    HomeSlickTemplate,
+    SlickTemplate,
   },
   async created() {
     this.genres = this.$store.state.MovieGenres;

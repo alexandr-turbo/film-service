@@ -11,6 +11,7 @@
           <div class="actor__title">Cast</div>
           <div v-for="(role, index) in lazyRoles" :key="index">
             <ActorCastCrewTemplate
+              v-if="role && role.media_type"
               :arr="role"
               :index="index"
               :genres="role.media_type === 'movie' ? movieGenres : tvshowGenres"
@@ -21,6 +22,7 @@
           <div class="actor__title">Crew</div>
           <div v-for="(crew, index) in lazyCrews" :key="index">
             <ActorCastCrewTemplate
+              v-if="crew && crew.media_type"
               :arr="crew"
               :index="index"
               :genres="crew.media_type === 'movie' ? movieGenres : tvshowGenres"

@@ -15,7 +15,7 @@
           <div>{{ currentfilm.overview }}</div>
         </div>
         <div v-if="cast.length">
-          <FilmActorsSlickTemplate :cast="cast" />
+          <SlickTemplate :cast="cast" />
         </div>
         <div v-if="trailers.length">
           <FilmTrailersSlickTemplate :trailers="trailers" />
@@ -33,7 +33,7 @@
 
 <script>
 import axios from "axios";
-import FilmActorsSlickTemplate from "../components/FilmActorsSlickTemplate.vue";
+import SlickTemplate from "../components/SlickTemplate.vue";
 import FilmTrailersSlickTemplate from "../components/FilmTrailersSlickTemplate.vue";
 import FilmReviewTemplate from "../components/FilmReviewTemplate.vue";
 export default {
@@ -49,7 +49,7 @@ export default {
     };
   },
   components: {
-    FilmActorsSlickTemplate,
+    SlickTemplate,
     FilmTrailersSlickTemplate,
     FilmReviewTemplate,
   },

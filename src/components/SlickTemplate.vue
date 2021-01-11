@@ -1,13 +1,25 @@
 <template>
-  <div v-if="type1 && type1.length">
-    <div class="home-slick-template__title">
-      {{ type | replaceAllToSpace }}
-    </div>
-    <slick class="slick" ref="slick" :options="slickOptions">
-      <div v-for="item in type1" :key="item.id">
-        <CoverTemplate2 :item="item" :genres="genres" />
+  <div>
+    <div v-if="cast">
+      <div class="slick-template__title">
+        cast
       </div>
-    </slick>
+      <slick class="slick" ref="slick" :options="slickOptions">
+        <div v-for="item in cast" :key="item.id">
+          <CoverTemplate2 :item="item" />
+        </div>
+      </slick>
+    </div>
+    <div v-else-if="type1 && type1.length">
+      <div class="slick-template__title">
+        {{ type | replaceAllToSpace }}
+      </div>
+      <slick class="slick" ref="slick" :options="slickOptions">
+        <div v-for="item in type1" :key="item.id">
+          <CoverTemplate2 :item="item" :genres="genres" />
+        </div>
+      </slick>
+    </div>
   </div>
 </template>
 
@@ -68,16 +80,16 @@ export default {
     CoverTemplate2,
     Slick,
   },
-  props: ["type", "genres", "type1"],
+  props: ["cast", "type", "genres", "type1"],
 };
 </script>
 <style scoped>
-.home-slick-template__title {
+.slick-template__title {
   margin-top: 50px;
   text-transform: uppercase;
 }
 @media (max-width: 539px) {
-  .home-slick-template__title {
+  .slick-template__title {
     text-align: center;
   }
 }
