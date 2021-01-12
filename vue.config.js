@@ -1,4 +1,4 @@
 module.exports = {
-    publicPath: '/film-service/'
+    publicPath: 'alexandr-turbo.github.io/film-service/'
     // publicPath: './'
 }
