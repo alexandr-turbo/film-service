@@ -1,7 +1,7 @@
 {
   "name": "film-service",
   "version": "0.1.0",
-  "homepage": "alexandr-turbo.github.io",
+  "homepage": "alexandr-turbo.github.io/film-service",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
