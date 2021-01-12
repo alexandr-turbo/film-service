@@ -1,7 +1,7 @@
 :root {
   --main-bg: linear-gradient(165deg, #251431 0%, #161130 22%);
   --main-text-color: #FFFFFF;
-  --toggle-btn-img: url(../src/assets/sun.svg);
+  --toggle-btn-img: url(../assets/sun.svg);
   --accent-color: #EB4E7A;
   --secondary-bg: #1C262B;
   --third-bg: #1C262B;
@@ -9,7 +9,7 @@
 :root[data-theme='light'] {
   --main-bg:#CCCCCC;
   --main-text-color: #000000;
-  --toggle-btn-img: url(../src/assets/moon.svg);
+  --toggle-btn-img: url(../assets/moon.svg);
   --accent-color: #4E9FEB;
   --secondary-bg: #6B6A6A;
   --third-bg: #FFFFFF;
