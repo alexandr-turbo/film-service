@@ -5,10 +5,10 @@ import NotFound from '@/views/NotFound'
 Vue.use(VueRouter)
 
 const routes = [
-  // {
-  //   path: '*',
-  //   component: NotFound
-  // },
+  {
+    path: '*',
+    component: NotFound
+  },
   {
     path: '/',
     name: 'home',
