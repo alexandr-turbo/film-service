@@ -6,8 +6,8 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "deploymac": "npm run build && git add . && git commit -m '1213' && git subtree push --prefix dist origin gh-pages",
-    "deploywin": "git push origin --delete gh-pages && rm -r dist && npm run build && git add . && git subtree push --prefix dist origin gh-pages"
+    "deploymac": "git push origin --delete gh-pages && npm run build && git add . && git commit -m '1213' && git subtree push --prefix dist origin gh-pages",
+    "deploywin": "git push origin --delete gh-pages && npm run build && git add . && git subtree push --prefix dist origin gh-pages"
   },
   "dependencies": {
     "@trevoreyre/autocomplete-vue": "^2.2.0",
