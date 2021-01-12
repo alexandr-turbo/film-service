@@ -44,7 +44,7 @@ export default {
 };
 </script>
 <style>
-@import './css/style.css';
+@import '../public/style.css';
 #app {
     margin-top: 0 !important;
 }
