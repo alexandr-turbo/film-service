@@ -1,4 +1,4 @@
 module.exports = {
-    // publicPath: '/film-service/'
+    publicPath: '/film-service/'
     // publicPath: './'
 }
