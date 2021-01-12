@@ -1,12 +1,12 @@
 {
   "name": "film-service",
   "version": "0.1.0",
-  "private": false,
+  "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "deploymac": "git push origin --delete gh-pages && npm run build && git add . && git commit -m 'publish' && git subtree push --prefix dist origin gh-pages",
+    "deploymac": "npm run build && git add . && git commit -m 'publish' && git subtree push --prefix dist origin gh-pages",
     "deploywin": "git push origin --delete gh-pages && npm run build && git add . && git subtree push --prefix dist origin gh-pages"
   },
   "dependencies": {
@@ -50,9 +50,6 @@
     "plugins": {
       "autoprefixer": {}
     }
-  },
-  "vue": {
-    "publicPath": "/film-service/"
   },
   "browserslist": [
     "> 1%",
