@@ -84,7 +84,7 @@ export default {
           (this.scrollHeight -
           document.documentElement.clientHeight -
           window.pageYOffset <
-          600 && document.documentElement.clientWidth < 1024 && document.documentElement.clientWidth >= 480) || 
+          540 && document.documentElement.clientWidth < 1024 && document.documentElement.clientWidth >= 480) || 
           (this.scrollHeight -
           document.documentElement.clientHeight -
           window.pageYOffset <
@@ -105,7 +105,7 @@ export default {
           (this.scrollHeight -
           document.documentElement.clientHeight -
           window.pageYOffset <
-          600 && document.documentElement.clientWidth < 1024 && document.documentElement.clientWidth >= 480) || 
+          540 && document.documentElement.clientWidth < 1024 && document.documentElement.clientWidth >= 480) || 
           (this.scrollHeight -
           document.documentElement.clientHeight -
           window.pageYOffset <
