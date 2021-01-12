@@ -77,10 +77,18 @@ export default {
         document.documentElement.clientHeight
       );
       if (
-        this.scrollHeight -
+        (this.scrollHeight -
           document.documentElement.clientHeight -
           window.pageYOffset <
-          175 &&
+          340 && document.documentElement.clientWidth >= 1024) || 
+          (this.scrollHeight -
+          document.documentElement.clientHeight -
+          window.pageYOffset <
+          600 && document.documentElement.clientWidth < 1024 && document.documentElement.clientWidth >= 480) || 
+          (this.scrollHeight -
+          document.documentElement.clientHeight -
+          window.pageYOffset <
+          825 && document.documentElement.clientWidth < 480) &&
         this.cast === true
       ) {
         for (; this.rolesLoadedCount < this.roles.length; ) {
@@ -90,10 +98,18 @@ export default {
         }
       }
       if (
-        this.scrollHeight -
+        (this.scrollHeight -
           document.documentElement.clientHeight -
           window.pageYOffset <
-          175 &&
+          340 && document.documentElement.clientWidth >= 1024) || 
+          (this.scrollHeight -
+          document.documentElement.clientHeight -
+          window.pageYOffset <
+          600 && document.documentElement.clientWidth < 1024 && document.documentElement.clientWidth >= 480) || 
+          (this.scrollHeight -
+          document.documentElement.clientHeight -
+          window.pageYOffset <
+          825 && document.documentElement.clientWidth < 480) &&
         this.cast === false
       ) {
         for (; this.crewsLoadedCount < this.crews.length; ) {
