@@ -1,7 +1,7 @@
 module.exports = {
-    publicPath: '/film-service/',
+    // indexPath: '/dist/index.html',
+    publicPath: '/film-service/'
     // publicPath: './'
     // publicPath: './'
     // publicPath: ''
-    // indexPath: '/dist/index.html'
 }
