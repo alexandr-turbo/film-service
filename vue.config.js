@@ -3,5 +3,5 @@ module.exports = {
     // publicPath: './'
     // publicPath: './'
     // publicPath: ''
-    indexPath: '/dist/index.html'
+    // indexPath: '/dist/index.html'
 }
