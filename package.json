@@ -1,6 +1,5 @@
 {
   "name": "film-service",
-  "homepage": "alexandr-turbo.github.io/film-service",
   "version": "0.1.0",
   "private": true,
   "scripts": {
