@@ -1,5 +1,5 @@
-// import store from '@/store'
-let loc = localStorage.getItem('locale') || 'en-US'
+import store from '@/store'
+let loc = store.state.locale.locale || 'en-US'
 export default function dateFilter(value, format = 'date') {
   const options = {}
 

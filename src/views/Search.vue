@@ -72,12 +72,14 @@ export default {
       } else {
         this.$root.loading = false
       }
-      
+    },
+    '$store.state.locale.locale'() {
+      // this.loc = this.$store.state.locale.locale
+      this.changeLocale()
     },
   },
   created() {
-    console.log(this.$route)
-    this.loc = localStorage.getItem('locale')
+    this.loc = this.$store.state.locale.locale
     if (this.$route.fullPath.indexOf("?") !== -1) {
       this.getSearchQuery();
       this.getPageNumber();
@@ -85,10 +87,25 @@ export default {
     } else {
       this.$root.loading = false
     }
-    this.movieGenres = this.$store.state.MovieGenres;
-    this.tvshowGenres = this.$store.state.TVShowGenres;
+    this.movieGenres = this.$store.state.genres.MovieGenres;
+    this.tvshowGenres = this.$store.state.genres.TVShowGenres;
   },
   methods: {
+    async changeLocale() {
+      this.$root.loading = true
+      this.loc = this.$store.state.locale.locale
+      if (this.$route.fullPath.indexOf("?") !== -1) {
+        this.getSearchQuery();
+        this.getPageNumber();
+        this.getPageSearchResults(this.searchQuery, this.pageNumber);
+      } else {
+        this.$root.loading = false
+      }
+      await this.$store.dispatch('loadMovieGenres')
+      this.movieGenres = this.$store.state.genres.MovieGenres;
+      await this.$store.dispatch('loadTVShowsGenres')
+      this.tvshowGenres = this.$store.state.genres.TVShowGenres;
+    },
     getSearchQuery() {
       this.searchQuery = this.$route.fullPath.split("?")[1].split("&")[0];
     },

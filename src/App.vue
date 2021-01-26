@@ -37,9 +37,12 @@ export default {
   //     return this.$store.getters.info.name
   //   }
   // },
-  created() {
-    this.$store.dispatch('loadMovieGenres')
-    this.$store.dispatch('loadTVShowsGenres')
+  async created() {
+    await this.$store.dispatch('loadMovieGenres')
+    await this.$store.dispatch('loadTVShowsGenres')
+    if(!this.$store.state.locale.locale) {
+      this.$store.commit('setLocale', 'en-US')
+    }
     Bus.$on('changeLocale', () => this.changeLocale())
   },
   methods: {

@@ -1,5 +1,6 @@
 import ru from '@/locales/ru.json'
 import en from '@/locales/en.json'
+import store from '@/store'
 
 const locales = {
   'ru-RU': ru,
@@ -7,6 +8,6 @@ const locales = {
 }
 
 export default function localizeFilter(key) {
-  const locale = localStorage.getItem('locale') || 'en-US'
+  const locale = store.state.locale.locale || 'en-US'
   return locales[locale][key] || `[Localize error]: key ${key} not found`
 }

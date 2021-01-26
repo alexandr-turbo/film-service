@@ -5,7 +5,7 @@
         <div class="footer-template__links-column">
           <div class="footer-template__links-title">
             <img class="footer-template__link-img" src="../assets/explore.svg">
-            <div>{{'footer-template-explore' | localize}}</div>
+            <div>{{explore}}</div>
           </div>
           <router-link
             to="/"
@@ -120,7 +120,22 @@
 </template>
 <script>
 // import { Bus } from '@/main'
+import localize from '@/filters/localize'
 export default {
+  data() {
+    return {
+      explore: ''
+    }
+  },
+  watch: {
+    '$store.state.locale.locale'() {
+      this.explore = localize('footer-template-explore')
+      // this.guest = localize('search-bar-template-guest')
+    },
+  },
+  mounted() {
+    this.explore = localize('footer-template-explore')
+  }
   // created() {
   //   Bus.$on('changeLocale', (data) => this.changeLocale(data))
   // },
@@ -145,9 +160,9 @@ export default {
   //     let p1 = await this.getPopularFilms();
   //     let p2 = await this.getFilms();
   //     if(this.filmType === 'movie') {
-  //       this.genres = this.$store.state.MovieGenres;
+  //       this.genres = this.$store.state.genres.MovieGenres;
   //     } else if(this.filmType === 'tv') {
-  //       this.genres = this.$store.state.TVShowGenres;
+  //       this.genres = this.$store.state.genres.TVShowGenres;
   //     }
   //     Promise.all([p1, p2]).then((this.$root.loading = false));
   //   },

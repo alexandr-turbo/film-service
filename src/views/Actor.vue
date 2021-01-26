@@ -120,38 +120,70 @@ export default {
         }
       }
     },
+    async getCastCrew() {
+      await axios
+        .get(
+          `${this.globalAPIMovieDBAddress}/3${this.$route.path}/combined_credits?api_key=${this.key}&language=${this.loc}`
+        )
+        .then((response) => {
+          if (response.data.cast) {
+            this.roles = response.data.cast;
+          }
+          if (response.data.crew) {
+            this.crews = response.data.crew;
+          }
+          for (; this.rolesLoadedCount < ROLES_ONLOAD_COUNT; ) {
+            this.lazyRoles.push(this.roles[this.rolesLoadedCount]);
+            this.rolesLoadedCount++;
+          }
+          for (; this.crewsLoadedCount < CREWS_ONLOAD_COUNT; ) {
+            this.lazyCrews.push(this.crews[this.crewsLoadedCount]);
+            this.crewsLoadedCount++;
+          }
+        });
+    },
+    async getActor() {
+      await axios
+        .get(
+          `${this.globalAPIMovieDBAddress}/3${this.$route.path}?api_key=${this.key}&language=${this.loc}`
+        )
+        .then((response) => {
+          this.actor = response.data;
+        });
+    },
+    async changeLocale() {
+      // window.addEventListener("scroll", this.onScroll);
+      this.$root.loading = true
+      this.loc = this.$store.state.locale.locale
+      this.cast = []
+      this.crew = []
+      this.lazyRoles = []
+      this.lazyCrews = []
+      this.rolesLoadedCount = 0
+      this.crewsLoadedCount = 0
+      let p1 = await this.getCastCrew()
+      this.actor = {}
+      let p2 = await this.getActor()
+      console.log(this.lazyRoles)
+      await this.$store.dispatch('loadMovieGenres')
+      this.movieGenres = this.$store.state.genres.MovieGenres;
+      await this.$store.dispatch('loadTVShowsGenres')
+      this.tvshowGenres = this.$store.state.genres.TVShowGenres;
+      Promise.all([p1, p2]).then(this.$root.loading = false)
+    }
+  },
+  watch: {
+    '$store.state.locale.locale'() {
+      // this.loc = this.$store.state.locale.locale
+      this.changeLocale()
+    },
   },
   async created() {
-    this.loc = localStorage.getItem('locale')
-    let p1 = await axios
-      .get(
-        `${this.globalAPIMovieDBAddress}/3${this.$route.path}/combined_credits?api_key=${this.key}&language=${this.loc}`
-      )
-      .then((response) => {
-        if (response.data.cast) {
-          this.roles = response.data.cast;
-        }
-        if (response.data.crew) {
-          this.crews = response.data.crew;
-        }
-        for (; this.rolesLoadedCount < ROLES_ONLOAD_COUNT; ) {
-          this.lazyRoles.push(this.roles[this.rolesLoadedCount]);
-          this.rolesLoadedCount++;
-        }
-        for (; this.crewsLoadedCount < CREWS_ONLOAD_COUNT; ) {
-          this.lazyCrews.push(this.crews[this.crewsLoadedCount]);
-          this.crewsLoadedCount++;
-        }
-      });
-    let p2 = await axios
-      .get(
-        `${this.globalAPIMovieDBAddress}/3${this.$route.path}?api_key=${this.key}&language=${this.loc}`
-      )
-      .then((response) => {
-        this.actor = response.data;
-      });
-    this.movieGenres = this.$store.state.MovieGenres;
-    this.tvshowGenres = this.$store.state.TVShowGenres;
+    this.loc = this.$store.state.locale.locale
+    let p1 = await this.getCastCrew()
+    let p2 = await this.getActor()
+    this.movieGenres = this.$store.state.genres.MovieGenres;
+    this.tvshowGenres = this.$store.state.genres.TVShowGenres;
     Promise.all([p1, p2]).then(this.$root.loading = false)
   },
 };

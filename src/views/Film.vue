@@ -40,11 +40,11 @@ export default {
   data() {
     return {
       key: process.env.VUE_APP_MOVIEDB,
-      genres: null,
-      currentfilm: null,
-      cast: null,
-      trailers: null,
-      reviews: null,
+      genres: '',
+      currentfilm: {},
+      cast: [],
+      trailers: [],
+      reviews: [],
       isvisible: true,
       loc: ''
     };
@@ -59,51 +59,87 @@ export default {
     // met() {
     //   this.loc = localStorage.getItem('locale')
     // }
+    async changeLocale() {
+      this.$root.loading = true
+      this.loc = this.$store.state.locale.locale
+      this.currentfilm = {}
+      let p1 = await this.getCurrentFilm()
+      this.genres = ''
+      this.getGenres()
+      this.cast = []
+      let p2 = this.getCast()
+      this.trailers = []
+      let p3 = this.getTrailers()
+      this.reviews = []
+      let p4 = this.getReviews()
+      Promise.all([p1, p2, p3, p4]).then(this.$root.loading = false)
+    },
+    async getCurrentFilm() {
+      await axios
+        .get(
+          `${this.globalAPIMovieDBAddress}/3/${this.filmType}/${this.filmID}?api_key=${this.key}&language=${this.loc}`
+        )
+        .then((response) => {
+          this.currentfilm = response.data;
+          // console.log(this.currentfilm)
+        });
+    },
+    getGenres() {
+      this.genres = this.currentfilm.genres.map((el) => el.name).join("/");
+    },
+    async getCast() {
+      await axios
+        .get(
+          `${this.globalAPIMovieDBAddress}/3/${this.filmType}/${this.filmID}/credits?api_key=${this.key}&language=${this.loc}`
+        )
+        .then((response) => {
+          this.cast = response.data.cast;
+          // console.log(response.data)
+          for (let i = 0; i < this.cast.length; i++) {
+            axios
+              .get(
+                `${this.globalAPIMovieDBAddress}/3/person/${this.cast[i].id}?api_key=${this.key}&language=${this.loc}`
+              )
+              .then((response) => {
+                // console.log(response.data.biography)
+                // this.cast[i].bio = response.data.biography;
+                this.$set(this.cast[i], 'bio', response.data.biography)
+              });
+          }
+        });
+    },
+    async getTrailers() {
+      await axios
+        .get(
+          `${this.globalAPIMovieDBAddress}/3/${this.filmType}/${this.filmID}/videos?api_key=${this.key}&language=${this.loc}`
+        )
+        .then((response) => {
+          this.trailers = response.data.results;
+        });
+    },
+    async getReviews() {
+      await axios
+        .get(
+          `${this.globalAPIMovieDBAddress}/3/${this.filmType}/${this.filmID}/reviews?api_key=${this.key}&language=${this.loc}`
+        )
+        .then((response) => {
+          this.reviews = response.data.results;
+        });
+    }
+  },
+  watch: {
+    '$store.state.locale.locale'() {
+      // this.loc = this.$store.state.locale.locale
+      this.changeLocale()
+    },
   },
   async created() {
-    this.loc = localStorage.getItem('locale')
-    let p1 = await axios
-      .get(
-        `${this.globalAPIMovieDBAddress}/3/${this.filmType}/${this.filmID}?api_key=${this.key}&language=${this.loc}`
-      )
-      .then((response) => {
-        this.currentfilm = response.data;
-        // console.log(this.currentfilm)
-        this.genres = this.currentfilm.genres.map((el) => el.name).join("/");
-      });
-    let p2 = await axios
-      .get(
-        `${this.globalAPIMovieDBAddress}/3/${this.filmType}/${this.filmID}/credits?api_key=${this.key}&language=${this.loc}`
-      )
-      .then((response) => {
-        this.cast = response.data.cast;
-        console.log(response.data)
-        for (let i = 0; i < this.cast.length; i++) {
-          axios
-            .get(
-              `${this.globalAPIMovieDBAddress}/3/person/${this.cast[i].id}?api_key=${this.key}&language=${this.loc}`
-            )
-            .then((response) => {
-              // console.log(response.data.biography)
-              // this.cast[i].bio = response.data.biography;
-              this.$set(this.cast[i], 'bio', response.data.biography)
-            });
-        }
-      });
-    let p3 = await axios
-      .get(
-        `${this.globalAPIMovieDBAddress}/3/${this.filmType}/${this.filmID}/videos?api_key=${this.key}&language=${this.loc}`
-      )
-      .then((response) => {
-        this.trailers = response.data.results;
-      });
-    let p4 = await axios
-      .get(
-        `${this.globalAPIMovieDBAddress}/3/${this.filmType}/${this.filmID}/reviews?api_key=${this.key}&language=${this.loc}`
-      )
-      .then((response) => {
-        this.reviews = response.data.results;
-      });
+    this.loc = this.$store.state.locale.locale
+    let p1 = await this.getCurrentFilm()
+    this.getGenres()
+    let p2 = await this.getCast()
+    let p3 = await this.getTrailers()
+    let p4 = await this.getReviews()
     Promise.all([p1, p2, p3, p4]).then(this.$root.loading = false)
   },
 };
