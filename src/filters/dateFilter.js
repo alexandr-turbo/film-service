@@ -1,6 +1,6 @@
 import store from '@/store'
-let loc = store.state.locale.locale || 'en-US'
 export default function dateFilter(value, format = 'date') {
+  let loc = store.state.locale.locale || 'en-US'
   const options = {}
 
   if (format.includes('date')) {

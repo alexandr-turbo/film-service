@@ -1,13 +1,13 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import NotFound from '@/views/NotFound'
 
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '*',
-    component: NotFound
+    meta: {layout: 'empty'},
+    component: () => import(/* webpackChunkName: "not-found" */ '../views/NotFound.vue'),
   },
   {
     path: '/',
