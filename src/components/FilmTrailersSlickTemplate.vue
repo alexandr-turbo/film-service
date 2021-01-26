@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="film-trailers-slick-template__title">trailers</div>
+    <div class="film-trailers-slick-template__title">{{'film-trailers-slick-template-trailers' | localize}}</div>
     <slick class="slick" ref="slick" :options="slickOptions_trailers">
       <div v-for="item in trailers" :key="item.id">
         <FilmTrailerCoverTemplate :item="item" />

@@ -4,11 +4,11 @@
       <div class="container">
         <ActorInfoTemplate :actor="actor" />
         <div class="actor__buttons">
-          <button class="actor__switch-button" v-if="roles.length" @click="cast = true">Cast</button>
-          <button class="actor__switch-button" v-if="crews.length" @click="cast = false">Crew</button>
+          <button class="actor__switch-button" v-if="roles.length" @click="cast = true">{{'actor-cast' | localize}}</button>
+          <button class="actor__switch-button" v-if="crews.length" @click="cast = false">{{'actor-crew' | localize}}</button>
         </div>
         <template v-if="cast">
-          <div class="actor__title">Cast</div>
+          <div class="actor__title">{{'actor-cast' | localize}}</div>
           <div v-for="(role, index) in lazyRoles" :key="index">
             <ActorCastCrewTemplate
               v-if="role && role.media_type"
@@ -19,7 +19,7 @@
           </div>
         </template>
         <template v-if="!cast">
-          <div class="actor__title">Crew</div>
+          <div class="actor__title">{{'actor-crew' | localize}}</div>
           <div v-for="(crew, index) in lazyCrews" :key="index">
             <ActorCastCrewTemplate
               v-if="crew && crew.media_type"
@@ -55,6 +55,7 @@ export default {
     rolesLoadedCount: 0,
     crewsLoadedCount: 0,
     key: process.env.VUE_APP_MOVIEDB,
+    loc: ''
   }),
   components: {
     ActorInfoTemplate,
@@ -121,9 +122,10 @@ export default {
     },
   },
   async created() {
+    this.loc = localStorage.getItem('locale')
     let p1 = await axios
       .get(
-        `${this.globalAPIMovieDBAddress}/3${this.$route.path}/combined_credits?api_key=${this.key}`
+        `${this.globalAPIMovieDBAddress}/3${this.$route.path}/combined_credits?api_key=${this.key}&language=${this.loc}`
       )
       .then((response) => {
         if (response.data.cast) {
@@ -143,7 +145,7 @@ export default {
       });
     let p2 = await axios
       .get(
-        `${this.globalAPIMovieDBAddress}/3${this.$route.path}?api_key=${this.key}`
+        `${this.globalAPIMovieDBAddress}/3${this.$route.path}?api_key=${this.key}&language=${this.loc}`
       )
       .then((response) => {
         this.actor = response.data;

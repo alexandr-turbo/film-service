@@ -4,7 +4,7 @@
       <form @submit.prevent="searchRequest">
         <div class="discover__form">
           <div class="discover__form-field-container">
-            <div>Media type</div>
+            <div>{{'discover-mediatype' | localize}}</div>
             <select class="discover__form-field" v-model="media_type">
               <option
                 v-for="mediatype in mediatypeOptions"
@@ -15,7 +15,7 @@
             </select>
           </div>
           <div class="discover__form-field-container">
-            <div>Sort</div>
+            <div>{{'discover-sort' | localize}}</div>
             <select class="discover__form-field" v-model="sortType">
               <option
                 v-for="sort in sortOptions"
@@ -26,19 +26,19 @@
             </select>
           </div>
           <div class="discover__form-field-container">
-            <div>Min average vote</div>
+            <div>{{'discover-min-average-vote' | localize}}</div>
             <input
               class="discover__form-field"
               type="number"
               v-model="vote"
-              placeholder="min average vote"
+              :placeholder="minAverageVotePlaceholder"
             />
           </div>
           <div
             v-if="media_type === 'movie'"
             class="discover__form-field-container"
           >
-            <div>Involved actor</div>
+            <div>{{'discover-involved-actor' | localize}}</div>
             <autocomplete
               v-if="!a"
               :search="search"
@@ -54,7 +54,7 @@
             />
           </div>
           <div class="discover__form-field-container">
-            <div>Genre</div>
+            <div>{{'discover-genre' | localize}}</div>
             <select class="discover__form-field" v-model="genre">
               <option value=""></option>
               <option v-for="genre in genres" :key="genre.id">{{
@@ -64,18 +64,18 @@
           </div>
           <div class="discover__form-field-container">
             <div>
-              {{ media_type === "movie" ? "Year" : "First airing date" }}
+              {{ media_type === "movie" ? 'discover-year' : 'discover-first-airing-date' | localize}}
             </div>
             <input
               class="discover__form-field"
               type="number"
               v-model="year"
-              placeholder="year"
+              :placeholder="yearPlaceholder"
             />
           </div>
         </div>
         <div class="discover__form-button-container">
-          <button class="discover__form-button" type="submit">submit</button>
+          <button class="discover__form-button" type="submit">{{'discover-submit' | localize}}</button>
         </div>
       </form>
       <div class="discover__results" v-if="searchResultPage.total_results">
@@ -88,7 +88,7 @@
         </div>
       </div>
       <div class="discover__results-title" v-else>
-        Nothing found
+        {{'discover-nothing-found' | localize}}
       </div>
       <div v-if="searchResultPage.page" class="discover__page-buttons">
         <button
@@ -96,14 +96,14 @@
           v-if="searchResultPage.page > 1"
           @click="getPreviousPageSearchResults()"
         >
-          Previous page
+          {{'discover-previous' | localize}}
         </button>
         <button
           class="discover__page-button discover__page-button--next"
           v-if="searchResultPage.page < searchResultPage.total_pages"
           @click="getNextPageSearchResults()"
         >
-          Next page
+          {{'discover-next' | localize}}
         </button>
       </div>
     </div>
@@ -113,32 +113,35 @@
 import axios from "axios";
 import CoverTemplate1 from "../components/CoverTemplate1.vue";
 import Autocomplete from "@trevoreyre/autocomplete-vue";
+import localize from '@/filters/localize'
 
 export default {
   data() {
     return {
       movieSortOptions: [
-        { title: "Popularity descending", value: "popularity.desc" },
-        { title: "Popularity ascending", value: "popularity.asc" },
-        { title: "Release date descending", value: "release_date.desc" },
-        { title: "Release date ascending", value: "release_date.asc" },
-        { title: "Revenue descending", value: "revenue.desc" },
-        { title: "Revenue ascending", value: "revenue.asc" },
-        { title: "Vote average descending", value: "vote_average.desc" },
-        { title: "Vote average ascending", value: "vote_average.asc" },
+        { title: localize('discover-popularity-descending'), value: "popularity.desc" },
+        { title: localize('discover-popularity-ascending'), value: "popularity.asc" },
+        { title: localize('discover-release-date-ascending'), value: "release_date.desc" },
+        { title: localize('discover-release-date-ascending'), value: "release_date.asc" },
+        { title: localize('discover-revenue-ascending'), value: "revenue.desc" },
+        { title: localize('discover-revenue-ascending'), value: "revenue.asc" },
+        { title: localize('discover-vote-average-ascending'), value: "vote_average.desc" },
+        { title: localize('discover-vote-average-ascending'), value: "vote_average.asc" },
       ],
       tvSortOptions: [
-        { title: "Popularity descending", value: "popularity.desc" },
-        { title: "Popularity ascending", value: "popularity.asc" },
-        { title: "First air date descending", value: "first_air_date.desc" },
-        { title: "First air date ascending", value: "first_air_date.asc" },
-        { title: "Vote average descending", value: "vote_average.desc" },
-        { title: "Vote average ascending", value: "vote_average.asc" },
+        { title: localize('discover-popularity-descending'), value: "popularity.desc" },
+        { title: localize('discover-popularity-ascending'), value: "popularity.asc" },
+        { title: localize('discover-first-air-date-ascending'), value: "first_air_date.desc" },
+        { title: localize('discover-first-air-date-ascending'), value: "first_air_date.asc" },
+        { title: localize('discover-vote-average-ascending'), value: "vote_average.desc" },
+        { title: localize('discover-vote-average-ascending'), value: "vote_average.asc" },
       ],
       mediatypeOptions: [
-        { title: "Movie", value: "movie" },
-        { title: "TVShow", value: "tv" },
+        { title: localize('discover-mediatype-movie'), value: "movie" },
+        { title: localize('discover-mediatype-tvshow'), value: "tv" },
       ],
+      minAverageVotePlaceholder: localize('discover-min-average-vote'),
+      yearPlaceholder: localize('discover-year'),
       year: "",
       genre: "",
       people: "",
@@ -166,6 +169,7 @@ export default {
       key: process.env.VUE_APP_MOVIEDB,
       a: "",
       preventOnCreatedUpdate: true,
+      loc: ''
     };
   },
   components: {
@@ -193,7 +197,7 @@ export default {
       this.routeSortBy = this.sortType = "popularity.desc";
     },
     $route() {
-      this.$root.loading = true;
+      // this.$root.loading = true;
       // if (
       //   (this.$route.fullPath.indexOf("?") !== -1) &
       //   (this.searchResultPage.page !== 0)
@@ -214,6 +218,8 @@ export default {
     },
   },
   async created() {
+    console.log(this.$route)
+    this.loc = localStorage.getItem('locale')
     this.getRoutePaths();
     this.media_type = this.routeMediatype;
     this.vote = this.routeVote;
@@ -239,7 +245,7 @@ export default {
     if (this.routeActor) {
       await axios
         .get(
-          `${this.globalAPIMovieDBAddress}/3/person/${this.routeActor}?api_key=${this.key}&language=en-US`
+          `${this.globalAPIMovieDBAddress}/3/person/${this.routeActor}?api_key=${this.key}&&language=${this.loc}`
         )
         .then((response) => {
           this.a = response.data.name;
@@ -281,7 +287,7 @@ export default {
       let a = [];
       await axios
         .get(
-          `${this.globalAPIMovieDBAddress}/3/search/person?api_key=${this.key}&language=en-US&query=${input}&include_adult=false&page=1`
+          `${this.globalAPIMovieDBAddress}/3/search/person?api_key=${this.key}&language=${this.loc}&query=${input}&include_adult=false&page=1`
         )
         .then((response) => {
           a = response.data.results;
@@ -337,7 +343,7 @@ export default {
       if (routeMediatype === "movie") {
         await axios
           .get(
-            `${this.globalAPIMovieDBAddress}/3/discover/${routeMediatype}?api_key=${this.key}&language=en-US&sort_by=${routeSortBy}&include_adult=false&include_video=false&vote_average.gte=${routeVote}&with_people=${routeActor}&with_genres=${routeGenreID}&year=${routeYear}&page=${routePage}`
+            `${this.globalAPIMovieDBAddress}/3/discover/${routeMediatype}?api_key=${this.key}&language=${this.loc}&sort_by=${routeSortBy}&include_adult=false&include_video=false&vote_average.gte=${routeVote}&with_people=${routeActor}&with_genres=${routeGenreID}&year=${routeYear}&page=${routePage}`
           )
           .then((response) => {
             this.searchResultPage = response.data;
@@ -354,7 +360,7 @@ export default {
       } else if (routeMediatype === "tv") {
         await axios
           .get(
-            `${this.globalAPIMovieDBAddress}/3/discover/${routeMediatype}?api_key=${this.key}&language=en-US&sort_by=${routeSortBy}&include_adult=false&include_video=false&vote_average.gte=${routeVote}&with_genres=${routeGenreID}&first_air_date_year=${routeYear}&page=${routePage}`
+            `${this.globalAPIMovieDBAddress}/3/discover/${routeMediatype}?api_key=${this.key}&language=${this.loc}&sort_by=${routeSortBy}&include_adult=false&include_video=false&vote_average.gte=${routeVote}&with_genres=${routeGenreID}&first_air_date_year=${routeYear}&page=${routePage}`
           )
           .then((response) => {
             this.searchResultPage = response.data;

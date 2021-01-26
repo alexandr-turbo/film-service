@@ -1,6 +1,9 @@
 <template>
   <div id="app">
-    <div id="page-preloader" class="preloader" v-if="$root.loading">
+    <component :is="layout">
+      <router-view/>
+    </component>
+    <!-- <div id="page-preloader" class="preloader" v-if="$root.loading">
       <div class="loader"></div>
     </div>
     <SearchBarTemplate /> 
@@ -8,39 +11,70 @@
     <div class="app__go-to-top-button-container" id='backToTop' @click="goToTop">
       <img class="app__go-to-top-button" src="./assets/arrow.svg">
     </div>
-    <FooterTemplate />
+    <FooterTemplate /> -->
   </div>
 </template>
 <script>
-import SearchBarTemplate from "./components/SearchBarTemplate.vue";
-import FooterTemplate from "./components/FooterTemplate.vue";
+import EmptyLayout from '@/layouts/EmptyLayout'
+import MainLayout from '@/layouts/MainLayout'
+// import SearchBarTemplate from "@/components/SearchBarTemplate.vue";
+// import FooterTemplate from "@/components/FooterTemplate.vue";
+import { Bus } from '@/main'
 export default {
   components: {
-    SearchBarTemplate,
-    FooterTemplate
+    MainLayout,
+    EmptyLayout
+    // SearchBarTemplate,
+    // FooterTemplate
   },
+  computed: {
+    layout() {
+      return (this.$route.meta.layout || 'empty') + '-layout'
+    }
+  },
+  // computed: {
+  //   name() {
+  //     return this.$store.getters.info.name
+  //   }
+  // },
   created() {
     this.$store.dispatch('loadMovieGenres')
     this.$store.dispatch('loadTVShowsGenres')
-  },
-  mounted() {
-    window.addEventListener("scroll", this.onScroll);
-  },
-  beforeDestroy() {
-    window.removeEventListener("scroll", this.onScroll);
+    Bus.$on('changeLocale', () => this.changeLocale())
   },
   methods: {
-    onScroll() {
-      if (pageYOffset >= 100) {
-        document.getElementById('backToTop').classList.add("app__go-to-top-button-visibility")
-      } else if (pageYOffset < 100) {
-        document.getElementById('backToTop').classList.remove("app__go-to-top-button-visibility")
-      }
+    async changeLocale() {
+      this.$store.dispatch('loadMovieGenres')
+      this.$store.dispatch('loadTVShowsGenres')
     },
-    goToTop() {
-      document.getElementById('app').scrollIntoView({behavior: "smooth"});
-    }
-  }
+  },
+  // async updated() {
+  //   console.log(1)
+  //   if (!Object.keys(this.$store.getters.info).length) {
+  //     await this.$store.dispatch('fetchInfo')
+  //   }
+  // },
+  // async mounted() {
+  //   if (!Object.keys(this.$store.getters.info).length) {
+  //     await this.$store.dispatch('fetchInfo')
+  //   }
+  //   window.addEventListener("scroll", this.onScroll);
+  // },
+  // beforeDestroy() {
+  //   window.removeEventListener("scroll", this.onScroll);
+  // },
+  // methods: {
+  //   onScroll() {
+  //     if (pageYOffset >= 100) {
+  //       document.getElementById('backToTop').classList.add("app__go-to-top-button-visibility")
+  //     } else if (pageYOffset < 100) {
+  //       document.getElementById('backToTop').classList.remove("app__go-to-top-button-visibility")
+  //     }
+  //   },
+  //   goToTop() {
+  //     document.getElementById('app').scrollIntoView({behavior: "smooth"});
+  //   }
+  // }
 };
 </script>
 <style>
@@ -53,7 +87,7 @@ body {
   font-family: sans-serif;
   color: var(--main-text-color);
 }
-.preloader {
+/* .preloader {
   position: fixed;
   left: 0;
   top: 0;
@@ -112,5 +146,5 @@ body {
 .app__go-to-top-button-visibility {
   transition: .5s all;
   opacity: 1;
-}
+} */
 </style>

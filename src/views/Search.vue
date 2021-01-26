@@ -2,7 +2,7 @@
   <div class="search">
     <div class="container">
       <div class="search__results-title" v-if="searchResultPage.page">
-        Search results for {{ searchQuery | replaceAllToSpace }}
+        {{'search-results' | localize}} {{ searchQuery | replaceAllToSpace }}
       </div>
       <div class="search__results" v-if="searchResultPage.total_results">
         <div
@@ -20,7 +20,7 @@
         </div>
       </div>
       <div class="search__results-title" v-else>
-        Nothing found
+        {{'search-nothing-found' | localize}}
       </div>
       <div v-if="searchResultPage.page" class="search__page-buttons">
         <button
@@ -28,14 +28,14 @@
           v-if="searchResultPage.page > 1"
           @click="getPreviousPageSearchResults()"
         >
-          Previous page
+          {{'search-previous' | localize}}
         </button>
         <button
           class="search__page-button search__page-button--next"
           v-if="searchResultPage.page < searchResultPage.total_pages"
           @click="getNextPageSearchResults()"
         >
-          Next page
+          {{'search-next' | localize}}
         </button>
       </div>
     </div>
@@ -55,7 +55,8 @@ export default {
       genres: [],
       searchQuery: "",
       pageNumber: "",
-      key: process.env.VUE_APP_MOVIEDB
+      key: process.env.VUE_APP_MOVIEDB,
+      loc: ''
     };
   },
   components: {
@@ -63,25 +64,26 @@ export default {
   },
   watch: {
     $route() {
-      this.$root.loading = true;
-      // if (
-      //   (this.$route.fullPath.indexOf("?") !== -1) &
-      //   (this.searchResultPage.page !== 0)
-      // ) {
+      // this.$root.loading = true;
+      if (this.$route.fullPath.indexOf("?") !== -1) {
         this.getSearchQuery();
         this.getPageNumber();
         this.getPageSearchResults(this.searchQuery, this.pageNumber);
-      // } else {
-      //   this.searchResultPage.page = 0;
-      // }
+      } else {
+        this.$root.loading = false
+      }
       
     },
   },
   created() {
+    console.log(this.$route)
+    this.loc = localStorage.getItem('locale')
     if (this.$route.fullPath.indexOf("?") !== -1) {
       this.getSearchQuery();
       this.getPageNumber();
       this.getPageSearchResults(this.searchQuery, this.pageNumber);
+    } else {
+      this.$root.loading = false
     }
     this.movieGenres = this.$store.state.MovieGenres;
     this.tvshowGenres = this.$store.state.TVShowGenres;
@@ -110,7 +112,7 @@ export default {
       }
       await axios
         .get(
-          `${this.globalAPIMovieDBAddress}/3/${b}/${a}?api_key=${this.key}&page=${page}&include_adult=false`
+          `${this.globalAPIMovieDBAddress}/3/${b}/${a}?api_key=${this.key}&page=${page}&include_adult=false&language=${this.loc}`
         )
         .then((response) => {
           this.searchResultPage = response.data;
@@ -122,14 +124,14 @@ export default {
     async getPopularPeopleList(page) {
       await axios
         .get(
-          `${this.globalAPIMovieDBAddress}/3/person/popular?api_key=${this.key}&language=en-US&page=${page}`
+          `${this.globalAPIMovieDBAddress}/3/person/popular?api_key=${this.key}&language=${this.loc}&page=${page}`
         )
         .then((response) => {
           this.searchResultPage = response.data;
           for (let i = 0; i < this.searchResultPage.results.length; i++) {
           axios
             .get(
-              `${this.globalAPIMovieDBAddress}/3/person/${this.searchResultPage.results[i].id}?api_key=${this.key}`
+              `${this.globalAPIMovieDBAddress}/3/person/${this.searchResultPage.results[i].id}?api_key=${this.key}&language=${this.loc}`
             )
             .then((response) => {
               this.$set(this.searchResultPage.results[i], 'bio', response.data.biography)
@@ -145,7 +147,7 @@ export default {
       } else {
         await axios
           .get(
-            `${this.globalAPIMovieDBAddress}/3/search/multi?api_key=${this.key}&query=${query}&page=${page}&include_adult=false`
+            `${this.globalAPIMovieDBAddress}/3/search/multi?api_key=${this.key}&query=${query}&page=${page}&include_adult=false&language=${this.loc}`
           )
           .then((response) => {
             this.searchResultPage = response.data;

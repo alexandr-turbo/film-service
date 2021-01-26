@@ -9,9 +9,9 @@
         />
       </div>
       <div class="container">
-        <div>Genres: {{ genres }}</div>
+        <div v-if="genres && genres.length">{{'film-genres' | localize}}: {{ genres }}</div>
         <div v-if="currentfilm.overview">
-          <div>SUMMARY</div>
+          <div>{{'film-summary' | localize}}</div>
           <div>{{ currentfilm.overview }}</div>
         </div>
         <div v-if="cast.length">
@@ -21,7 +21,7 @@
           <FilmTrailersSlickTemplate :trailers="trailers" />
         </div>
         <div class="film__title" v-if="reviews && reviews.length">
-          REVIEWS
+          {{'film-reviews' | localize}}
         </div>
         <div v-for="(review, index) in reviews" :key="review.id">
           <FilmReviewTemplate :review="review" :index="index" />
@@ -46,6 +46,7 @@ export default {
       trailers: null,
       reviews: null,
       isvisible: true,
+      loc: ''
     };
   },
   components: {
@@ -54,41 +55,51 @@ export default {
     FilmReviewTemplate,
   },
   props: ["filmID", "filmType"],
+  methods: {
+    // met() {
+    //   this.loc = localStorage.getItem('locale')
+    // }
+  },
   async created() {
+    this.loc = localStorage.getItem('locale')
     let p1 = await axios
       .get(
-        `${this.globalAPIMovieDBAddress}/3/${this.filmType}/${this.filmID}?api_key=${this.key}`
+        `${this.globalAPIMovieDBAddress}/3/${this.filmType}/${this.filmID}?api_key=${this.key}&language=${this.loc}`
       )
       .then((response) => {
         this.currentfilm = response.data;
+        // console.log(this.currentfilm)
         this.genres = this.currentfilm.genres.map((el) => el.name).join("/");
       });
     let p2 = await axios
       .get(
-        `${this.globalAPIMovieDBAddress}/3/${this.filmType}/${this.filmID}/credits?api_key=${this.key}`
+        `${this.globalAPIMovieDBAddress}/3/${this.filmType}/${this.filmID}/credits?api_key=${this.key}&language=${this.loc}`
       )
       .then((response) => {
         this.cast = response.data.cast;
+        console.log(response.data)
         for (let i = 0; i < this.cast.length; i++) {
           axios
             .get(
-              `${this.globalAPIMovieDBAddress}/3/person/${this.cast[i].id}?api_key=${this.key}`
+              `${this.globalAPIMovieDBAddress}/3/person/${this.cast[i].id}?api_key=${this.key}&language=${this.loc}`
             )
             .then((response) => {
-              this.cast[i].bio = response.data.biography;
+              // console.log(response.data.biography)
+              // this.cast[i].bio = response.data.biography;
+              this.$set(this.cast[i], 'bio', response.data.biography)
             });
         }
       });
     let p3 = await axios
       .get(
-        `${this.globalAPIMovieDBAddress}/3/${this.filmType}/${this.filmID}/videos?api_key=${this.key}`
+        `${this.globalAPIMovieDBAddress}/3/${this.filmType}/${this.filmID}/videos?api_key=${this.key}&language=${this.loc}`
       )
       .then((response) => {
         this.trailers = response.data.results;
       });
     let p4 = await axios
       .get(
-        `${this.globalAPIMovieDBAddress}/3/${this.filmType}/${this.filmID}/reviews?api_key=${this.key}&language=en-US`
+        `${this.globalAPIMovieDBAddress}/3/${this.filmType}/${this.filmID}/reviews?api_key=${this.key}&language=${this.loc}`
       )
       .then((response) => {
         this.reviews = response.data.results;

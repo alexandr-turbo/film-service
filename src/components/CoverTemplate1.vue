@@ -20,7 +20,7 @@
         {{ item.title || item.name }}
       </div>
       <div v-else class="cover-template1__film-title">
-        DB thinks that search keyword is included
+        {{'cover-template-1-db' | localize}}
       </div>
     </router-link>
     <router-link
@@ -44,12 +44,12 @@
         {{ item.title || item.name || item.original_title || item.original_name }}
       </div>
       <div v-else class="cover-template1__film-title">
-        DB thinks that search keyword is included
+        {{'cover-template-1-db' | localize}}
       </div>
       <div v-if="item.genre_ids && item.genre_ids !== '' && item.genre_ids.length" class="cover-template1__film-title">
         {{ getCurrentMediaTypeGenresNames(genres, item.genre_ids) }}
       </div>
-      <div v-else class="cover-template1__film-title">Genres are not provided</div>
+      <div v-else class="cover-template1__film-title">{{'cover-template-1-genres-are-not-provided' | localize}}</div>
     </router-link>
     <router-link
       v-else-if="searchQuery === 'popular_people'"

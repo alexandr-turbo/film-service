@@ -1,7 +1,7 @@
 <template>
   <div class="not-found__container">
     <div class="not-found">
-      Page not found
+      {{'page-not-found' | localize}}
     </div>
   </div>
 </template>

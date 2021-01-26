@@ -1,6 +1,8 @@
 <template>
+  <!-- <div v-if="popular1.length"> -->
   <div v-if="popular.length">
     <slick class="slick" ref="slick" :options="slickOptionsUpper">
+      <!-- <div v-for="item in popular1" :key="item.id"> -->
       <div v-for="item in popular" :key="item.id">
         <router-link
           class="home-upper-slick-template"
@@ -15,11 +17,12 @@
             :src="`${globalImgAddress}1280${item.backdrop_path}`"
           />
           <div class="home-upper-slick-template__bio">
-            <div class="home-upper-slick-template__title">popular</div>
+            <div class="home-upper-slick-template__title">{{'home-upper-slick-template-title' | localize}}</div>
             <div v-if="item.title || item.name || item.original_title || item.original_name">
               {{ item.title || item.name || item.original_title || item.original_name }}
             </div>
-            <div>{{ getCurrentMediaTypeGenresNames(genres, item.genre_ids) }}</div>
+            <!-- <div class="home-upper-slick-template__genres">{{ getCurrentMediaTypeGenresNames(genres1, item.genre_ids) }}</div> -->
+            <div class="home-upper-slick-template__genres">{{ getCurrentMediaTypeGenresNames(genres, item.genre_ids) }}</div>
           </div>
         </router-link>
       </div>
@@ -29,7 +32,7 @@
 
 <script>
 import Slick from "vue-slick";
-
+// import { Bus } from '@/main'
 export default {
   data() {
     return {
@@ -42,12 +45,31 @@ export default {
         draggable: false,
         lazyLoad: "ondemand",
       },
+      // genres1: [],
+      // popular1: {}
     };
   },
   props: ["genres", "popular"],
   components: {
     Slick,
   },
+  // created() {
+  //   this.genres1 = this.genres
+  //   this.popular1 = this.popular
+  // },
+  // mounted() {
+  //   this.genres1 = this.genres
+  //   this.popular1 = this.popular
+  //   Bus.$on('changeLocale', () => this.changeLocale())
+  // },
+  // methods: {
+  //   changeLocale() {
+  //     this.genres1 = []
+  //     this.genres1 = this.genres
+  //     this.popular1 = {}
+  //     this.popular1 = this.popular
+  //   }
+  // }
 };
 </script>
 <style scoped>
@@ -69,5 +91,8 @@ export default {
 }
 .home-upper-slick-template__title {
   text-transform: uppercase;
+}
+.home-upper-slick-template__genres {
+  text-transform: capitalize;
 }
 </style>

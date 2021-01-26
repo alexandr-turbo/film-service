@@ -12,9 +12,9 @@
           <div>{{ actor.name }}</div>
           <div v-if="actor.birthday">
             {{ getPrettyDate(actor.birthday) }} ({{ getAge(actor.birthday) }}
-            y/o),
+            {{'actor-info-template-years-old' | localize}}),
           </div>
-          <div v-if="actor.place_of_birth">Born in {{ actor.place_of_birth }}</div>
+          <div v-if="actor.place_of_birth">{{ actor.gender === 1 ? 'actor-info-template-female-born' : 'actor-info-template-male-born' | localize}} {{ actor.place_of_birth }}</div>
           <div>
             {{ getGender(actor.gender) }} | {{ actor.known_for_department }}
           </div>
@@ -26,18 +26,19 @@
     </div>
     <div class="actor-info-template" v-else>
       <div class="actor-info-template__bio">
-        No info about actor =(
+        {{'actor-info-template-no-info' | localize}}
       </div>
     </div>
   </div>
 </template>
 <script>
 
+import localize from '@/filters/localize'
 export default {
   props: ["actor"],
   methods: {
     getGender(gender) {
-      return gender === 1 ? "Female" : "Male";
+      return gender === 1 ? localize('actor-info-template-female') : localize('actor-info-template-male');
     },
     getAge(birthdayDate) {
       var now = new Date();
@@ -58,18 +59,18 @@ export default {
     getPrettyDate(currentDate) {
       let arr = currentDate.split("-");
       let months = [
-        "Jan",
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-        "Oct",
-        "Nov",
-        "Dec",
+        localize("actor-info-template-january"),
+        localize("actor-info-template-february"),
+        localize("actor-info-template-march"),
+        localize("actor-info-template-april"),
+        localize("actor-info-template-may"),
+        localize("actor-info-template-june"),
+        localize("actor-info-template-july"),
+        localize("actor-info-template-august"),
+        localize("actor-info-template-september"),
+        localize("actor-info-template-october"),
+        localize("actor-info-template-november"),
+        localize("actor-info-template-december"),
       ];
       var prettyDate = months[+arr[1] - 1] + " " + arr[2] + ", " + arr[0];
       return prettyDate;

@@ -3,8 +3,21 @@
     <router-link to="/">
       <img class="search-bar-template__home-link" src="@/assets/home.png" />
     </router-link>
+    <div>
+      <div> {{'search-bar-template-greating' | localize}}, {{name}}!</div>
+      <button v-if="name.includes('guest') || name.includes('гость')" @click="login">
+        {{'search-bar-template-login' | localize}}
+      </button>
+      <button v-if="!name.includes('guest') && !name.includes('гость')" @click="logout">
+        {{'search-bar-template-logout' | localize}}
+      </button>
+      <button v-if="name.includes('guest') || name.includes('гость')" @click="register">
+        {{'search-bar-template-register' | localize}}
+      </button>
+      <div>{{'search-bar-template-now' | localize}} {{date | dateFilter('datetime') }}</div>
+    </div>
     <form class="search-bar-template__form" @submit.prevent="send(query)">
-      <input class="search-bar-template__form-input" v-model="query" placeholder="search films" />
+      <input class="search-bar-template__form-input" v-model="query" :placeholder="searchBarPlaceholder" />
       <button class="search-bar-template__form-button" type="submit">
         <img class="search-bar-template__form-button-image" src="@/assets/search.png" />
       </button>
@@ -15,24 +28,76 @@
       <img class="search-bar-template__discover-link" src="@/assets/discover.png" />
     </router-link>
     <button class="toggle-theme" />
+    <button @click="changeLocale">{{locale}}</button>
   </div>
 </template>
 <script>
+import { Bus } from '@/main'
 import replaceAllToDash from '@/filters/replaceAllToDash'
+import localize from '@/filters/localize'
 export default {
   data() {
     return {
       query: "",
-      imgSrc: ""
+      imgSrc: "",
+      date: new Date(),
+      interval: null,
+      locale: '',
+      searchBarPlaceholder: localize('search-bar-template-search-films')
     };
   },
+  computed: {
+    name() {
+      return this.$store.getters.info.name || localize('search-bar-template-guest')
+    },
+    // searchFilmsPlaceholder() {
+    //   return localize('search-bar-template-search-films')
+    // }
+  },
   methods: {
+    login() {
+      this.$router.push('/login')
+    },
+    async logout() {
+      await this.$store.dispatch('logout')
+      this.$router.push('/login')
+    },
+    register() {
+      this.$router.push('/register')
+    },
     send(query) {
       this.$router.push(`/search?${replaceAllToDash(query)}&page=1`);
       this.query = "";
     },
+    changeLocale() {
+      console.log(localStorage.getItem('locale'))
+      if(localStorage.getItem('locale') === 'en-US') {
+        // console.log(2)
+        localStorage.setItem('locale', 'ru-RU')
+        this.locale = 'Ru'
+        Bus.$emit('changeLocale', 'ru-RU')
+      } else if(localStorage.getItem('locale') === 'ru-RU') {
+        // console.log(3)
+        localStorage.setItem('locale', 'en-US')
+        this.locale = 'En'
+        Bus.$emit('changeLocale', 'en-US')
+      }
+      console.log(localStorage.getItem('locale'))
+      // Bus.$emit('changeLocale', 'changeLocale')
+    }
   },
-  mounted() {
+  async mounted() {
+    if(!localStorage.getItem('locale')) {
+      localStorage.setItem('locale', 'en-US')
+      this.locale = 'En'
+    } else if(localStorage.getItem('locale') === 'ru-RU') {
+      this.locale = 'Ru'
+    } else if(localStorage.getItem('locale') === 'en-US') {
+      this.locale = 'En'
+    }
+    this.interval = setInterval(() => {
+      this.date = new Date()
+    }, 1000)
     const toggleTheme = document.querySelector(".toggle-theme")
     let el = document.documentElement
     toggleTheme.addEventListener('click', () => {
@@ -48,6 +113,9 @@ export default {
       el.setAttribute('data-theme', 'light')
     }
   },
+  beforeDestroy() {
+    clearInterval(this.interval)
+  }
 };
 </script>
 <style scoped>

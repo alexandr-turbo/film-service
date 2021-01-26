@@ -12,7 +12,7 @@
       <a
         class="film-review-template__full-review"
         :href="`//www.themoviedb.org/review/${review.id}`"
-        >See full review >></a
+        >{{'film-review-template-see-full-review' | localize}} >></a
       >
     </div>
   </div>

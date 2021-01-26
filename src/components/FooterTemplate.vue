@@ -5,91 +5,91 @@
         <div class="footer-template__links-column">
           <div class="footer-template__links-title">
             <img class="footer-template__link-img" src="../assets/explore.svg">
-            <div>Explore</div>
+            <div>{{'footer-template-explore' | localize}}</div>
           </div>
           <router-link
             to="/"
             tag="div"
           >
-            <div class="footer-template__link-title">Home</div>
+            <div class="footer-template__link-title">{{'footer-template-home' | localize}}</div>
           </router-link>
           <router-link
             to="/discover?mediatype=movie&sort_by=popularity.desc&vote_average.gte=&with_people=&with_genres=&year=&page=1"
             tag="div"
           >
-            <div class="footer-template__link-title">Discover</div>
+            <div class="footer-template__link-title">{{'footer-template-discover' | localize}}</div>
           </router-link>
         </div>
         <div class="footer-template__links-column">
           <div class="footer-template__links-title">
             <img class="footer-template__link-img" src="../assets/movies.svg">
-            <div>Movies</div>
+            <div>{{'footer-template-movies' | localize}}</div>
           </div>
           <router-link
             to="/search?top_rated_movies&page=1"
             tag="div"
           >
-            <div class="footer-template__link-title">Top rated movies</div>
+            <div class="footer-template__link-title">{{'footer-template-top-rated-movies' | localize}}</div>
           </router-link>
           <router-link
             to="/search?upcoming_movies&page=1"
             tag="div"
           >
-            <div class="footer-template__link-title">Upcoming movies</div>
+            <div class="footer-template__link-title">{{'footer-template-upcoming-movies' | localize}}</div>
           </router-link>
           <router-link
             to="/search?now_playing_movies&page=1"
             tag="div"
           >
-            <div class="footer-template__link-title">Now playing movies</div>
+            <div class="footer-template__link-title">{{'footer-template-now-playing-movies' | localize}}</div>
           </router-link>
           <router-link
             to="/search?popular_movies&page=1"
             tag="div"
           >
-            <div class="footer-template__link-title">Popular movies</div>
+            <div class="footer-template__link-title">{{'footer-template-popular-movies' | localize}}</div>
           </router-link>
         </div>
         <div class="footer-template__links-column">
           <div class="footer-template__links-title">
             <img class="footer-template__link-img" src="../assets/tv.svg">
-            <div>TV</div>
+            <div>{{'footer-template-tvshows' | localize}}</div>
           </div>
           <router-link
             to="/search?popular_tv_shows&page=1"
             tag="div"
           >
-            <div class="footer-template__link-title">Popular TV shows</div>
+            <div class="footer-template__link-title">{{'footer-template-popular-tvshows' | localize}}</div>
           </router-link>
           <router-link
             to="/search?top_rated_tv_shows&page=1"
             tag="div"
           >
-            <div class="footer-template__link-title">Top rated TV shows</div>
+            <div class="footer-template__link-title">{{'footer-template-top-rated-tvshows' | localize}}</div>
           </router-link>
           <router-link
             to="/search?on_the_air_tv_shows&page=1"
             tag="div"
           >
-            <div class="footer-template__link-title">On the air TV shows</div>
+            <div class="footer-template__link-title">{{'footer-template-on-the-air-tvshows' | localize}}</div>
           </router-link>
           <router-link
             to="/search?airing_today_tv_shows&page=1"
             tag="div"
           >
-            <div class="footer-template__link-title">Airing today TV shows</div>
+            <div class="footer-template__link-title">{{'footer-template-airing-today-tvshows' | localize}}</div>
           </router-link>
         </div>
         <div class="footer-template__links-column">
           <div class="footer-template__links-title">
             <img class="footer-template__link-img" src="../assets/people.svg">
-            <div>People</div>
+            <div>{{'footer-template-people' | localize}}</div>
           </div>
           <router-link
             to="/search?popular_people&page=1"
             tag="div"
           >
-            <div class="footer-template__link-title">Popular people</div>
+            <div class="footer-template__link-title">{{'footer-template-popular-people' | localize}}</div>
           </router-link>
         </div>
       </div>
@@ -119,7 +119,40 @@
   </div>
 </template>
 <script>
-export default {};
+// import { Bus } from '@/main'
+export default {
+  // created() {
+  //   Bus.$on('changeLocale', (data) => this.changeLocale(data))
+  // },
+  // methods: {
+  //   async changeLocale(data) {
+  //     // this.$store.dispatch('loadMovieGenres')
+  //       this.genres = []
+
+  //     // console.log(localStorage.getItem('locale'))
+  //     this.$root.loading = true
+  //     // this.loc = localStorage.getItem('locale')
+  //     this.loc = data
+  //     console.log(this.loc)
+  //     // console.log(this.$store)
+  //     if(this.filmType === 'movie') {
+  //       // this.$store.dispatch('loadMovieGenres')
+  //       this.filmSlickArr = this.movieSlickArr;
+  //     } else if(this.filmType === 'tv') {
+  //       // this.$store.dispatch('loadTVShowsGenres')
+  //       this.filmSlickArr = this.tvshowSlickArr;
+  //     }
+  //     let p1 = await this.getPopularFilms();
+  //     let p2 = await this.getFilms();
+  //     if(this.filmType === 'movie') {
+  //       this.genres = this.$store.state.MovieGenres;
+  //     } else if(this.filmType === 'tv') {
+  //       this.genres = this.$store.state.TVShowGenres;
+  //     }
+  //     Promise.all([p1, p2]).then((this.$root.loading = false));
+  //   },
+  // }
+};
 </script>
 <style scoped>
 .footer-template {
@@ -166,6 +199,7 @@ export default {};
   display: flex;
   align-items: center;
   margin-bottom: 20px;
+  text-transform: capitalize;
 }
 .footer-template__link-img {
   height: 30px;
@@ -174,6 +208,7 @@ export default {};
 .footer-template__link-title {
   cursor: pointer;
   margin-bottom: 10px;
+  text-transform: capitalize;
 }
 
 

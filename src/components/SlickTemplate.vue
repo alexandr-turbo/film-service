@@ -2,7 +2,7 @@
   <div>
     <div v-if="cast">
       <div class="slick-template__title">
-        cast
+        {{'slick-template-cast' | localize}}
       </div>
       <slick class="slick" ref="slick" :options="slickOptions">
         <div v-for="item in cast" :key="item.id">
@@ -12,7 +12,7 @@
     </div>
     <div v-else-if="type1 && type1.length">
       <div class="slick-template__title">
-        {{ type | replaceAllToSpace }}
+        {{typeName}}
       </div>
       <slick class="slick" ref="slick" :options="slickOptions">
         <div v-for="item in type1" :key="item.id">
@@ -26,6 +26,7 @@
 <script>
 import Slick from "vue-slick";
 import CoverTemplate2 from "../components/CoverTemplate2.vue";
+import localize from '@/filters/localize'
 
 export default {
   data() {
@@ -81,6 +82,11 @@ export default {
     Slick,
   },
   props: ["cast", "type", "genres", "type1"],
+  computed: {
+    typeName() {
+      return localize('slick-template-' + this.type)
+    }
+  }
 };
 </script>
 <style scoped>

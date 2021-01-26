@@ -7,10 +7,10 @@
     <div class="container">
       <div class="home__buttons">
         <button class="home__switch-button" @click="switchType('movie')">
-          Movies
+          {{'home-movies' | localize}}
         </button>
         <button class="home__switch-button" @click="switchType('tv')">
-          TV Shows
+          {{'home-tvshows' | localize}}
         </button>
       </div>
       <div v-for="(filmSlick, index) in filmSlickArr" :key="filmSlick.id">
@@ -28,6 +28,7 @@
 import HomeUpperSlickTemplate from "../components/HomeUpperSlickTemplate.vue";
 import SlickTemplate from "../components/SlickTemplate.vue";
 import axios from "axios";
+import { Bus } from '@/main'
 
 export default {
   data() {
@@ -41,20 +42,33 @@ export default {
       movieSlickArr: ["upcoming", "popular", "now_playing", "top_rated"],
       filmSlickArr: [],
       temp: [],
+      loc: ''
     };
   },
   components: {
     HomeUpperSlickTemplate,
     SlickTemplate,
   },
+  // async mounted() {
+  //   if (!Object.keys(this.$store.getters.info).length) {
+  //     await this.$store.dispatch('fetchInfo')
+  //   }
+  // },
   async created() {
-    this.genres = this.$store.state.MovieGenres;
+    this.loc = localStorage.getItem('locale')
+    if(this.$store.state.MovieGenres.length) {
+      this.genres = this.$store.state.MovieGenres;
+    }
     this.filmSlickArr = this.movieSlickArr;
     let p1 = await this.getPopularFilms();
     let p2 = await this.getFilms();
     Promise.all([p1, p2]).then((this.$root.loading = false));
+    Bus.$on('changeLocale', (data) => this.changeLocale(data))
   },
   watch: {
+    // '$store.getters.info.name'() {
+    //   console.log(this.$store.getters.info.name)
+    // },
     filmType() {
       this.popular = [];
       this.getPopularFilms();
@@ -63,10 +77,46 @@ export default {
     },
   },
   methods: {
+    async changeLocale(data) {
+      // this.$store.dispatch('loadMovieGenres')
+        this.genres = []
+
+      // console.log(localStorage.getItem('locale'))
+      this.$root.loading = true
+      // this.loc = localStorage.getItem('locale')
+      this.loc = data
+      console.log(this.loc)
+      // console.log(this.$store)
+      // if(this.filmType === 'movie') {
+      //   // this.$store.dispatch('loadMovieGenres')
+      //   this.filmSlickArr = []
+      //   this.filmSlickArr = this.movieSlickArr;
+      // } else if(this.filmType === 'tv') {
+      //   // this.$store.dispatch('loadTVShowsGenres')
+      //   this.filmSlickArr = []
+      //   this.filmSlickArr = this.tvshowSlickArr;
+      // }
+      this.popular = [];
+      let p1 = await this.getPopularFilms();
+      this.type1 = [];
+      let p2 = await this.getFilms();
+      if(this.filmType === 'movie') {
+        // this.$store.dispatch('loadMovieGenres')
+        // this.filmSlickArr = []
+        this.filmSlickArr = this.movieSlickArr;
+        this.genres = this.$store.state.MovieGenres;
+      } else if(this.filmType === 'tv') {
+        // this.$store.dispatch('loadTVShowsGenres')
+        // this.filmSlickArr = []
+        this.filmSlickArr = this.tvshowSlickArr;
+        this.genres = this.$store.state.TVShowGenres;
+      }
+      Promise.all([p1, p2]).then((this.$root.loading = false));
+    },
     async getPopularFilms() {
       await axios
         .get(
-          `${this.globalAPIMovieDBAddress}/3/${this.filmType}/popular?api_key=${this.key}`
+          `${this.globalAPIMovieDBAddress}/3/${this.filmType}/popular?api_key=${this.key}&language=${this.loc}`
         )
         .then((response) => {
           this.popular = response.data.results;
@@ -81,7 +131,7 @@ export default {
       for (let i = 0; i < this.filmSlickArr.length; i++) {
         await axios
           .get(
-            `${this.globalAPIMovieDBAddress}/3/${this.filmType}/${this.filmSlickArr[i]}?api_key=${this.key}`
+            `${this.globalAPIMovieDBAddress}/3/${this.filmType}/${this.filmSlickArr[i]}?api_key=${this.key}&language=${this.loc}`
           )
           .then((response) => {
             this.temp = response.data.results

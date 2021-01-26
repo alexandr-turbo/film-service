@@ -13,10 +13,12 @@
     "@trevoreyre/autocomplete-vue": "^2.2.0",
     "axios": "^0.19.0",
     "core-js": "^3.3.2",
+    "firebase": "^8.2.2",
     "gulp": "^4.0.2",
     "vue": "^2.6.10",
     "vue-router": "^3.1.3",
     "vue-slick": "^1.1.15",
+    "vuelidate": "^0.7.6",
     "vuex": "^3.5.1"
   },
   "devDependencies": {

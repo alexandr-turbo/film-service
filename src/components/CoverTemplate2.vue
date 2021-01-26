@@ -86,4 +86,7 @@ export default {
 .cover-template2__genres {
   text-align: center;
 }
+.cover-template2__genres {
+  text-transform: capitalize;
+}
 </style>

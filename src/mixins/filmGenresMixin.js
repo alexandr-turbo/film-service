@@ -1,6 +1,7 @@
 export default {
   methods: {
     getCurrentMediaTypeGenresNames(genres, genreIDs) {
+      // console.log(genres)
       if (genres && genreIDs) {
         let genreContainer = [];
         let genreContainerPosition = 0;
