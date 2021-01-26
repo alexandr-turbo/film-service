@@ -64,7 +64,6 @@ export default {
   },
   watch: {
     $route() {
-      // this.$root.loading = true;
       if (this.$route.fullPath.indexOf("?") !== -1) {
         this.getSearchQuery();
         this.getPageNumber();
@@ -176,15 +175,15 @@ export default {
       this.getSearchQuery();
       this.increasePageNumber();
       this.$router.push(
-            `${this.$route.path}?${this.searchQuery}&page=${this.pageNumber}`
-          );
+        `${this.$route.path}?${this.searchQuery}&page=${this.pageNumber}`
+      );
     },
     async getPreviousPageSearchResults() {
       this.getSearchQuery();
       this.decreasePageNumber();
       this.$router.push(
-            `${this.$route.path}?${this.searchQuery}&page=${this.pageNumber}`
-          );
+        `${this.$route.path}?${this.searchQuery}&page=${this.pageNumber}`
+      );
     },
   },
 };
