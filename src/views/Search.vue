@@ -1,7 +1,7 @@
 <template>
   <div class="search">
     <div class="container">
-      <div class="search__results-title" v-if="searchResultPage.page">
+      <div class="search__results-title" v-if="searchResultPage.total_results">
         {{'search-results' | localize}} {{ searchQuery | replaceAllToSpace }}
       </div>
       <div class="search__results" v-if="searchResultPage.total_results">
@@ -64,12 +64,15 @@ export default {
   },
   watch: {
     $route() {
-      if (this.$route.fullPath.indexOf("?") !== -1) {
+      // console.log(Object.values(this.$route.query))
+      // if (this.$route.fullPath.indexOf("?") !== -1) {
+      if(Object.values(this.$route.query)[1] !== null && Object.keys(this.$route.query).length > 1) {
         this.getSearchQuery();
         this.getPageNumber();
         this.getPageSearchResults(this.searchQuery, this.pageNumber);
       } else {
-        this.$root.loading = false
+        this.searchResultPage = {}
+        this.$root.loading = false;
       }
     },
     '$store.state.locale.locale'() {
@@ -78,13 +81,16 @@ export default {
     },
   },
   created() {
+    // console.log(Object.values(this.$route.query))
     this.loc = this.$store.state.locale.locale
-    if (this.$route.fullPath.indexOf("?") !== -1) {
+    // if(Object.values(this.$route.query)[1] !== null) {
+      if(Object.values(this.$route.query)[1] !== null && Object.keys(this.$route.query).length > 1) {
       this.getSearchQuery();
       this.getPageNumber();
       this.getPageSearchResults(this.searchQuery, this.pageNumber);
     } else {
-      this.$root.loading = false
+      this.searchResultPage = {}
+      this.$root.loading = false;
     }
     this.movieGenres = this.$store.state.genres.MovieGenres;
     this.tvshowGenres = this.$store.state.genres.TVShowGenres;
@@ -93,7 +99,7 @@ export default {
     async changeLocale() {
       this.$root.loading = true
       this.loc = this.$store.state.locale.locale
-      if (this.$route.fullPath.indexOf("?") !== -1) {
+      if(Object.values(this.$route.query)[1] !== null) {
         this.getSearchQuery();
         this.getPageNumber();
         this.getPageSearchResults(this.searchQuery, this.pageNumber);
@@ -106,16 +112,18 @@ export default {
       this.tvshowGenres = this.$store.state.genres.TVShowGenres;
     },
     getSearchQuery() {
-      this.searchQuery = this.$route.fullPath.split("?")[1].split("&")[0];
+      this.searchQuery = Object.keys(this.$route.query)[0]
     },
     getPageNumber() {
-      this.pageNumber = this.$route.fullPath.split("page=")[1];
+      this.pageNumber = this.$route.query.page
     },
     increasePageNumber() {
-      this.pageNumber = ++this.$route.fullPath.split("page=")[1];
+      this.pageNumber = this.$route.query.page
+      this.pageNumber++
     },
     decreasePageNumber() {
-      this.pageNumber = --this.$route.fullPath.split("page=")[1];
+      this.pageNumber = this.$route.query.page
+      this.pageNumber--
     },
     async getFilmsList(query, page) {
       let a, b
