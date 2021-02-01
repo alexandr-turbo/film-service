@@ -2,34 +2,23 @@ import axios from "axios"
 import store from '@/store'
 
 const key = process.env.VUE_APP_MOVIEDB
-// let loc = localStorage.getItem('locale')
 
 export default {
   state: {
     MovieGenres: [],
-    TVShowGenres: [],
-    // loading: true
+    TVShowGenres: []
   },
   mutations: {
     setMovieGenres (state, genres) {
       state.MovieGenres = genres
-      // console.log(state.MovieGenres)
     },
     setTVShowGenres (state, genres) {
       state.TVShowGenres = genres
     },
-    // setLoadingTrue (state) {
-    //   state.loading = true
-    // },
-    // setLoadingFalse (state) {
-    //   state.loading = false
-    // }
   },
   actions: {
     async loadMovieGenres ({ commit }) {
-    //   const loc = localStorage.getItem('locale')
     const loc = store.state.locale.locale
-      console.log(loc)
       await axios
         .get(
           `https://api.themoviedb.org/3/genre/movie/list?api_key=${key}&language=${loc}`
@@ -39,7 +28,6 @@ export default {
         });
     },
     async loadTVShowsGenres ({ commit }) {
-      // const loc = localStorage.getItem('locale')
       const loc = store.state.locale.locale
       await axios
         .get(

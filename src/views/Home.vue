@@ -63,14 +63,9 @@ export default {
     let p1 = await this.getPopularFilms();
     let p2 = await this.getFilms();
     Promise.all([p1, p2]).then((this.$root.loading = false));
-    // Bus.$on('changeLocale', (data) => this.changeLocale(data))
   },
   watch: {
-    // '$store.getters.info.name'() {
-    //   console.log(this.$store.getters.info.name)
-    // },
     '$store.state.locale.locale'() {
-      // this.loc = this.$store.state.locale.locale
       this.changeLocale()
     },
     filmType() {
@@ -92,7 +87,6 @@ export default {
       if(this.filmType === 'movie') {
         await this.$store.dispatch('loadMovieGenres')
         this.filmSlickArr = this.movieSlickArr;
-        console.log(this.$store.state.genres.MovieGenres)
         this.genres = this.$store.state.genres.MovieGenres;
       } else if(this.filmType === 'tv') {
         await this.$store.dispatch('loadTVShowsGenres')

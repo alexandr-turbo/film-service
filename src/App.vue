@@ -1,9 +1,6 @@
 <template>
   <div id="app">
-    <component :is="layout">
-      <router-view/>
-    </component>
-    <!-- <div id="page-preloader" class="preloader" v-if="$root.loading">
+    <div id="page-preloader" class="preloader" v-if="$root.loading">
       <div class="loader"></div>
     </div>
     <SearchBarTemplate /> 
@@ -11,32 +8,44 @@
     <div class="app__go-to-top-button-container" id='backToTop' @click="goToTop">
       <img class="app__go-to-top-button" src="./assets/arrow.svg">
     </div>
-    <FooterTemplate /> -->
+    <FooterTemplate />
   </div>
 </template>
 <script>
-import EmptyLayout from '@/layouts/EmptyLayout'
-import MainLayout from '@/layouts/MainLayout'
-// import SearchBarTemplate from "@/components/SearchBarTemplate.vue";
-// import FooterTemplate from "@/components/FooterTemplate.vue";
+import SearchBarTemplate from "@/components/SearchBarTemplate.vue";
+import FooterTemplate from "@/components/FooterTemplate.vue";
 import { Bus } from '@/main'
 export default {
   components: {
-    MainLayout,
-    EmptyLayout
-    // SearchBarTemplate,
-    // FooterTemplate
+    SearchBarTemplate,
+    FooterTemplate
   },
-  computed: {
-    layout() {
-      return (this.$route.meta.layout || 'empty') + '-layout'
+  async mounted() {
+    if (!Object.keys(this.$store.getters.info).length) {
+      await this.$store.dispatch('fetchInfo')
     }
+    this.loading = false
+    window.addEventListener("scroll", this.onScroll);
   },
-  // computed: {
-  //   name() {
-  //     return this.$store.getters.info.name
-  //   }
-  // },
+  beforeDestroy() {
+    window.removeEventListener("scroll", this.onScroll);
+  },
+  methods: {
+    onScroll() {
+      if (pageYOffset >= 100) {
+        document.getElementById('backToTop').classList.add("app__go-to-top-button-visibility")
+      } else if (pageYOffset < 100) {
+        document.getElementById('backToTop').classList.remove("app__go-to-top-button-visibility")
+      }
+    },
+    goToTop() {
+      document.getElementById('app').scrollIntoView({behavior: "smooth"});
+    },
+    async changeLocale() {
+      this.$store.dispatch('loadMovieGenres')
+      this.$store.dispatch('loadTVShowsGenres')
+    },
+  },
   async created() {
     await this.$store.dispatch('loadMovieGenres')
     await this.$store.dispatch('loadTVShowsGenres')
@@ -45,39 +54,6 @@ export default {
     }
     Bus.$on('changeLocale', () => this.changeLocale())
   },
-  methods: {
-    async changeLocale() {
-      this.$store.dispatch('loadMovieGenres')
-      this.$store.dispatch('loadTVShowsGenres')
-    },
-  },
-  // async updated() {
-  //   console.log(1)
-  //   if (!Object.keys(this.$store.getters.info).length) {
-  //     await this.$store.dispatch('fetchInfo')
-  //   }
-  // },
-  // async mounted() {
-  //   if (!Object.keys(this.$store.getters.info).length) {
-  //     await this.$store.dispatch('fetchInfo')
-  //   }
-  //   window.addEventListener("scroll", this.onScroll);
-  // },
-  // beforeDestroy() {
-  //   window.removeEventListener("scroll", this.onScroll);
-  // },
-  // methods: {
-  //   onScroll() {
-  //     if (pageYOffset >= 100) {
-  //       document.getElementById('backToTop').classList.add("app__go-to-top-button-visibility")
-  //     } else if (pageYOffset < 100) {
-  //       document.getElementById('backToTop').classList.remove("app__go-to-top-button-visibility")
-  //     }
-  //   },
-  //   goToTop() {
-  //     document.getElementById('app').scrollIntoView({behavior: "smooth"});
-  //   }
-  // }
 };
 </script>
 <style>
@@ -90,7 +66,7 @@ body {
   font-family: sans-serif;
   color: var(--main-text-color);
 }
-/* .preloader {
+.preloader {
   position: fixed;
   left: 0;
   top: 0;
@@ -100,7 +76,11 @@ body {
   transition: 1s all;
   visibility: visible;
   animation-name: animation;
-  animation-duration: 2s;
+  animation-duration: 3s;
+}
+@keyframes animation {
+    0%     {background:black; opacity: 1;}
+    100.0%  {background:black; opacity: 0;}
 }
 .loader {
   width: 75px;
@@ -124,10 +104,6 @@ body {
     opacity: 1;
   }
 }
-@keyframes animation {
-    0%     {background:black; opacity: 1;}
-    100.0%  {background:black; opacity: 0;}
-}
 .app__go-to-top-button-container {
   position: fixed;
   height: 70px;
@@ -149,5 +125,5 @@ body {
 .app__go-to-top-button-visibility {
   transition: .5s all;
   opacity: 1;
-} */
+}
 </style>

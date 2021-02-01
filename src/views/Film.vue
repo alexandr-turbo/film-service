@@ -81,7 +81,6 @@ export default {
         )
         .then((response) => {
           this.currentfilm = response.data;
-          // console.log(this.currentfilm)
         });
     },
     getGenres() {
@@ -94,15 +93,12 @@ export default {
         )
         .then((response) => {
           this.cast = response.data.cast;
-          // console.log(response.data)
           for (let i = 0; i < this.cast.length; i++) {
             axios
               .get(
                 `${this.globalAPIMovieDBAddress}/3/person/${this.cast[i].id}?api_key=${this.key}&language=${this.loc}`
               )
               .then((response) => {
-                // console.log(response.data.biography)
-                // this.cast[i].bio = response.data.biography;
                 this.$set(this.cast[i], 'bio', response.data.biography)
               });
           }

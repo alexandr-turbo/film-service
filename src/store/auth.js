@@ -2,16 +2,13 @@ import firebase from 'firebase/app'
 
 export default {
   actions: {
-    // eslint-disable-next-line no-unused-vars
     async login({dispatch, commit}, {email, password}) {
       try {
         await firebase.auth().signInWithEmailAndPassword(email, password)
       } catch (e) {
-        // console.log(e)
         throw e
       }
     },
-    // eslint-disable-next-line no-unused-vars
     async register({dispatch}, {email, password, name}) {
       try {
         await firebase.auth().createUserWithEmailAndPassword(email, password)
@@ -20,7 +17,6 @@ export default {
           name
         })
       } catch (e) {
-        // console.log(e)
         throw e
       }
     },

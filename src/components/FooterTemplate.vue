@@ -14,7 +14,7 @@
             <div class="footer-template__link-title">{{'footer-template-home' | localize}}</div>
           </router-link>
           <router-link
-            to="/discover?mediatype=movie&sort_by=popularity.desc&vote_average.gte=&with_people=&with_genres=&year=&page=1"
+            to="/discover?mediatype=movie&sort_by=popularity.desc&vote_average=&with_people=&with_genres=&year=&page=1"
             tag="div"
           >
             <div class="footer-template__link-title">{{'footer-template-discover' | localize}}</div>
@@ -97,21 +97,11 @@
         <div>
           <div class="footer-template__header">
             <div class="footer-template__title">Film cloud</div>
-            <!-- <div class="footer-template__links">
-              <router-link class="footer-template__link" to="/">
-                <div>Home</div>
-              </router-link>
-              <router-link
-                class="footer-template__link"
-                to="/discover?mediatype=movie&sort_by=popularity.desc&vote_average.gte=&with_people=&with_genres=&year=&page=1"
-              >
-                <div>Discover</div>
-              </router-link>
-            </div> -->
           </div>
           <div>
             Code and design by Aleksandr Savostian
           </div>
+          <div>{{'footer-template-now' | localize}} {{date | dateFilter('datetime') }}</div>
         </div>
         <img class="footer-template__db-image" src="@/assets/TMDB.png" />
       </div>
@@ -119,54 +109,29 @@
   </div>
 </template>
 <script>
-// import { Bus } from '@/main'
 import localize from '@/filters/localize'
 export default {
   data() {
     return {
-      explore: ''
+      explore: '',
+      date: new Date(),
+      inteval: null
     }
   },
   watch: {
     '$store.state.locale.locale'() {
       this.explore = localize('footer-template-explore')
-      // this.guest = localize('search-bar-template-guest')
     },
   },
   mounted() {
     this.explore = localize('footer-template-explore')
+    this.interval = setInterval(() => {
+      this.date = new Date()
+    }, 1000)
+  },
+  beforeDestroy() {
+    clearInterval(this.interval)
   }
-  // created() {
-  //   Bus.$on('changeLocale', (data) => this.changeLocale(data))
-  // },
-  // methods: {
-  //   async changeLocale(data) {
-  //     // this.$store.dispatch('loadMovieGenres')
-  //       this.genres = []
-
-  //     // console.log(localStorage.getItem('locale'))
-  //     this.$root.loading = true
-  //     // this.loc = localStorage.getItem('locale')
-  //     this.loc = data
-  //     console.log(this.loc)
-  //     // console.log(this.$store)
-  //     if(this.filmType === 'movie') {
-  //       // this.$store.dispatch('loadMovieGenres')
-  //       this.filmSlickArr = this.movieSlickArr;
-  //     } else if(this.filmType === 'tv') {
-  //       // this.$store.dispatch('loadTVShowsGenres')
-  //       this.filmSlickArr = this.tvshowSlickArr;
-  //     }
-  //     let p1 = await this.getPopularFilms();
-  //     let p2 = await this.getFilms();
-  //     if(this.filmType === 'movie') {
-  //       this.genres = this.$store.state.genres.MovieGenres;
-  //     } else if(this.filmType === 'tv') {
-  //       this.genres = this.$store.state.genres.TVShowGenres;
-  //     }
-  //     Promise.all([p1, p2]).then((this.$root.loading = false));
-  //   },
-  // }
 };
 </script>
 <style scoped>

@@ -152,7 +152,6 @@ export default {
         });
     },
     async changeLocale() {
-      // window.addEventListener("scroll", this.onScroll);
       this.$root.loading = true
       this.loc = this.$store.state.locale.locale
       this.cast = []
@@ -164,7 +163,6 @@ export default {
       let p1 = await this.getCastCrew()
       this.actor = {}
       let p2 = await this.getActor()
-      console.log(this.lazyRoles)
       await this.$store.dispatch('loadMovieGenres')
       this.movieGenres = this.$store.state.genres.MovieGenres;
       await this.$store.dispatch('loadTVShowsGenres')
@@ -174,7 +172,6 @@ export default {
   },
   watch: {
     '$store.state.locale.locale'() {
-      // this.loc = this.$store.state.locale.locale
       this.changeLocale()
     },
   },

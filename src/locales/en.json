@@ -4,7 +4,6 @@
   "search-bar-template-login": "login",
   "search-bar-template-logout": "logout",
   "search-bar-template-register": "register",
-  "search-bar-template-now": "now",
   "search-bar-template-search-films": "search films",
   "home-movies": "movies",
   "home-tvshows": "tv shows",
@@ -98,6 +97,7 @@
   "footer-template-airing-today-tvshows": "airing today",
   "footer-template-people": "people",
   "footer-template-popular-people": "popular",
+  "footer-template-now": "now",
   "page-not-found": "page not found",
   "auth-email-is-required": "email is required",
   "auth-enter-correct-email": "enter correct email",
@@ -110,5 +110,8 @@
   "auth-no-account": "No account?",
   "auth-register": "Register",
   "auth-already-registered": "Already registered?",
-  "auth-login": "Login"
+  "auth-login": "Login",
+  "auth-email": "Email",
+  "auth-password": "Password",
+  "auth-name": "Name"
 }

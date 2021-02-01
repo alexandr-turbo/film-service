@@ -64,7 +64,6 @@ export default {
   },
   watch: {
     $route() {
-      // console.log(Object.values(this.$route.query))
       // if (this.$route.fullPath.indexOf("?") !== -1) {
       if(Object.values(this.$route.query)[1] !== null && Object.keys(this.$route.query).length > 1) {
         this.getSearchQuery();
@@ -76,12 +75,10 @@ export default {
       }
     },
     '$store.state.locale.locale'() {
-      // this.loc = this.$store.state.locale.locale
       this.changeLocale()
     },
   },
   created() {
-    // console.log(Object.values(this.$route.query))
     this.loc = this.$store.state.locale.locale
     // if(Object.values(this.$route.query)[1] !== null) {
       if(Object.values(this.$route.query)[1] !== null && Object.keys(this.$route.query).length > 1) {

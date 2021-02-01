@@ -5,7 +5,7 @@
         {{'slick-template-cast' | localize}}
       </div>
       <slick class="slick" ref="slick" :options="slickOptions">
-        <div v-for="item in cast" :key="item.id">
+        <div v-for="item in cast" :key="item.cast_id">
           <CoverTemplate2 :item="item" />
         </div>
       </slick>

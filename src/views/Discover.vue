@@ -210,12 +210,6 @@ export default {
       this.routeSortBy = this.sortType = "popularity.desc";
     },
     $route() {
-      // this.$root.loading = true;
-      // if (
-      //   (this.$route.fullPath.indexOf("?") !== -1) &
-      //   (this.searchResultPage.page !== 0)
-      // ) {
-      console.log(this.$route.query);
       if (this.isTrue()) {
         this.getRoutePaths();
         this.getPageSearchResults(
@@ -228,18 +222,15 @@ export default {
           this.routePage
         );
       } else {
-        console.log(1);
         this.searchResultPage = {};
         this.$root.loading = false;
       }
     },
     "$store.state.locale.locale"() {
-      // this.loc = this.$store.state.locale.locale
       this.changeLocale();
     },
   },
   async created() {
-    console.log(Object.keys(this.$route.query));
     this.loc = this.$store.state.locale.locale;
     this.yearPlaceholder = localize("discover-year");
     this.minAverageVotePlaceholder = localize("discover-min-average-vote");
@@ -335,7 +326,6 @@ export default {
           });
       }
     } else {
-      console.log(1);
       this.searchResultPage = {};
       this.$root.loading = false;
     }

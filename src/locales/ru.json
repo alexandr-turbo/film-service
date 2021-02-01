@@ -3,8 +3,7 @@
   "search-bar-template-guest": "гость",
   "search-bar-template-login": "Войти",
   "search-bar-template-logout": "Выйти",
-  "search-bar-template-register": "Зарагистрироваться",
-  "search-bar-template-now": "Сейчас",
+  "search-bar-template-register": "Зарегистрироваться",
   "search-bar-template-search-films": "поиск фильмов",
   "home-movies": "Фильмы",
   "home-tvshows": "Сериалы",
@@ -98,6 +97,7 @@
   "footer-template-airing-today-tvshows": "сегодня в эфире",
   "footer-template-people": "люди",
   "footer-template-popular-people": "популярные",
+  "footer-template-now": "Сейчас",
   "page-not-found": "страница не найдена",
   "auth-email-is-required": "введите электронную почту",
   "auth-enter-correct-email": "адрес электронной почты не корректен",
@@ -110,5 +110,8 @@
   "auth-no-account": "Нет профиля?",
   "auth-register": "Зарегистрироваться",
   "auth-already-registered": "Уже зарегистрирован?",
-  "auth-login": "Войти"
+  "auth-login": "Войти",
+  "auth-email": "Электронная почта",
+  "auth-password": "Пароль",
+  "auth-name": "Имя"
 }

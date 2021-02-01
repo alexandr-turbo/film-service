@@ -9,7 +9,9 @@
 <script>
 
 export default {
-  
+  created() {
+    this.$root.loading = false
+  }
 }
   
 </script>
@@ -20,7 +22,8 @@ export default {
   justify-content: center;
   align-items: center;
   font-size: 64px;
-  height: 65vh;
+  /* height: 65vh; */
+  height: calc(100vh - 390px); /* 310px - footer, 80px - searchbar */
   width: 100vw;
   color: black;
 }
