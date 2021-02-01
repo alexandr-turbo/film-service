@@ -1,6 +1,6 @@
 export default {
   state: {
-    locale: localStorage.getItem('locale') || ''
+    locale: localStorage.getItem('locale') || 'en-US'
   },
   mutations: {
     setLocale(state, locale) {

@@ -14,7 +14,6 @@
 <script>
 import SearchBarTemplate from "@/components/SearchBarTemplate.vue";
 import FooterTemplate from "@/components/FooterTemplate.vue";
-import { Bus } from '@/main'
 export default {
   components: {
     SearchBarTemplate,
@@ -49,10 +48,10 @@ export default {
   async created() {
     await this.$store.dispatch('loadMovieGenres')
     await this.$store.dispatch('loadTVShowsGenres')
-    if(!this.$store.state.locale.locale) {
-      this.$store.commit('setLocale', 'en-US')
-    }
-    Bus.$on('changeLocale', () => this.changeLocale())
+    // if(!this.$store.state.locale.locale) {
+    //   console.log(1)
+    //   this.$store.commit('setLocale', 'en-US')
+    // }
   },
 };
 </script>

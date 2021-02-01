@@ -1,6 +1,6 @@
 <template>
   <div class="search-bar-template">
-    <Auth @outside="clearForm" v-if="clicked">
+    <Auth @outside="clearForm(), hideForm()" v-if="clicked">
       <template class="flex2" v-slot:header>
         <div class="flex">
           <div class="auth__form-title" v-if="log">
@@ -35,9 +35,25 @@
             </div>
           </div>
           <div class="flex">
-            <button type="submit">{{'auth-submit' | localize}}</button>
+            <button class="auth__form-button" type="submit">{{'auth-submit' | localize}}</button>
           </div>
         </form>
+      </template>
+      <template v-slot:footer>
+        <!-- <div class="flex"> -->
+          <div class="flex3" v-if="log">
+            <div>
+              {{'auth-no-account' | localize}}
+            </div>
+            <div class="auth__form-link" @click="sign = true, log = false, clearForm()">{{'auth-register' | localize}}</div>
+          </div>
+          <div class="flex3" v-else-if="sign">
+            <div>
+              {{'auth-already-registered' | localize}}
+            </div>
+            <div class="auth__form-link" @click="log = true, sign = false, clearForm()">{{'auth-login' | localize}}</div>
+          </div>
+        <!-- </div> -->
       </template>
     </Auth>
     <router-link to="/">
@@ -127,8 +143,10 @@ export default {
     }
   },
   methods: {
-    clearForm() {
+    hideForm() {
       this.clicked = false
+    },
+    clearForm() {
       this.name = this.email = this.password = ''
       this.$v.$reset()
     },
@@ -156,6 +174,7 @@ export default {
         } catch (e) {}
       }
       this.clearForm()
+      this.hideForm()
       if (!Object.keys(this.$store.getters.info).length) {
         await this.$store.dispatch('fetchInfo')
       }
@@ -291,8 +310,10 @@ export default {
 .auth__form-title {
   margin-bottom: 20px;
 } 
-.auth__form-input {
+.auth__form-input,
+.auth__form-button {
   margin-bottom: 20px;
+  outline: none;
 } 
 .auth__form-validation-invalid {
   color: white;
@@ -308,5 +329,12 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+.flex3 {
+  display: flex;
+  justify-content: space-between;
+}
+.auth__form-link {
+  text-decoration: underline;
 }
 </style>
