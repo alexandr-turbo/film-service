@@ -1,59 +1,57 @@
 <template>
   <div class="search-bar-template">
     <Auth @outside="clearForm(), hideForm()" v-if="clicked">
-      <template class="flex2" v-slot:header>
-        <div class="flex">
-          <div class="auth__form-title" v-if="log">
+      <template v-slot:header>
+        <div class="search-bar-template__form-title-container">
+          <div class="search-bar-template__form-title" v-if="log">
             {{'auth-login' | localize}}
           </div>
-          <div class="auth__form-title" v-else-if="sign">
+          <div class="search-bar-template__form-title" v-else-if="sign">
             {{'auth-register' | localize}}
           </div>
         </div>
       </template>
-      <template class="flex2" v-slot:main>
+      <template v-slot:main>
         <form @submit.prevent="submit">
           <div v-if="log || sign">
-            <div class="auth__form-input-container">
+            <div class="search-bar-template__form-input-container">
               <div>{{'auth-email' | localize}}</div>
-              <input class="auth__form-input" type="text" v-model.trim="email" :class="{invalid: ($v.email.$dirty && !$v.email.required) || ($v.email.$dirty && !$v.email.email)}" />
-              <small class="auth__form-validation-invalid" v-if="$v.email.$dirty && !$v.email.required">{{'auth-email-is-required' | localize}}</small>
-              <small class="auth__form-validation-invalid" v-else-if="$v.email.$dirty && !$v.email.email">{{'auth-email-is-required' | localize}}</small>
+              <input class="search-bar-template__form-input" type="text" v-model.trim="email" :class="{invalid: ($v.email.$dirty && !$v.email.required) || ($v.email.$dirty && !$v.email.email)}" />
+              <small class="search-bar-template__form-validation-invalid" v-if="$v.email.$dirty && !$v.email.required">{{'auth-email-is-required' | localize}}</small>
+              <small class="search-bar-template__form-validation-invalid" v-else-if="$v.email.$dirty && !$v.email.email">{{'auth-email-is-required' | localize}}</small>
             </div>
-            <div class="auth__form-input-container">
+            <div class="search-bar-template__form-input-container">
               <div>{{'auth-password' | localize}}</div>
-              <input class="auth__form-input" type="password" v-model.trim="password" :class="{invalid: ($v.password.$dirty && !$v.password.required) || ($v.password.$dirty && !$v.password.minLength)}" />
-              <small class="auth__form-validation-invalid" v-if="$v.password.$dirty && !$v.password.required">{{'auth-password-is-required' | localize}}</small>
-              <small class="auth__form-validation-invalid" v-else-if="$v.password.$dirty && !$v.password.minLength">{{'auth-password-min-length1' | localize}} {{$v.password.$params.minLength.min}} {{'auth-password-min-length2' | localize}} {{ password.length }} {{'auth-password-min-length3' | localize}}</small>
+              <input class="search-bar-template__form-input" type="password" v-model.trim="password" :class="{invalid: ($v.password.$dirty && !$v.password.required) || ($v.password.$dirty && !$v.password.minLength)}" />
+              <small class="search-bar-template__form-validation-invalid" v-if="$v.password.$dirty && !$v.password.required">{{'auth-password-is-required' | localize}}</small>
+              <small class="search-bar-template__form-validation-invalid" v-else-if="$v.password.$dirty && !$v.password.minLength">{{'auth-password-min-length1' | localize}} {{$v.password.$params.minLength.min}} {{'auth-password-min-length2' | localize}} {{ password.length }} {{'auth-password-min-length3' | localize}}</small>
             </div>
           </div>
           <div v-if="sign">
-            <div class="auth__form-input-container">
+            <div class="search-bar-template__form-input-container">
               <div>{{'auth-name' | localize}}</div>
-              <input class="auth__form-input" type="text" v-model.trim="name" :class="{invalid: $v.name.$dirty && !$v.name.required}">
-              <small class="auth__form-validation-invalid" v-if="$v.name.$dirty && !$v.name.required">{{'auth-name-is-required' | localize}}</small>
+              <input class="search-bar-template__form-input" type="text" v-model.trim="name" :class="{invalid: $v.name.$dirty && !$v.name.required}">
+              <small class="search-bar-template__form-validation-invalid" v-if="$v.name.$dirty && !$v.name.required">{{'auth-name-is-required' | localize}}</small>
             </div>
           </div>
-          <div class="flex">
-            <button class="auth__form-button" type="submit">{{'auth-submit' | localize}}</button>
+          <div class="search-bar-template__form-button-container">
+            <button class="search-bar-template__form-button" type="submit">{{'auth-submit' | localize}}</button>
           </div>
         </form>
       </template>
       <template v-slot:footer>
-        <!-- <div class="flex"> -->
-          <div class="flex3" v-if="log">
-            <div>
-              {{'auth-no-account' | localize}}
-            </div>
-            <div class="auth__form-link" @click="sign = true, log = false, clearForm()">{{'auth-register' | localize}}</div>
+        <div class="search-bar-template__form-question" v-if="log">
+          <div>
+            {{'auth-no-account' | localize}}
           </div>
-          <div class="flex3" v-else-if="sign">
-            <div>
-              {{'auth-already-registered' | localize}}
-            </div>
-            <div class="auth__form-link" @click="log = true, sign = false, clearForm()">{{'auth-login' | localize}}</div>
+          <div class="search-bar-template__form-link" @click="sign = true, log = false, clearForm()">{{'auth-register' | localize}}</div>
+        </div>
+        <div class="search-bar-template__form-question" v-else-if="sign">
+          <div>
+            {{'auth-already-registered' | localize}}
           </div>
-        <!-- </div> -->
+          <div class="search-bar-template__form-link" @click="log = true, sign = false, clearForm()">{{'auth-login' | localize}}</div>
+        </div>
       </template>
     </Auth>
     <router-link to="/">
@@ -68,10 +66,6 @@
     <button class="toggle-language" @click="changeLocale">{{locale}}</button>
     <div class="search-bar-template-greating">
       <div> {{'search-bar-template-greating' | localize}}, {{username ? username : guest }}!</div>
-      <!-- <div class="arrow-down"></div> -->
-      <!-- <button v-if="!name" @click="login">
-        {{'search-bar-template-login' | localize}}
-      </button> -->
       <button v-if="!username" @click="log = true, sign = false, clicked = true">
         {{'search-bar-template-login' | localize}}
       </button>
@@ -82,16 +76,15 @@
         {{'search-bar-template-register' | localize}}
       </button>
     </div>
-    <form class="search-bar-template__form" @submit.prevent="send(query)">
-      <input class="search-bar-template__form-input" v-model="query" :placeholder="searchBarPlaceholder" />
-      <button class="search-bar-template__form-button" type="submit">
-        <img class="search-bar-template__form-button-image" src="@/assets/search.png" />
+    <form class="search-bar-template__search-form" @submit.prevent="send(query)">
+      <input class="search-bar-template__search-form-input" v-model="query" :placeholder="searchBarPlaceholder" />
+      <button class="search-bar-template__search-form-button" type="submit">
+        <img class="search-bar-template__search-form-button-image" src="@/assets/search.png" />
       </button>
     </form>
   </div>
 </template>
 <script>
-// import { Bus } from '@/main'
 import replaceAllToDash from '@/filters/replaceAllToDash'
 import localize from '@/filters/localize'
 import Auth from "@/components/Auth.vue";
@@ -104,8 +97,6 @@ export default {
       clicked: false,
       query: "",
       imgSrc: "",
-      // date: new Date(),
-      // interval: null,
       locale: '',
       guest: '',
       searchBarPlaceholder: '',
@@ -233,6 +224,36 @@ export default {
   background: var(--secondary-bg);
   position: relative;
 }
+.search-bar-template__form-title-container,
+.search-bar-template__form-button-container {
+  display: flex;
+  justify-content: center;
+}
+.search-bar-template__form-title {
+  margin-bottom: 20px;
+} 
+.search-bar-template__form-input-container {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+.search-bar-template__form-input,
+.search-bar-template__form-button {
+  margin-bottom: 20px;
+  outline: none;
+} 
+.search-bar-template__form-validation-invalid {
+  color: white;
+  position: absolute;
+  top: 40px;
+}
+.search-bar-template__form-question {
+  display: flex;
+  justify-content: space-between;
+}
+.search-bar-template__form-link {
+  text-decoration: underline;
+}
 .search-bar-template__home-link {
   position: absolute;
   height: 40px;
@@ -264,22 +285,16 @@ export default {
   /* top: calc(50% - (40px / 2)); */
   right: 20px;
 }
-.arrow-down {
-  width: 0; 
-  height: 0; 
-  border-left: 20px solid transparent;
-  border-right: 20px solid transparent;
-  
-  border-top: 20px solid #f00;
-}
 .search-bar-template-greating {
   display: flex;
 }
-.search-bar-template__form {
+
+
+.search-bar-template__search-form {
   display: flex;
   align-items: center;
 }
-.search-bar-template__form-input {
+.search-bar-template__search-form-input {
   height: 32px;
   width: 30vw;
   border: 0;
@@ -289,7 +304,7 @@ export default {
   padding-right: 100px;
   font-size: 18px;
 }
-.search-bar-template__form-button {
+.search-bar-template__search-form-button {
   border-radius: 20px;
   outline: none;
   padding: 9px 30px;
@@ -299,42 +314,10 @@ export default {
   display: flex;
   align-items: center;
 }
-.search-bar-template__form-button-image {
+.search-bar-template__search-form-button-image {
   height: 16px;
 }
-.auth__form-input-container {
-  display: flex;
-  flex-direction: column;
-  position: relative;
-}
-.auth__form-title {
-  margin-bottom: 20px;
-} 
-.auth__form-input,
-.auth__form-button {
-  margin-bottom: 20px;
-  outline: none;
-} 
-.auth__form-validation-invalid {
-  color: white;
-  position: absolute;
-  top: 40px;
-}
-.flex {
-  display: flex;
-  justify-content: center;
-}
-.flex2 {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-.flex3 {
-  display: flex;
-  justify-content: space-between;
-}
-.auth__form-link {
-  text-decoration: underline;
-}
+
+
+
 </style>
