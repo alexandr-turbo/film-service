@@ -62,19 +62,7 @@
     >
       <img class="search-bar-template__discover-link" src="@/assets/discover.png" />
     </router-link>
-    <button class="toggle-theme" />
-    <button class="toggle-language" @click="changeLocale">{{locale}}</button>
     <div class="search-bar-template-greating">
-      <div> {{'search-bar-template-greating' | localize}}, {{username ? username : guest }}!</div>
-      <button v-if="!username" @click="log = true, sign = false, clicked = true">
-        {{'search-bar-template-login' | localize}}
-      </button>
-      <button v-if="username" @click="logout">
-        {{'search-bar-template-logout' | localize}}
-      </button>
-      <button v-if="!username" @click="sign = true, log = false, clicked = true">
-        {{'search-bar-template-register' | localize}}
-      </button>
     </div>
     <form class="search-bar-template__search-form" @submit.prevent="send(query)">
       <input class="search-bar-template__search-form-input" v-model="query" :placeholder="searchBarPlaceholder" />
@@ -82,6 +70,31 @@
         <img class="search-bar-template__search-form-button-image" src="@/assets/search.png" />
       </button>
     </form>
+    <div class="user-photo-container search-bar-template__auth-tooltip-container">
+
+      <template v-if="username">
+        <img class="user-photo" src="@/assets/user.svg">
+        <div class="user-first-letter">{{firstLetter}}</div>
+      </template>
+      <template v-else-if="!username">
+        <img class="user-photo" src="@/assets/guest.svg">
+      </template>
+      <span class="search-bar-template__auth-tooltip">
+        <div> {{'search-bar-template-greating' | localize}}, {{username ? username : guest }}!</div>
+        <button class="search-bar-template__auth-button" v-if="!username" @click="log = true, sign = false, clicked = true">
+          {{'search-bar-template-login' | localize}}
+        </button>
+        <button class="search-bar-template__auth-button" v-if="username" @click="logout">
+          {{'search-bar-template-logout' | localize}}
+        </button>
+        <button class="search-bar-template__auth-button" v-if="!username" @click="sign = true, log = false, clicked = true">
+          {{'search-bar-template-register' | localize}}
+        </button>
+      </span>
+    </div>
+    <button class="toggle-theme" />
+    <img v-if="locale" :src="require(`@/assets/${locale}.png`)" class="toggle-language" @click="changeLocale">
+
   </div>
 </template>
 <script>
@@ -104,7 +117,8 @@ export default {
 			password: '',
       name: '',
       routeName: '',
-      username: ''
+      username: '',
+      userIconVisible: false
     };
   },
   validations() {
@@ -131,6 +145,11 @@ export default {
     },
     '$store.getters.info.name'() {
       this.username = this.$store.getters.info.name
+    }
+  },
+  computed: {
+    firstLetter() {
+      return this.username.charAt(0).toUpperCase()
     }
   },
   methods: {
@@ -183,10 +202,10 @@ export default {
     changeLocale() {
       if(this.$store.state.locale.locale === 'en-US') {
         this.$store.commit('setLocale', 'ru-RU')
-        this.locale = 'Ru'
+        this.locale = 'ru'
       } else if(this.$store.state.locale.locale === 'ru-RU') {
         this.$store.commit('setLocale', 'en-US')
-        this.locale = 'En'
+        this.locale = 'en'
       }
     }
   },
@@ -194,9 +213,9 @@ export default {
     this.guest = localize('search-bar-template-guest')
     this.searchBarPlaceholder = localize('search-bar-template-search-films')
     if(this.$store.state.locale.locale === 'ru-RU') {
-      this.locale = 'Ru'
+      this.locale = 'ru'
     } else if(this.$store.state.locale.locale === 'en-US') {
-      this.locale = 'En'
+      this.locale = 'en'
     }
     const toggleTheme = document.querySelector(".toggle-theme")
     let el = document.documentElement
@@ -246,6 +265,7 @@ export default {
   color: white;
   position: absolute;
   top: 40px;
+  font-size: 10px;
 }
 .search-bar-template__form-question {
   display: flex;
@@ -266,6 +286,23 @@ export default {
   top: calc(50% - (40px / 2));
   left: 70px;
 }
+.user-photo-container {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* top: calc(50% - (40px / 2)); */
+  right: 140px;
+}
+.user-photo {
+  height: 40px;
+  position: absolute;
+}
+.user-first-letter {
+  position: absolute;
+  /* top: calc(50% - (16px / 2));
+  right: 135px; */
+}
 .toggle-theme {
   width: 40px;
   height: 40px;
@@ -282,6 +319,8 @@ export default {
 }
 .toggle-language {
   position: absolute;
+  width: 40px;
+  height: 40px;
   /* top: calc(50% - (40px / 2)); */
   right: 20px;
 }
@@ -317,7 +356,41 @@ export default {
 .search-bar-template__search-form-button-image {
   height: 16px;
 }
+/* Tooltip text */
+.search-bar-template__auth-tooltip-container .search-bar-template__auth-tooltip {
+  visibility: hidden;
+  min-width: 200px;
+  background-color: var(--accent-color);
+  color: #fff;
+  /* text-align: center; */
+  padding: 20px;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+ 
+  /* Position the tooltip text - see examples below! */
+  position: absolute;
+  z-index: 1;
+  top: 30px;
+}
 
-
-
+/* Show the tooltip text when you mouse over the tooltip container */
+.search-bar-template__auth-tooltip-container:hover .search-bar-template__auth-tooltip {
+  visibility: visible;
+}
+.search-bar-template__auth-tooltip-container .search-bar-template__auth-tooltip::after {
+  content: " ";
+  position: absolute;
+  bottom: 100%;  /* At the top of the tooltip */
+  left: 50%;
+  margin-left: -10px;
+  border-width: 10px;
+  border-style: solid;
+  border-color: transparent transparent var(--accent-color) transparent;
+}
+.search-bar-template__auth-button {
+  margin-top: 20px;
+}
 </style>
