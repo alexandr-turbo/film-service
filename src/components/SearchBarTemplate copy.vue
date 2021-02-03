@@ -54,7 +54,7 @@
         </div>
       </template>
     </Auth>
-    <div class="a">
+    <div>
       <router-link to="/">
         <img class="search-bar-template__home-link" src="@/assets/home.png" />
       </router-link>
@@ -64,16 +64,13 @@
         <img class="search-bar-template__discover-link" src="@/assets/discover.png" />
       </router-link>
       <div class="search-bar-template__auth-tooltip-container">
-        <!-- <template v-if="username"> -->
-          <div class="user-first-letter">
-            {{username ? firstLetter : ''}}
-            <img v-if="username" class="user-photo" src="@/assets/user.svg">
-
-            <img v-else-if="!username" class="user-photo" src="@/assets/guest.svg">
-          </div>
-        <!-- </template>
-        <template v-else-if="!username"> -->
-        <!-- </template> -->
+        <template v-if="username">
+          <img class="user-photo" src="@/assets/user.svg">
+          <div class="user-first-letter">{{firstLetter}}</div>
+        </template>
+        <template v-else-if="!username">
+          <img class="user-photo" src="@/assets/guest.svg">
+        </template>
         <span class="search-bar-template__auth-tooltip">
           <div> {{'search-bar-template-greating' | localize}}, {{username ? username : guest }}!</div>
           <button class="search-bar-template__auth-button" v-if="!username" @click="log = true, sign = false, clicked = true">
@@ -237,41 +234,6 @@ export default {
 </script>
 <style scoped>
 @media (max-width: 640px) {
-  .search-bar-template__search-form-input {
-    height: 32px;
-    width: 50vw;
-    border: 0;
-    border-radius: 20px;
-    outline: none;
-    padding-left: 18px;
-    padding-right: 100px;
-    font-size: 18px;
-  }
-  .a {
-    display: flex;
-    justify-content: space-between;
-    width: 80vw;
-    /* flex-direction: row; */
-  }
-  .search-bar-template__auth-tooltip-container {
-    position: relative;
-    /* display: flex;
-    justify-content: center;
-    align-items: center; */
-    /* top: calc(50% - (40px / 2)); */
-    /* top: 50%; */
-    /* right: 140px; */
-  }
-  .user-first-letter {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 40px;
-    height: 40px;
-    /* top: calc(50% - (16px / 2));
-    right: 135px; */
-  }
   .search-bar-template {
     display: flex;
     flex-direction: column;
@@ -316,33 +278,6 @@ export default {
   }
 }
 @media (min-width: 641px) {
-  .search-bar-template__search-form-input {
-    height: 32px;
-    width: 30vw;
-    border: 0;
-    border-radius: 20px;
-    outline: none;
-    padding-left: 18px;
-    padding-right: 100px;
-    font-size: 18px;
-  }
-  .search-bar-template__auth-tooltip-container {
-    position: absolute;
-    /* display: flex;
-    justify-content: center;
-    align-items: center; */
-    top: calc(50% - (40px / 2));
-    /* top: 50%; */
-    right: 120px;
-  }
-  .user-first-letter {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    /* top: calc(50% - (16px / 2));
-    right: 135px; */
-  }
   .search-bar-template {
     display: flex;
     justify-content: center;
@@ -416,17 +351,23 @@ export default {
 .search-bar-template__form-link {
   text-decoration: underline;
 }
+
+
+.search-bar-template__auth-tooltip-container {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* top: calc(50% - (40px / 2)); */
+  top: 50%;
+  right: 140px;
+}
 .user-photo {
   height: 40px;
   position: absolute;
 }
 .user-first-letter {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 40px;
-  height: 40px;
+  position: absolute;
   /* top: calc(50% - (16px / 2));
   right: 135px; */
 }
@@ -441,7 +382,16 @@ export default {
   display: flex;
   align-items: center;
 }
-
+.search-bar-template__search-form-input {
+  height: 32px;
+  width: 30vw;
+  border: 0;
+  border-radius: 20px;
+  outline: none;
+  padding-left: 18px;
+  padding-right: 100px;
+  font-size: 18px;
+}
 .search-bar-template__search-form-button {
   border-radius: 20px;
   outline: none;
@@ -472,12 +422,7 @@ export default {
   /* Position the tooltip text - see examples below! */
   position: absolute;
   z-index: 1;
-  top: 50px;
-  /* left: calc(100% - 20px); */
-  /* right: 50%;
-  left: 50%; */
-  /* left: 0; */
-  right: -100px;
+  top: 30px;
 }
 
 /* Show the tooltip text when you mouse over the tooltip container */
