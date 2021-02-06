@@ -1,16 +1,12 @@
 <template>
-  <!-- <div v-if="popular1.length"> -->
   <div v-if="popular.length">
     <slick class="slick" ref="slick" :options="slickOptionsUpper">
-      <!-- <div v-for="item in popular1" :key="item.id"> -->
       <div v-for="item in popular" :key="item.id">
-        <router-link
+        <div
           class="home-upper-slick-template"
-          tag="div"
-          :to="{
-            name: 'film',
-            params: { filmID: item.id, filmType: item.media_type },
-          }"
+          @mousedown="clickable = true"
+          @mousemove="clickable = false"
+          @mouseup="clickable ? $router.push(`details/${item.media_type}/${item.id}`) : ''"
         >
           <img
             class="home-upper-slick-template__poster"
@@ -21,10 +17,9 @@
             <div v-if="item.title || item.name || item.original_title || item.original_name">
               {{ item.title || item.name || item.original_title || item.original_name }}
             </div>
-            <!-- <div class="home-upper-slick-template__genres">{{ getCurrentMediaTypeGenresNames(genres1, item.genre_ids) }}</div> -->
             <div class="home-upper-slick-template__genres">{{ getCurrentMediaTypeGenresNames(genres, item.genre_ids) }}</div>
           </div>
-        </router-link>
+        </div>
       </div>
     </slick>
   </div>
@@ -32,44 +27,25 @@
 
 <script>
 import Slick from "vue-slick";
-// import { Bus } from '@/main'
 export default {
   data() {
     return {
+      clickable: undefined,
       slickOptionsUpper: {
         slidesToShow: 1,
         infinite: true,
         autoplay: true,
-        autoplaySpeed: 3000,
+        autoplaySpeed: 5000,
         arrows: false,
-        draggable: false,
+        draggable: true,
         lazyLoad: "ondemand",
       },
-      // genres1: [],
-      // popular1: {}
     };
   },
   props: ["genres", "popular"],
   components: {
     Slick,
   },
-  // created() {
-  //   this.genres1 = this.genres
-  //   this.popular1 = this.popular
-  // },
-  // mounted() {
-  //   this.genres1 = this.genres
-  //   this.popular1 = this.popular
-  //   Bus.$on('changeLocale', () => this.changeLocale())
-  // },
-  // methods: {
-  //   changeLocale() {
-  //     this.genres1 = []
-  //     this.genres1 = this.genres
-  //     this.popular1 = {}
-  //     this.popular1 = this.popular
-  //   }
-  // }
 };
 </script>
 <style scoped>
@@ -80,6 +56,7 @@ export default {
   position: relative;
 }
 .home-upper-slick-template__poster {
+  cursor: pointer;
   height: 100%;
   width: 100%;
 }
@@ -94,5 +71,8 @@ export default {
 }
 .home-upper-slick-template__genres {
   text-transform: capitalize;
+}
+.d {
+  pointer-events: none;
 }
 </style>

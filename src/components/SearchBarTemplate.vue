@@ -263,6 +263,7 @@ export default {
     /* right: 140px; */
   }
   .user-first-letter {
+    cursor: pointer;
     position: relative;
     display: flex;
     justify-content: center;
@@ -294,6 +295,7 @@ export default {
     left: 70px; */
   }
   .toggle-theme {
+    cursor: pointer;
     width: 40px;
     height: 40px;
     padding: 0;
@@ -308,6 +310,7 @@ export default {
     right: 70px; */
   }
   .toggle-language {
+    cursor: pointer;
     position: unset;
     width: 40px;
     height: 40px;
@@ -336,10 +339,13 @@ export default {
     right: 120px;
   }
   .user-first-letter {
+    cursor: pointer;
     position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 40px;
+    height: 40px;
     /* top: calc(50% - (16px / 2));
     right: 135px; */
   }
@@ -364,6 +370,7 @@ export default {
     left: 70px;
   }
   .toggle-theme {
+    cursor: pointer;
     width: 40px;
     height: 40px;
     padding: 0;
@@ -378,6 +385,7 @@ export default {
     right: 70px;
   }
   .toggle-language {
+    cursor: pointer;
     position: absolute;
     width: 40px;
     height: 40px;
@@ -400,9 +408,16 @@ export default {
 }
 .search-bar-template__form-input,
 .search-bar-template__form-button {
-  margin-bottom: 20px;
   outline: none;
-} 
+  border: none;
+  min-width: 200px;
+  color: var(--accent-color);
+  margin-bottom: 20px;
+}
+.search-bar-template__form-button {
+  border-radius: 6px;
+  min-height: 24px;
+}
 .search-bar-template__form-validation-invalid {
   color: white;
   position: absolute;
@@ -420,17 +435,6 @@ export default {
   height: 40px;
   position: absolute;
 }
-.user-first-letter {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 40px;
-  height: 40px;
-  /* top: calc(50% - (16px / 2));
-  right: 135px; */
-}
-
 
 .search-bar-template-greating {
   display: flex;
@@ -443,6 +447,7 @@ export default {
 }
 
 .search-bar-template__search-form-button {
+  cursor: pointer;
   border-radius: 20px;
   outline: none;
   padding: 9px 30px;
@@ -495,6 +500,14 @@ export default {
   border-color: transparent transparent var(--accent-color) transparent;
 }
 .search-bar-template__auth-button {
+  /* border-radius: 20px; */
+  cursor: pointer;
+  outline: none;
+  border: none;
+  min-width: 200px;
   margin-top: 20px;
+  border-radius: 6px;
+  color: var(--accent-color);
+  min-height: 24px;
 }
 </style>

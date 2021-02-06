@@ -1,5 +1,5 @@
 <template>
-  <div class="search">
+  <div class="search" :class="{'search1': !searchResultPage.total_results}">
     <div class="container">
       <div class="search__results-title" v-if="searchResultPage.total_results">
         {{'search-results' | localize}} {{ searchQuery | replaceAllToSpace }}
@@ -257,5 +257,14 @@ export default {
 }
 .search__page-button--next::after {
   content: ">>";
+}
+.search1 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 32px;
+  /* height: 65vh; */
+  height: calc(100vh - 390px); /* 310px - footer, 80px - searchbar */
+  width: 100vw;
 }
 </style>

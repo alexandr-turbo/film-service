@@ -18,7 +18,15 @@
           <SlickTemplate :cast="cast" />
         </div>
         <div v-if="trailers.length">
-          <FilmTrailersSlickTemplate :trailers="trailers" />
+          <div class="film-trailers-slick-template__title">{{'film-trailers-slick-template-trailers' | localize}}</div>
+          <div v-for="item in trailers" :key="item.id">
+            <iframe
+              :width="iFrameWidth"
+              :height="iFrameWidth/16*9"
+              :src="`https://www.youtube.com/embed/${item.key}`"
+            ></iframe>
+            <div class="film-trailer-cover-template__trailer-title">{{ item.name }}</div>
+          </div>
         </div>
         <div class="film__title" v-if="reviews && reviews.length">
           {{'film-reviews' | localize}}
@@ -34,7 +42,6 @@
 <script>
 import axios from "axios";
 import SlickTemplate from "../components/SlickTemplate.vue";
-import FilmTrailersSlickTemplate from "../components/FilmTrailersSlickTemplate.vue";
 import FilmReviewTemplate from "../components/FilmReviewTemplate.vue";
 export default {
   data() {
@@ -46,19 +53,17 @@ export default {
       trailers: [],
       reviews: [],
       isvisible: true,
-      loc: ''
+      loc: '',
+      windowWidth: 0,
+      iFrameWidth: 0
     };
   },
   components: {
     SlickTemplate,
-    FilmTrailersSlickTemplate,
     FilmReviewTemplate,
   },
   props: ["filmID", "filmType"],
   methods: {
-    // met() {
-    //   this.loc = localStorage.getItem('locale')
-    // }
     async changeLocale() {
       this.$root.loading = true
       this.loc = this.$store.state.locale.locale
@@ -121,7 +126,15 @@ export default {
         .then((response) => {
           this.reviews = response.data.results;
         });
-    }
+    },
+    getWindowWidth(event) {
+      this.windowWidth = document.documentElement.clientWidth;
+      console.log(this.windowWidth)
+      this.windowWidth > 479 ? this.iFrameWidth = this.windowWidth * 0.8 : this.iFrameWidth = this.windowWidth * 0.9
+    },
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.getWindowWidth);
   },
   watch: {
     '$store.state.locale.locale'() {
@@ -129,7 +142,7 @@ export default {
       this.changeLocale()
     },
   },
-  async created() {
+  async mounted() {
     this.loc = this.$store.state.locale.locale
     let p1 = await this.getCurrentFilm()
     this.getGenres()
@@ -137,6 +150,12 @@ export default {
     let p3 = await this.getTrailers()
     let p4 = await this.getReviews()
     Promise.all([p1, p2, p3, p4]).then(this.$root.loading = false)
+    this.$nextTick(function() {
+      window.addEventListener('resize', this.getWindowWidth);
+
+      //Init
+      this.getWindowWidth()
+    })
   },
 };
 </script>
@@ -162,5 +181,43 @@ export default {
   .film__title {
     text-align: center;
   }
+}
+
+
+.film-trailers-slick-template__title {
+  margin-top: 50px;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+}
+@media (max-width: 539px) {
+  .film-trailers-slick-template__title {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+}
+
+
+
+.film-trailer-cover-template__trailer-container {
+  display: flex;
+  justify-content: center;
+  margin: 20px auto 0;
+}
+@media (max-width: 539px) {
+  .film-trailer-cover-template__trailer {
+    width: 250px;
+    /* height: 240px; */
+  }
+}
+@media (min-width: 540px) {
+  .film-trailer-cover-template__trailer {
+    width: 320px;
+    /* height: 240px; */
+  }
+}
+.film-trailer-cover-template__trailer-title {
+  text-align: center;
+  margin: 10px auto 50px;
+  /* color: var(--main-text-color); */
 }
 </style>

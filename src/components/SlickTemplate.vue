@@ -34,7 +34,7 @@ export default {
       slickOptions: {
         slidesToShow: 7,
         infinite: true,
-        draggable: false,
+        draggable: true,
         lazyLoad: "ondemand",
         responsive: [
           {

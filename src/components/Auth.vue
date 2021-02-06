@@ -38,7 +38,8 @@
     background: rgba(0, 0, 0, 0.5);
   }
   .ac {
-    border-radius: 20px;
+    /* border-radius: 20px; */
+    border-radius: 6px;
     background: var(--accent-color);
     min-width: 280px;
     min-height: auto;

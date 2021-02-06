@@ -1,16 +1,12 @@
 <template>
   <div class="cover-template2__container">
-    <router-link
+    <div
       v-if="!item.media_type"
-      tag="div"
       class="cover-template2"
       :title="item.bio"
-      :to="{
-        name: 'actor',
-        params: {
-          actorID: item.id,
-        },
-      }"
+      @mousedown="clickable = true"
+      @mousemove="clickable = false"
+      @mouseup="clickable ? $router.push(`/person/${item.id}`) : ''"
     >
       <img
         v-if="item.profile_path && item.profile_path !== ''"
@@ -23,19 +19,14 @@
         src="@/assets/no-image.png"
       />
       <div class="cover-template2__title">{{ item.name }}</div>
-    </router-link>
-    <router-link
+    </div>
+    <div
       v-else-if="item.media_type"
-      tag="div"
       class="cover-template2"
       :title="item.overview"
-      :to="{
-        name: 'film',
-        params: {
-          filmID: item.id,
-          filmType: item.media_type,
-        },
-      }"
+      @mousedown="clickable = true"
+      @mousemove="clickable = false"
+      @mouseup="clickable ? $router.push(`details/${item.media_type}/${item.id}`) : ''"
     >
       <img
         v-if="item.poster_path && item.poster_path !== ''"
@@ -53,11 +44,16 @@
       <div class="cover-template2__genres">
         {{ getCurrentMediaTypeGenresNames(genres, item.genre_ids) }}
       </div>
-    </router-link>
+    </div>
   </div>
 </template>
 <script>
 export default {
+  data() {
+    return {
+      clickable: true
+    }
+  },
   props: ["genres", "item"],
 };
 </script>
@@ -66,6 +62,9 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+.cover-template2__container:focus {
+  outline: none;
 }
 .cover-template2 {
   margin: 10px auto;
