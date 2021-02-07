@@ -1,6 +1,6 @@
 <template>
   <div class="search-bar-template">
-    <Auth @outside="clearForm(), hideForm()" v-if="clicked">
+    <Modal @outside="clearForm(), hideForm()" v-if="clicked">
       <template v-slot:header>
         <div class="search-bar-template__form-title-container">
           <div class="search-bar-template__form-title" v-if="log">
@@ -53,27 +53,23 @@
           <div class="search-bar-template__form-link" @click="log = true, sign = false, clearForm()">{{'auth-login' | localize}}</div>
         </div>
       </template>
-    </Auth>
+    </Modal>
     <div class="a">
       <router-link to="/">
-        <img class="search-bar-template__home-link" src="@/assets/home.png" />
+        <img title="Home" class="search-bar-template__home-link" src="@/assets/home.png" />
       </router-link>
       <router-link
         to="/discover?mediatype=movie&sort_by=popularity.desc&vote_average=&with_people=&with_genres=&year=&page=1"
       >
-        <img class="search-bar-template__discover-link" src="@/assets/discover.png" />
+        <img title="Discover" class="search-bar-template__discover-link" src="@/assets/discover.png" />
       </router-link>
       <div class="search-bar-template__auth-tooltip-container">
-        <!-- <template v-if="username"> -->
-          <div class="user-first-letter">
-            {{username ? firstLetter : ''}}
-            <img v-if="username" class="user-photo" src="@/assets/user.svg">
+        <div class="user-first-letter">
+          {{username ? firstLetter : ''}}
+          <img v-if="username" class="user-photo" src="@/assets/user.svg">
 
-            <img v-else-if="!username" class="user-photo" src="@/assets/guest.svg">
-          </div>
-        <!-- </template>
-        <template v-else-if="!username"> -->
-        <!-- </template> -->
+          <img v-else-if="!username" class="user-photo" src="@/assets/guest.svg">
+        </div>
         <span class="search-bar-template__auth-tooltip">
           <div> {{'search-bar-template-greating' | localize}}, {{username ? username : guest }}!</div>
           <button class="search-bar-template__auth-button" v-if="!username" @click="log = true, sign = false, clicked = true">
@@ -87,8 +83,8 @@
           </button>
         </span>
       </div>
-      <button class="toggle-theme" />
-      <img v-if="locale" :src="require(`@/assets/${locale}.png`)" class="toggle-language" @click="changeLocale">
+      <button title="Change theme" class="toggle-theme" />
+      <img title="Change locale" v-if="locale" :src="require(`@/assets/${locale}.png`)" class="toggle-language" @click="changeLocale">
     </div>
     <form class="search-bar-template__search-form" @submit.prevent="send(query)">
       <input class="search-bar-template__search-form-input" v-model="query" :placeholder="searchBarPlaceholder" />
@@ -101,7 +97,7 @@
 <script>
 import replaceAllToDash from '@/filters/replaceAllToDash'
 import localize from '@/filters/localize'
-import Auth from "@/components/Auth.vue";
+import Modal from "@/components/Modal.vue";
 import { email, required, minLength } from "vuelidate/lib/validators";
 export default {
   data() {
@@ -137,7 +133,7 @@ export default {
     }
   },
   components: {
-    Auth
+    Modal
   },
   watch: {
     '$store.state.locale.locale'() {
@@ -463,7 +459,7 @@ export default {
 /* Tooltip text */
 .search-bar-template__auth-tooltip {
   visibility: hidden;
-  min-width: 200px;
+  min-width: 100px;
   background-color: var(--accent-color);
   color: #fff;
   /* text-align: center; */
