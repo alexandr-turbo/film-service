@@ -6,18 +6,38 @@
           class="home-upper-slick-template"
           @mousedown="clickable = true"
           @mousemove="clickable = false"
-          @mouseup="clickable ? $router.push(`details/${item.media_type}/${item.id}`) : ''"
+          @mouseup="
+            clickable
+              ? $router.push(`details/${item.media_type}/${item.id}`)
+              : ''
+          "
         >
           <img
             class="home-upper-slick-template__poster"
             :src="`${globalImgAddress}1280${item.backdrop_path}`"
           />
           <div class="home-upper-slick-template__bio">
-            <div class="home-upper-slick-template__title">{{'home-upper-slick-template-title' | localize}}</div>
-            <div v-if="item.title || item.name || item.original_title || item.original_name">
-              {{ item.title || item.name || item.original_title || item.original_name }}
+            <div class="home-upper-slick-template__title">
+              {{ "home-upper-slick-template-title" | localize }}
             </div>
-            <div class="home-upper-slick-template__genres">{{ getCurrentMediaTypeGenresNames(genres, item.genre_ids) }}</div>
+            <div
+              v-if="
+                item.title ||
+                  item.name ||
+                  item.original_title ||
+                  item.original_name
+              "
+            >
+              {{
+                item.title ||
+                  item.name ||
+                  item.original_title ||
+                  item.original_name
+              }}
+            </div>
+            <div class="home-upper-slick-template__genres">
+              {{ getCurrentMediaTypeGenresNames(genres, item.genre_ids) }}
+            </div>
           </div>
         </div>
       </div>

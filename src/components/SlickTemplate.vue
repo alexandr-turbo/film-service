@@ -2,7 +2,7 @@
   <div>
     <div v-if="cast">
       <div class="slick-template__title">
-        {{'slick-template-cast' | localize}}
+        {{ "slick-template-cast" | localize }}
       </div>
       <slick class="slick" ref="slick" :options="slickOptions">
         <div v-for="item in cast" :key="item.cast_id">
@@ -12,7 +12,7 @@
     </div>
     <div v-else-if="filmsArray && filmsArray.length">
       <div class="slick-template__title">
-        {{typeName}}
+        {{ typeName }}
       </div>
       <slick class="slick" ref="slick" :options="slickOptions">
         <div v-for="item in filmsArray" :key="item.id">
@@ -26,7 +26,7 @@
 <script>
 import Slick from "vue-slick";
 import CoverTemplate2 from "../components/CoverTemplate2.vue";
-import localize from '@/filters/localize'
+import localize from "@/filters/localize";
 
 export default {
   data() {
@@ -84,9 +84,9 @@ export default {
   props: ["cast", "filmSlickTitle", "genres", "filmsArray"],
   computed: {
     typeName() {
-      return localize('slick-template-' + this.filmSlickTitle)
-    }
-  }
+      return localize("slick-template-" + this.filmSlickTitle);
+    },
+  },
 };
 </script>
 <style scoped>

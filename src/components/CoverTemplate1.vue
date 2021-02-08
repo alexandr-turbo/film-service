@@ -20,7 +20,7 @@
         {{ item.title || item.name }}
       </div>
       <div v-else class="cover-template1__film-title">
-        {{'cover-template-1-db' | localize}}
+        {{ "cover-template-1-db" | localize }}
       </div>
     </router-link>
     <router-link
@@ -37,19 +37,30 @@
         v-if="item.poster_path && item.poster_path !== ''"
         class="cover-template1__poster"
         :src="`${globalImgAddress}154${item.poster_path}`"
-        
       />
       <img v-else class="cover-template1__poster" src="@/assets/no-image.png" />
-      <div v-if="item.title || item.name || item.original_title || item.original_name" class="cover-template1__film-title">
-        {{ item.title || item.name || item.original_title || item.original_name }}
+      <div
+        v-if="
+          item.title || item.name || item.original_title || item.original_name
+        "
+        class="cover-template1__film-title"
+      >
+        {{
+          item.title || item.name || item.original_title || item.original_name
+        }}
       </div>
       <div v-else class="cover-template1__film-title">
-        {{'cover-template-1-db' | localize}}
+        {{ "cover-template-1-db" | localize }}
       </div>
-      <div v-if="item.genre_ids && item.genre_ids !== '' && item.genre_ids.length" class="cover-template1__film-title">
+      <div
+        v-if="item.genre_ids && item.genre_ids !== '' && item.genre_ids.length"
+        class="cover-template1__film-title"
+      >
         {{ getCurrentMediaTypeGenresNames(genres, item.genre_ids) }}
       </div>
-      <div v-else class="cover-template1__film-title">{{'cover-template-1-genres-are-not-provided' | localize}}</div>
+      <div v-else class="cover-template1__film-title">
+        {{ "cover-template-1-genres-are-not-provided" | localize }}
+      </div>
     </router-link>
     <router-link
       v-else-if="searchQuery === 'popular_people'"
@@ -67,19 +78,13 @@
         v-if="item.profile_path && item.profile_path !== ''"
         class="cover-template1__poster"
         :src="`${globalImgAddress}154${item.profile_path}`"
-        
       />
-      <img
-        v-else
-        class="cover-template1__poster"
-        src="@/assets/no-image.png"
-      />
+      <img v-else class="cover-template1__poster" src="@/assets/no-image.png" />
       <div class="cover-template1__film-title">{{ item.name }}</div>
     </router-link>
   </div>
 </template>
 <script>
-
 export default {
   props: ["item", "genres", "searchQuery"],
 };

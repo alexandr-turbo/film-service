@@ -1,8 +1,8 @@
 <template>
-  <div class="search" :class="{'search1': !searchResultPage.total_results}">
+  <div class="search" :class="{ search1: !searchResultPage.total_results }">
     <div class="container">
       <div class="search__results-title" v-if="searchResultPage.total_results">
-        {{'search-results' | localize}} {{ searchQuery | replaceAllToSpace }}
+        {{ "search-results" | localize }} {{ searchQuery | replaceAllToSpace }}
       </div>
       <div class="search__results" v-if="searchResultPage.total_results">
         <div
@@ -13,14 +13,12 @@
           <CoverTemplate1
             :searchQuery="searchQuery"
             :item="item"
-            :genres="
-              item.media_type === 'movie' ? movieGenres : tvshowGenres
-            "
+            :genres="item.media_type === 'movie' ? movieGenres : tvshowGenres"
           />
         </div>
       </div>
       <div class="search__results-title" v-else>
-        {{'search-nothing-found' | localize}}
+        {{ "search-nothing-found" | localize }}
       </div>
       <div v-if="searchResultPage.page" class="search__page-buttons">
         <button
@@ -28,14 +26,14 @@
           v-if="searchResultPage.page > 1"
           @click="getPreviousPageSearchResults()"
         >
-          {{'search-previous' | localize}}
+          {{ "search-previous" | localize }}
         </button>
         <button
           class="search__page-button search__page-button--next"
           v-if="searchResultPage.page < searchResultPage.total_pages"
           @click="getNextPageSearchResults()"
         >
-          {{'search-next' | localize}}
+          {{ "search-next" | localize }}
         </button>
       </div>
     </div>
@@ -56,7 +54,7 @@ export default {
       searchQuery: "",
       pageNumber: "",
       key: process.env.VUE_APP_MOVIEDB,
-      locale: ''
+      locale: "",
     };
   },
   components: {
@@ -65,28 +63,34 @@ export default {
   watch: {
     $route() {
       // if (this.$route.fullPath.indexOf("?") !== -1) {
-      if(Object.values(this.$route.query)[1] !== null && Object.keys(this.$route.query).length > 1) {
+      if (
+        Object.values(this.$route.query)[1] !== null &&
+        Object.keys(this.$route.query).length > 1
+      ) {
         this.getSearchQuery();
         this.getPageNumber();
         this.getPageSearchResults(this.searchQuery, this.pageNumber);
       } else {
-        this.searchResultPage = {}
+        this.searchResultPage = {};
         this.$root.loading = false;
       }
     },
-    '$store.getters.locale'() {
-      this.changeLocale()
+    "$store.getters.locale"() {
+      this.changeLocale();
     },
   },
   created() {
-    this.locale = this.$store.getters.locale
+    this.locale = this.$store.getters.locale;
     // if(Object.values(this.$route.query)[1] !== null) {
-      if(Object.values(this.$route.query)[1] !== null && Object.keys(this.$route.query).length > 1) {
+    if (
+      Object.values(this.$route.query)[1] !== null &&
+      Object.keys(this.$route.query).length > 1
+    ) {
       this.getSearchQuery();
       this.getPageNumber();
       this.getPageSearchResults(this.searchQuery, this.pageNumber);
     } else {
-      this.searchResultPage = {}
+      this.searchResultPage = {};
       this.$root.loading = false;
     }
     this.movieGenres = this.$store.getters.MovieGenres;
@@ -94,42 +98,42 @@ export default {
   },
   methods: {
     async changeLocale() {
-      this.$root.loading = true
-      this.locale = this.$store.getters.locale
-      if(Object.values(this.$route.query)[1] !== null) {
+      this.$root.loading = true;
+      this.locale = this.$store.getters.locale;
+      if (Object.values(this.$route.query)[1] !== null) {
         this.getSearchQuery();
         this.getPageNumber();
         this.getPageSearchResults(this.searchQuery, this.pageNumber);
       } else {
-        this.$root.loading = false
+        this.$root.loading = false;
       }
-      await this.$store.dispatch('loadMovieGenres')
+      await this.$store.dispatch("loadMovieGenres");
       this.movieGenres = this.$store.getters.MovieGenres;
-      await this.$store.dispatch('loadTVShowsGenres')
+      await this.$store.dispatch("loadTVShowsGenres");
       this.tvshowGenres = this.$store.getters.TVShowGenres;
     },
     getSearchQuery() {
-      this.searchQuery = Object.keys(this.$route.query)[0]
+      this.searchQuery = Object.keys(this.$route.query)[0];
     },
     getPageNumber() {
-      this.pageNumber = this.$route.query.page
+      this.pageNumber = this.$route.query.page;
     },
     increasePageNumber() {
-      this.pageNumber = this.$route.query.page
-      this.pageNumber++
+      this.pageNumber = this.$route.query.page;
+      this.pageNumber++;
     },
     decreasePageNumber() {
-      this.pageNumber = this.$route.query.page
-      this.pageNumber--
+      this.pageNumber = this.$route.query.page;
+      this.pageNumber--;
     },
     async getFilmsList(query, page) {
-      let a, b
-      if (query.includes('movies')) {
-        a = query.slice(0, query.indexOf('movies') - 1)
-        b = 'movie'
-      } else if (query.includes('tv_shows')) {
-        a = query.slice(0, query.indexOf('tv_shows') - 1)
-        b = 'tv'
+      let a, b;
+      if (query.includes("movies")) {
+        a = query.slice(0, query.indexOf("movies") - 1);
+        b = "movie";
+      } else if (query.includes("tv_shows")) {
+        a = query.slice(0, query.indexOf("tv_shows") - 1);
+        b = "tv";
       }
       await axios
         .get(
@@ -137,8 +141,8 @@ export default {
         )
         .then((response) => {
           this.searchResultPage = response.data;
-          for(let i = 0; i < this.searchResultPage.results.length; i++) {
-            this.searchResultPage.results[i].media_type = b
+          for (let i = 0; i < this.searchResultPage.results.length; i++) {
+            this.searchResultPage.results[i].media_type = b;
           }
         });
     },
@@ -150,21 +154,25 @@ export default {
         .then((response) => {
           this.searchResultPage = response.data;
           for (let i = 0; i < this.searchResultPage.results.length; i++) {
-          axios
-            .get(
-              `${this.globalAPIMovieDBAddress}/3/person/${this.searchResultPage.results[i].id}?api_key=${this.key}&language=${this.locale}`
-            )
-            .then((response) => {
-              this.$set(this.searchResultPage.results[i], 'bio', response.data.biography)
-            });
-        }
+            axios
+              .get(
+                `${this.globalAPIMovieDBAddress}/3/person/${this.searchResultPage.results[i].id}?api_key=${this.key}&language=${this.locale}`
+              )
+              .then((response) => {
+                this.$set(
+                  this.searchResultPage.results[i],
+                  "bio",
+                  response.data.biography
+                );
+              });
+          }
         });
     },
     async getPageSearchResults(query, page) {
-      if(query.includes('movies') || query.includes('tv_shows')) {
-        this.getFilmsList(query, page)
-      } else if(query.includes('popular_people')) {
-        this.getPopularPeopleList(page)
+      if (query.includes("movies") || query.includes("tv_shows")) {
+        this.getFilmsList(query, page);
+      } else if (query.includes("popular_people")) {
+        this.getPopularPeopleList(page);
       } else {
         await axios
           .get(
@@ -174,7 +182,7 @@ export default {
             this.searchResultPage = response.data;
           });
       }
-      this.$root.loading = false
+      this.$root.loading = false;
     },
     async getNextPageSearchResults() {
       this.getSearchQuery();
@@ -263,7 +271,6 @@ export default {
   justify-content: center;
   align-items: center;
   font-size: 32px;
-  /* height: 65vh; */
   height: calc(100vh - 390px); /* 310px - footer, 80px - searchbar */
   width: 100vw;
 }

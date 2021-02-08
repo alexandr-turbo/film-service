@@ -159,7 +159,7 @@ export default {
       locale: "",
       b: "",
       c: "",
-      arr2: []
+      arr2: [],
     };
   },
   components: {
@@ -331,14 +331,47 @@ export default {
     }
   },
   methods: {
-    isTrue(){
-      let arr = Object.keys(this.$route.query)
-      if(this.$route.query.mediatype && this.$route.query.mediatype === "movie") {
-        this.arr2 = ["mediatype", "page", "sort_by", "vote_average", "with_genres", "with_people", "year"]
-        return this.arr2.every(i => arr.includes(i)) && this.movieSortOptions.some(i => i.value === this.$route.query.sort_by) && this.$route.query.page;
-      } else if(this.$route.query.mediatype && this.$route.query.mediatype === "tv") {
-        this.arr2 = ["mediatype", "page", "sort_by", "vote_average", "with_genres", "first_air_date_year"]
-        return this.arr2.every(i => arr.includes(i)) && this.tvSortOptions.some(i => i.value === this.$route.query.sort_by) && this.$route.query.page;
+    isTrue() {
+      let arr = Object.keys(this.$route.query);
+      if (
+        this.$route.query.mediatype &&
+        this.$route.query.mediatype === "movie"
+      ) {
+        this.arr2 = [
+          "mediatype",
+          "page",
+          "sort_by",
+          "vote_average",
+          "with_genres",
+          "with_people",
+          "year",
+        ];
+        return (
+          this.arr2.every((i) => arr.includes(i)) &&
+          this.movieSortOptions.some(
+            (i) => i.value === this.$route.query.sort_by
+          ) &&
+          this.$route.query.page
+        );
+      } else if (
+        this.$route.query.mediatype &&
+        this.$route.query.mediatype === "tv"
+      ) {
+        this.arr2 = [
+          "mediatype",
+          "page",
+          "sort_by",
+          "vote_average",
+          "with_genres",
+          "first_air_date_year",
+        ];
+        return (
+          this.arr2.every((i) => arr.includes(i)) &&
+          this.tvSortOptions.some(
+            (i) => i.value === this.$route.query.sort_by
+          ) &&
+          this.$route.query.page
+        );
       }
     },
 

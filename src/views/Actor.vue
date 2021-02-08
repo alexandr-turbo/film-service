@@ -4,11 +4,23 @@
       <div class="container">
         <ActorInfoTemplate :actor="actor" />
         <div class="actor__buttons">
-          <button class="actor__switch-button" v-if="roles.length" @click="cast = true">{{'actor-cast' | localize}}</button>
-          <button class="actor__switch-button" v-if="crews.length" @click="cast = false">{{'actor-crew' | localize}}</button>
+          <button
+            class="actor__switch-button"
+            v-if="roles.length"
+            @click="cast = true"
+          >
+            {{ "actor-cast" | localize }}
+          </button>
+          <button
+            class="actor__switch-button"
+            v-if="crews.length"
+            @click="cast = false"
+          >
+            {{ "actor-crew" | localize }}
+          </button>
         </div>
         <template v-if="cast">
-          <div class="actor__title">{{'actor-cast' | localize}}</div>
+          <div class="actor__title">{{ "actor-cast" | localize }}</div>
           <div v-for="(role, index) in lazyRolesArray" :key="index">
             <ActorCastCrewTemplate
               v-if="role && role.media_type"
@@ -19,7 +31,7 @@
           </div>
         </template>
         <template v-if="!cast">
-          <div class="actor__title">{{'actor-crew' | localize}}</div>
+          <div class="actor__title">{{ "actor-crew" | localize }}</div>
           <div v-for="(crew, index) in lazyCrews" :key="index">
             <ActorCastCrewTemplate
               v-if="crew && crew.media_type"
@@ -39,8 +51,8 @@ import axios from "axios";
 import ActorInfoTemplate from "../components/ActorInfoTemplate.vue";
 import ActorCastCrewTemplate from "../components/ActorCastCrewTemplate.vue";
 
-const ROLES_ONLOAD_COUNT = 5
-const CREWS_ONLOAD_COUNT = 5
+const ROLES_ONLOAD_COUNT = 5;
+const CREWS_ONLOAD_COUNT = 5;
 export default {
   data: () => ({
     cast: true,
@@ -55,11 +67,11 @@ export default {
     rolesLoadedCount: 0,
     crewsLoadedCount: 0,
     key: process.env.VUE_APP_MOVIEDB,
-    locale: ''
+    locale: "",
   }),
   components: {
     ActorInfoTemplate,
-    ActorCastCrewTemplate
+    ActorCastCrewTemplate,
   },
   mounted() {
     window.addEventListener("scroll", this.onScroll);
@@ -81,16 +93,20 @@ export default {
         (this.scrollHeight -
           document.documentElement.clientHeight -
           window.pageYOffset <
-          340 && document.documentElement.clientWidth >= 1024) || 
-          (this.scrollHeight -
+          340 &&
+          document.documentElement.clientWidth >= 1024) ||
+        (this.scrollHeight -
           document.documentElement.clientHeight -
           window.pageYOffset <
-          540 && document.documentElement.clientWidth < 1024 && document.documentElement.clientWidth >= 480) || 
-          (this.scrollHeight -
+          540 &&
+          document.documentElement.clientWidth < 1024 &&
+          document.documentElement.clientWidth >= 480) ||
+        (this.scrollHeight -
           document.documentElement.clientHeight -
           window.pageYOffset <
-          825 && document.documentElement.clientWidth < 480) &&
-        this.cast === true
+          825 &&
+          document.documentElement.clientWidth < 480 &&
+          this.cast === true)
       ) {
         for (; this.rolesLoadedCount < this.roles.length; ) {
           this.lazyRolesArray.push(this.roles[this.rolesLoadedCount]);
@@ -102,16 +118,20 @@ export default {
         (this.scrollHeight -
           document.documentElement.clientHeight -
           window.pageYOffset <
-          340 && document.documentElement.clientWidth >= 1024) || 
-          (this.scrollHeight -
+          340 &&
+          document.documentElement.clientWidth >= 1024) ||
+        (this.scrollHeight -
           document.documentElement.clientHeight -
           window.pageYOffset <
-          540 && document.documentElement.clientWidth < 1024 && document.documentElement.clientWidth >= 480) || 
-          (this.scrollHeight -
+          540 &&
+          document.documentElement.clientWidth < 1024 &&
+          document.documentElement.clientWidth >= 480) ||
+        (this.scrollHeight -
           document.documentElement.clientHeight -
           window.pageYOffset <
-          825 && document.documentElement.clientWidth < 480) &&
-        this.cast === false
+          825 &&
+          document.documentElement.clientWidth < 480 &&
+          this.cast === false)
       ) {
         for (; this.crewsLoadedCount < this.crews.length; ) {
           this.lazyCrews.push(this.crews[this.crewsLoadedCount]);
@@ -152,36 +172,36 @@ export default {
         });
     },
     async changeLocale() {
-      this.$root.loading = true
-      this.locale = this.$store.getters.locale
-      this.cast = []
-      this.crew = []
-      this.lazyRolesArray = []
-      this.lazyCrews = []
-      this.rolesLoadedCount = 0
-      this.crewsLoadedCount = 0
-      let p1 = await this.getCastCrew()
-      this.actor = {}
-      let p2 = await this.getActor()
-      await this.$store.dispatch('loadMovieGenres')
+      this.$root.loading = true;
+      this.locale = this.$store.getters.locale;
+      this.cast = [];
+      this.crew = [];
+      this.lazyRolesArray = [];
+      this.lazyCrews = [];
+      this.rolesLoadedCount = 0;
+      this.crewsLoadedCount = 0;
+      let p1 = await this.getCastCrew();
+      this.actor = {};
+      let p2 = await this.getActor();
+      await this.$store.dispatch("loadMovieGenres");
       this.movieGenres = this.$store.getters.MovieGenres;
-      await this.$store.dispatch('loadTVShowsGenres')
+      await this.$store.dispatch("loadTVShowsGenres");
       this.tvshowGenres = this.$store.getters.TVShowGenres;
-      Promise.all([p1, p2]).then(this.$root.loading = false)
-    }
+      Promise.all([p1, p2]).then((this.$root.loading = false));
+    },
   },
   watch: {
-    '$store.getters.locale'() {
-      this.changeLocale()
+    "$store.getters.locale"() {
+      this.changeLocale();
     },
   },
   async created() {
-    this.locale = this.$store.getters.locale
-    let p1 = await this.getCastCrew()
-    let p2 = await this.getActor()
+    this.locale = this.$store.getters.locale;
+    let p1 = await this.getCastCrew();
+    let p2 = await this.getActor();
     this.movieGenres = this.$store.getters.MovieGenres;
     this.tvshowGenres = this.$store.getters.TVShowGenres;
-    Promise.all([p1, p2]).then(this.$root.loading = false)
+    Promise.all([p1, p2]).then((this.$root.loading = false));
   },
 };
 </script>

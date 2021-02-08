@@ -9,27 +9,33 @@
         />
       </div>
       <div class="container">
-        <div v-if="genres && genres.length">{{'film-genres' | localize}}: {{ genres }}</div>
+        <div v-if="genres && genres.length">
+          {{ "film-genres" | localize }}: {{ genres }}
+        </div>
         <div v-if="currentFilm.overview">
-          <div>{{'film-summary' | localize}}</div>
+          <div>{{ "film-summary" | localize }}</div>
           <div>{{ currentFilm.overview }}</div>
         </div>
         <div v-if="cast.length">
           <SlickTemplate :cast="cast" />
         </div>
         <div v-if="trailers.length">
-          <div class="film-trailers-slick-template__title">{{'film-trailers-slick-template-trailers' | localize}}</div>
+          <div class="film-trailers-slick-template__title">
+            {{ "film-trailers-slick-template-trailers" | localize }}
+          </div>
           <div v-for="trailer in trailers" :key="trailer.id">
             <iframe
               :width="iFrameWidth"
-              :height="iFrameWidth/16*9"
+              :height="(iFrameWidth / 16) * 9"
               :src="`https://www.youtube.com/embed/${trailer.key}`"
             ></iframe>
-            <div class="film-trailer-cover-template__trailer-title">{{ trailer.name }}</div>
+            <div class="film-trailer-cover-template__trailer-title">
+              {{ trailer.name }}
+            </div>
           </div>
         </div>
         <div class="film__title" v-if="reviews && reviews.length">
-          {{'film-reviews' | localize}}
+          {{ "film-reviews" | localize }}
         </div>
         <div v-for="(review, index) in reviews" :key="review.id">
           <FilmReviewTemplate :review="review" :index="index" />
@@ -47,14 +53,14 @@ export default {
   data() {
     return {
       key: process.env.VUE_APP_MOVIEDB,
-      genres: '',
+      genres: "",
       currentFilm: {},
       cast: [],
       trailers: [],
       reviews: [],
-      locale: '',
+      locale: "",
       windowWidth: 0,
-      iFrameWidth: 0
+      iFrameWidth: 0,
     };
   },
   components: {
@@ -64,19 +70,19 @@ export default {
   props: ["filmID", "filmType"],
   methods: {
     async changeLocale() {
-      this.$root.loading = true
-      this.locale = this.$store.getters.locale
-      this.currentFilm = {}
-      let p1 = await this.getCurrentFilm()
-      this.genres = ''
-      this.getGenres()
-      this.cast = []
-      let p2 = this.getCast()
-      this.trailers = []
-      let p3 = this.getTrailers()
-      this.reviews = []
-      let p4 = this.getReviews()
-      Promise.all([p1, p2, p3, p4]).then(this.$root.loading = false)
+      this.$root.loading = true;
+      this.locale = this.$store.getters.locale;
+      this.currentFilm = {};
+      let p1 = await this.getCurrentFilm();
+      this.genres = "";
+      this.getGenres();
+      this.cast = [];
+      let p2 = this.getCast();
+      this.trailers = [];
+      let p3 = this.getTrailers();
+      this.reviews = [];
+      let p4 = this.getReviews();
+      Promise.all([p1, p2, p3, p4]).then((this.$root.loading = false));
     },
     async getCurrentFilm() {
       await axios
@@ -88,7 +94,9 @@ export default {
         });
     },
     getGenres() {
-      this.genres = this.currentFilm.genres.map((genre) => genre.name).join("/");
+      this.genres = this.currentFilm.genres
+        .map((genre) => genre.name)
+        .join("/");
     },
     async getCast() {
       await axios
@@ -103,7 +111,7 @@ export default {
                 `${this.globalAPIMovieDBAddress}/3/person/${this.cast[i].id}?api_key=${this.key}&language=${this.locale}`
               )
               .then((response) => {
-                this.$set(this.cast[i], 'bio', response.data.biography)
+                this.$set(this.cast[i], "bio", response.data.biography);
               });
           }
         });
@@ -128,30 +136,32 @@ export default {
     },
     getWindowWidth(event) {
       this.windowWidth = document.documentElement.clientWidth;
-      console.log(this.windowWidth)
-      this.windowWidth > 479 ? this.iFrameWidth = this.windowWidth * 0.8 : this.iFrameWidth = this.windowWidth * 0.9
+      console.log(this.windowWidth);
+      this.windowWidth > 479
+        ? (this.iFrameWidth = this.windowWidth * 0.8)
+        : (this.iFrameWidth = this.windowWidth * 0.9);
     },
   },
   beforeDestroy() {
-    window.removeEventListener('resize', this.getWindowWidth);
+    window.removeEventListener("resize", this.getWindowWidth);
   },
   watch: {
-    '$store.getters.locale'() {
-      this.changeLocale()
+    "$store.getters.locale"() {
+      this.changeLocale();
     },
   },
   async mounted() {
-    this.locale = this.$store.getters.locale
-    let p1 = await this.getCurrentFilm()
-    this.getGenres()
-    let p2 = await this.getCast()
-    let p3 = await this.getTrailers()
-    let p4 = await this.getReviews()
-    Promise.all([p1, p2, p3, p4]).then(this.$root.loading = false)
+    this.locale = this.$store.getters.locale;
+    let p1 = await this.getCurrentFilm();
+    this.getGenres();
+    let p2 = await this.getCast();
+    let p3 = await this.getTrailers();
+    let p4 = await this.getReviews();
+    Promise.all([p1, p2, p3, p4]).then((this.$root.loading = false));
     this.$nextTick(function() {
-      window.addEventListener('resize', this.getWindowWidth);
-      this.getWindowWidth()
-    })
+      window.addEventListener("resize", this.getWindowWidth);
+      this.getWindowWidth();
+    });
   },
 };
 </script>

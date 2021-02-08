@@ -3,10 +3,14 @@
     <div id="page-preloader" class="preloader" v-if="$root.loading">
       <div class="loader"></div>
     </div>
-    <SearchBarTemplate /> 
+    <SearchBarTemplate />
     <router-view />
-    <div class="app__go-to-top-button-container" id='backToTop' @click="goToTop">
-      <img class="app__go-to-top-button" src="./assets/arrow.svg">
+    <div
+      class="app__go-to-top-button-container"
+      id="backToTop"
+      @click="goToTop"
+    >
+      <img class="app__go-to-top-button" src="./assets/arrow.svg" />
     </div>
     <FooterTemplate />
   </div>
@@ -17,13 +21,13 @@ import FooterTemplate from "@/components/FooterTemplate.vue";
 export default {
   components: {
     SearchBarTemplate,
-    FooterTemplate
+    FooterTemplate,
   },
   async mounted() {
     if (!Object.keys(this.$store.getters.info).length) {
-      await this.$store.dispatch('fetchInfo')
+      await this.$store.dispatch("fetchInfo");
     }
-    this.loading = false
+    this.loading = false;
     window.addEventListener("scroll", this.onScroll);
   },
   beforeDestroy() {
@@ -32,29 +36,33 @@ export default {
   methods: {
     onScroll() {
       if (pageYOffset >= 100) {
-        document.getElementById('backToTop').classList.add("app__go-to-top-button-visibility")
+        document
+          .getElementById("backToTop")
+          .classList.add("app__go-to-top-button-visibility");
       } else if (pageYOffset < 100) {
-        document.getElementById('backToTop').classList.remove("app__go-to-top-button-visibility")
+        document
+          .getElementById("backToTop")
+          .classList.remove("app__go-to-top-button-visibility");
       }
     },
     goToTop() {
-      document.getElementById('app').scrollIntoView({behavior: "smooth"});
+      document.getElementById("app").scrollIntoView({ behavior: "smooth" });
     },
     async changeLocale() {
-      this.$store.dispatch('loadMovieGenres')
-      this.$store.dispatch('loadTVShowsGenres')
+      this.$store.dispatch("loadMovieGenres");
+      this.$store.dispatch("loadTVShowsGenres");
     },
   },
   async created() {
-    await this.$store.dispatch('loadMovieGenres')
-    await this.$store.dispatch('loadTVShowsGenres')
+    await this.$store.dispatch("loadMovieGenres");
+    await this.$store.dispatch("loadTVShowsGenres");
   },
 };
 </script>
 <style>
-@import 'css/style.css';
+@import "css/style.css";
 #app {
-    margin-top: 0 !important;
+  margin-top: 0 !important;
 }
 body {
   margin: 0 !important;
@@ -74,8 +82,14 @@ body {
   animation-duration: 3s;
 }
 @keyframes animation {
-    0%     {background:black; opacity: 1;}
-    100.0%  {background:black; opacity: 0;}
+  0% {
+    background: black;
+    opacity: 1;
+  }
+  100.0% {
+    background: black;
+    opacity: 0;
+  }
 }
 .loader {
   width: 75px;
@@ -111,14 +125,14 @@ body {
   bottom: 30px;
   right: 30px;
   cursor: pointer;
-  transition: .5s all;
+  transition: 0.5s all;
   opacity: 0;
 }
 .app__go-to-top-button {
   height: 30px;
 }
 .app__go-to-top-button-visibility {
-  transition: .5s all;
+  transition: 0.5s all;
   opacity: 1;
 }
 </style>

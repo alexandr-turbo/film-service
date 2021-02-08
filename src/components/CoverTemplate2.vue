@@ -13,11 +13,7 @@
         class="cover-template2__poster"
         :src="`${globalImgAddress}154${item.profile_path}`"
       />
-      <img
-        v-else
-        class="cover-template2__poster"
-        src="@/assets/no-image.png"
-      />
+      <img v-else class="cover-template2__poster" src="@/assets/no-image.png" />
       <div class="cover-template2__title">{{ item.name }}</div>
     </div>
     <div
@@ -26,20 +22,25 @@
       :title="item.overview"
       @mousedown="clickable = true"
       @mousemove="clickable = false"
-      @mouseup="clickable ? $router.push(`details/${item.media_type}/${item.id}`) : ''"
+      @mouseup="
+        clickable ? $router.push(`details/${item.media_type}/${item.id}`) : ''
+      "
     >
       <img
         v-if="item.poster_path && item.poster_path !== ''"
         class="cover-template2__poster"
         :src="`${globalImgAddress}154${item.poster_path}`"
       />
-      <img
-        v-else
-        class="cover-template2__poster"
-        src="@/assets/no-image.png"
-      />
-      <div class="cover-template2__title" v-if="item.title || item.name || item.original_title || item.original_name">
-        {{ item.title || item.name || item.original_title || item.original_name }}
+      <img v-else class="cover-template2__poster" src="@/assets/no-image.png" />
+      <div
+        class="cover-template2__title"
+        v-if="
+          item.title || item.name || item.original_title || item.original_name
+        "
+      >
+        {{
+          item.title || item.name || item.original_title || item.original_name
+        }}
       </div>
       <div class="cover-template2__genres">
         {{ getCurrentMediaTypeGenresNames(genres, item.genre_ids) }}
@@ -51,8 +52,8 @@
 export default {
   data() {
     return {
-      clickable: true
-    }
+      clickable: true,
+    };
   },
   props: ["genres", "item"],
 };

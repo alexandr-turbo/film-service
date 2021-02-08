@@ -7,13 +7,16 @@
     <div class="container">
       <div class="home__buttons">
         <button class="home__switch-button" @click="switchType('movie')">
-          {{'home-movies' | localize}}
+          {{ "home-movies" | localize }}
         </button>
         <button class="home__switch-button" @click="switchType('tv')">
-          {{'home-tvshows' | localize}}
+          {{ "home-tvshows" | localize }}
         </button>
       </div>
-      <div v-for="(filmSlickTitle, index) in filmSlickTitlesArray" :key="filmSlickTitle.id">
+      <div
+        v-for="(filmSlickTitle, index) in filmSlickTitlesArray"
+        :key="filmSlickTitle.id"
+      >
         <SlickTemplate
           :filmsArray="filmsArrays[index]"
           :filmSlickTitle="filmSlickTitle"
@@ -41,16 +44,16 @@ export default {
       movieSlickArr: ["upcoming", "popular", "now_playing", "top_rated"],
       filmSlickTitlesArray: [],
       temp: [],
-      locale: ''
+      locale: "",
     };
   },
   components: {
     HomeUpperSlickTemplate,
-    SlickTemplate
+    SlickTemplate,
   },
   async created() {
     this.locale = this.$store.getters.locale;
-    if(this.$store.getters.MovieGenres.length) {
+    if (this.$store.getters.MovieGenres.length) {
       this.genres = this.$store.getters.MovieGenres;
     }
     this.filmSlickTitlesArray = this.movieSlickArr;
@@ -59,8 +62,8 @@ export default {
     Promise.all([p1, p2]).then((this.$root.loading = false));
   },
   watch: {
-    '$store.getters.locale'() {
-      this.changeLocale()
+    "$store.getters.locale"() {
+      this.changeLocale();
     },
     filmType() {
       this.popularMoviesArray = [];
@@ -71,19 +74,19 @@ export default {
   },
   methods: {
     async changeLocale() {
-      this.$root.loading = true
-      this.locale = this.$store.getters.locale
-      this.genres = []
+      this.$root.loading = true;
+      this.locale = this.$store.getters.locale;
+      this.genres = [];
       this.popularMoviesArray = [];
       let p1 = await this.getPopularFilms();
       this.filmsArrays = [];
       let p2 = await this.getFilms();
-      if(this.filmType === 'movie') {
-        await this.$store.dispatch('loadMovieGenres')
+      if (this.filmType === "movie") {
+        await this.$store.dispatch("loadMovieGenres");
         this.filmSlickTitlesArray = this.movieSlickArr;
         this.genres = this.$store.getters.MovieGenres;
-      } else if(this.filmType === 'tv') {
-        await this.$store.dispatch('loadTVShowsGenres')
+      } else if (this.filmType === "tv") {
+        await this.$store.dispatch("loadTVShowsGenres");
         this.filmSlickTitlesArray = this.tvshowSlickArr;
         this.genres = this.$store.getters.TVShowGenres;
       }
@@ -97,7 +100,7 @@ export default {
         .then((response) => {
           this.popularMoviesArray = response.data.results;
           for (let i = 0; i < this.popularMoviesArray.length; i++) {
-            this.$set(this.popularMoviesArray[i], 'media_type', this.filmType)
+            this.$set(this.popularMoviesArray[i], "media_type", this.filmType);
           }
         });
     },
@@ -108,9 +111,9 @@ export default {
             `${this.globalAPIMovieDBAddress}/3/${this.filmType}/${this.filmSlickTitlesArray[i]}?api_key=${this.key}&language=${this.locale}`
           )
           .then((response) => {
-            this.temp = response.data.results
+            this.temp = response.data.results;
             for (let i = 0; i < this.temp.length; i++) {
-              this.$set(this.temp[i], 'media_type', this.filmType)
+              this.$set(this.temp[i], "media_type", this.filmType);
             }
             this.filmsArrays.push(this.temp);
           });
