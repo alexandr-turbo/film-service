@@ -4,10 +4,10 @@
       <template v-slot:header>
         <div class="search-bar-template__form-title-container">
           <div class="search-bar-template__form-title" v-if="log">
-            {{'auth-login' | localize}}
+            {{'search-bar-template-form-auth-login' | localize}}
           </div>
           <div class="search-bar-template__form-title" v-else-if="sign">
-            {{'auth-register' | localize}}
+            {{'search-bar-template-form-auth-register' | localize}}
           </div>
         </div>
       </template>
@@ -15,53 +15,72 @@
         <form @submit.prevent="submit">
           <div v-if="log || sign">
             <div class="search-bar-template__form-input-container">
-              <div>{{'auth-email' | localize}}</div>
+              <div>{{'search-bar-template-form-auth-email' | localize}}</div>
               <input class="search-bar-template__form-input" type="text" v-model.trim="email" :class="{invalid: ($v.email.$dirty && !$v.email.required) || ($v.email.$dirty && !$v.email.email)}" />
-              <small class="search-bar-template__form-validation-invalid" v-if="$v.email.$dirty && !$v.email.required">{{'auth-email-is-required' | localize}}</small>
-              <small class="search-bar-template__form-validation-invalid" v-else-if="$v.email.$dirty && !$v.email.email">{{'auth-email-is-required' | localize}}</small>
+              <small class="search-bar-template__form-validation-invalid" v-if="$v.email.$dirty && !$v.email.required">{{'search-bar-template-form-auth-email-is-required' | localize}}</small>
+              <small class="search-bar-template__form-validation-invalid" v-else-if="$v.email.$dirty && !$v.email.email">{{'search-bar-template-form-auth-enter-correct-email' | localize}}</small>
             </div>
             <div class="search-bar-template__form-input-container">
-              <div>{{'auth-password' | localize}}</div>
+              <div>{{'search-bar-template-form-auth-password' | localize}}</div>
               <input class="search-bar-template__form-input" type="password" v-model.trim="password" :class="{invalid: ($v.password.$dirty && !$v.password.required) || ($v.password.$dirty && !$v.password.minLength)}" />
-              <small class="search-bar-template__form-validation-invalid" v-if="$v.password.$dirty && !$v.password.required">{{'auth-password-is-required' | localize}}</small>
-              <small class="search-bar-template__form-validation-invalid" v-else-if="$v.password.$dirty && !$v.password.minLength">{{'auth-password-min-length1' | localize}} {{$v.password.$params.minLength.min}} {{'auth-password-min-length2' | localize}} {{ password.length }} {{'auth-password-min-length3' | localize}}</small>
+              <small class="search-bar-template__form-validation-invalid" v-if="$v.password.$dirty && !$v.password.required">{{'search-bar-template-form-auth-password-is-required' | localize}}</small>
+              <small class="search-bar-template__form-validation-invalid" v-else-if="$v.password.$dirty && !$v.password.minLength">{{'search-bar-template-form-auth-password-min-length1' | localize}} {{$v.password.$params.minLength.min}} {{'search-bar-template-form-auth-password-min-length2' | localize}} {{ password.length }} {{'search-bar-template-form-auth-password-min-length3' | localize}}</small>
             </div>
           </div>
           <div v-if="sign">
             <div class="search-bar-template__form-input-container">
-              <div>{{'auth-name' | localize}}</div>
+              <div>{{'search-bar-template-form-auth-name' | localize}}</div>
               <input class="search-bar-template__form-input" type="text" v-model.trim="name" :class="{invalid: $v.name.$dirty && !$v.name.required}">
-              <small class="search-bar-template__form-validation-invalid" v-if="$v.name.$dirty && !$v.name.required">{{'auth-name-is-required' | localize}}</small>
+              <small class="search-bar-template__form-validation-invalid" v-if="$v.name.$dirty && !$v.name.required">{{'search-bar-template-form-auth-name-is-required' | localize}}</small>
             </div>
           </div>
           <div class="search-bar-template__form-button-container">
-            <button class="search-bar-template__form-button" type="submit">{{'auth-submit' | localize}}</button>
+            <button class="search-bar-template__form-button" type="submit">{{log ? 'search-bar-template-form-auth-login-btn' : 'search-bar-template-form-auth-register-btn' | localize}}</button>
           </div>
         </form>
       </template>
       <template v-slot:footer>
         <div class="search-bar-template__form-question" v-if="log">
           <div>
-            {{'auth-no-account' | localize}}
+            {{'search-bar-template-form-auth-no-account' | localize}}
           </div>
-          <div class="search-bar-template__form-link" @click="sign = true, log = false, clearForm()">{{'auth-register' | localize}}</div>
+          <div class="search-bar-template__form-link" @click="sign = true, log = false, clearForm()">{{'search-bar-template-form-auth-register' | localize}}</div>
         </div>
         <div class="search-bar-template__form-question" v-else-if="sign">
           <div>
-            {{'auth-already-registered' | localize}}
+            {{'search-bar-template-form-auth-already-registered' | localize}}
           </div>
-          <div class="search-bar-template__form-link" @click="log = true, sign = false, clearForm()">{{'auth-login' | localize}}</div>
+          <div class="search-bar-template__form-link" @click="log = true, sign = false, clearForm()">{{'search-bar-template-form-auth-login' | localize}}</div>
         </div>
       </template>
     </Modal>
-    <div class="a">
+    <div class="search-bar-template__container">
       <router-link to="/">
-        <img title="Home" class="search-bar-template__home-link" src="@/assets/home.png" />
+        <div class="search-bar-template__home-link-container">
+          <img class="abs" src="@/assets/home.png" />
+          <div class="abs2">
+            <Tooltip>
+              <template v-slot:main>
+                {{'search-bar-template-home-btn' | localize}}
+              </template>
+            </Tooltip>
+          </div>
+        </div> 
       </router-link>
       <router-link
         to="/discover?mediatype=movie&sort_by=popularity.desc&vote_average=&with_people=&with_genres=&year=&page=1"
       >
-        <img title="Discover" class="search-bar-template__discover-link" src="@/assets/discover.png" />
+        <div class="search-bar-template__discover-link">
+          <img class="abs" src="@/assets/discover.png" />
+          <div class="abs2">
+            <Tooltip>
+            <template v-slot:main>
+              {{'search-bar-template-discover-btn' | localize}}
+            </template>
+          </Tooltip>
+          </div>
+        </div> 
+        
       </router-link>
       <div class="search-bar-template__auth-tooltip-container">
         <div class="user-first-letter">
@@ -70,21 +89,47 @@
 
           <img v-else-if="!username" class="user-photo" src="@/assets/guest.svg">
         </div>
-        <span class="search-bar-template__auth-tooltip">
-          <div> {{'search-bar-template-greating' | localize}}, {{username ? username : guest }}!</div>
-          <button class="search-bar-template__auth-button" v-if="!username" @click="log = true, sign = false, clicked = true">
-            {{'search-bar-template-login' | localize}}
-          </button>
-          <button class="search-bar-template__auth-button" v-if="username" @click="logout">
-            {{'search-bar-template-logout' | localize}}
-          </button>
-          <button class="search-bar-template__auth-button" v-if="!username" @click="sign = true, log = false, clicked = true">
-            {{'search-bar-template-register' | localize}}
-          </button>
-        </span>
+        <div class="abs2">
+            <Tooltip>
+              <template v-slot:main>
+                <div> {{'search-bar-template-greating' | localize}}, {{username ? username : guest }}!</div>
+                <button class="search-bar-template__auth-button" v-if="!username" @click="log = true, sign = false, clicked = true">
+                  {{'search-bar-template-login-btn' | localize}}
+                </button>
+                <button class="search-bar-template__auth-button" v-if="username" @click="logout">
+                  {{'search-bar-template-logout-btn' | localize}}
+                </button>
+                <button class="search-bar-template__auth-button" v-if="!username" @click="sign = true, log = false, clicked = true">
+                  {{'search-bar-template-register-btn' | localize}}
+                </button>
+              </template>
+            </Tooltip>
+          </div>
       </div>
-      <button title="Change theme" class="toggle-theme" />
-      <img title="Change locale" v-if="locale" :src="require(`@/assets/${locale}.png`)" class="toggle-language" @click="changeLocale">
+      <!-- <button title="Change theme" class="toggle-theme" /> -->
+      <div class="rel">
+        <button class="toggle-theme" />
+        <div class="abs2">
+          <Tooltip>
+          <template v-slot:main>
+            {{'search-bar-template-toggle-theme-btn' | localize}}
+          </template>
+        </Tooltip>
+        </div>
+      </div> 
+      <div class="toggle-language">
+        <img v-if="locale" :src="require(`@/assets/${locale}.png`)" class="abs" @click="changeLocale">
+        <div class="abs2">
+          <Tooltip>
+          <template v-slot:main>
+            {{'search-bar-template-toggle-locale-btn' | localize}}
+          </template>
+        </Tooltip>
+        </div>
+      </div> 
+
+
+      <!-- <img title="Change locale" v-if="locale" :src="require(`@/assets/${locale}.png`)" class="toggle-language" @click="changeLocale"> -->
     </div>
     <form class="search-bar-template__search-form" @submit.prevent="send(query)">
       <input class="search-bar-template__search-form-input" v-model="query" :placeholder="searchBarPlaceholder" />
@@ -98,6 +143,7 @@
 import replaceAllToDash from '@/filters/replaceAllToDash'
 import localize from '@/filters/localize'
 import Modal from "@/components/Modal.vue";
+import Tooltip from "@/components/Tooltip.vue";
 import { email, required, minLength } from "vuelidate/lib/validators";
 export default {
   data() {
@@ -115,7 +161,6 @@ export default {
       name: '',
       routeName: '',
       username: '',
-      userIconVisible: false
     };
   },
   validations() {
@@ -133,10 +178,11 @@ export default {
     }
   },
   components: {
-    Modal
+    Modal,
+    Tooltip
   },
   watch: {
-    '$store.state.locale.locale'() {
+    '$store.getters.locale'() {
       this.guest = localize('search-bar-template-guest')
       this.searchBarPlaceholder = localize('search-bar-template-search-films')
     },
@@ -197,10 +243,10 @@ export default {
       this.query = "";
     },
     changeLocale() {
-      if(this.$store.state.locale.locale === 'en-US') {
+      if(this.$store.getters.locale === 'en-US') {
         this.$store.commit('setLocale', 'ru-RU')
         this.locale = 'ru'
-      } else if(this.$store.state.locale.locale === 'ru-RU') {
+      } else if(this.$store.getters.locale === 'ru-RU') {
         this.$store.commit('setLocale', 'en-US')
         this.locale = 'en'
       }
@@ -209,9 +255,9 @@ export default {
   mounted() {
     this.guest = localize('search-bar-template-guest')
     this.searchBarPlaceholder = localize('search-bar-template-search-films')
-    if(this.$store.state.locale.locale === 'ru-RU') {
+    if(this.$store.getters.locale === 'ru-RU') {
       this.locale = 'ru'
-    } else if(this.$store.state.locale.locale === 'en-US') {
+    } else if(this.$store.getters.locale === 'en-US') {
       this.locale = 'en'
     }
     const toggleTheme = document.querySelector(".toggle-theme")
@@ -243,7 +289,7 @@ export default {
     padding-right: 100px;
     font-size: 18px;
   }
-  .a {
+  .search-bar-template__container {
     display: flex;
     justify-content: space-between;
     width: 80vw;
@@ -278,15 +324,19 @@ export default {
     background: var(--secondary-bg);
     position: relative;
   }
-  .search-bar-template__home-link {
-    position: unset;
+  .search-bar-template__home-link-container {
+    position: relative;
     height: 40px;
+    width: 40px;
+    /* top: calc(50% - (40px / 2)); */
+    /* left: 20px; */
     /* top: calc(50% - (40px / 2));
     left: 20px; */
   }
   .search-bar-template__discover-link {
-    position: unset;
+    position: relative;
     height: 40px;
+    width: 40px;
     /* top: calc(50% - (40px / 2));
     left: 70px; */
   }
@@ -294,8 +344,8 @@ export default {
     cursor: pointer;
     width: 40px;
     height: 40px;
-    padding: 0;
-    margin: 0;
+    /* padding: 0;
+    margin: 0; */
     border: 0;
     outline: none;
     background-color: transparent;
@@ -305,11 +355,16 @@ export default {
     /* top: calc(50% - (40px / 2));
     right: 70px; */
   }
-  .toggle-language {
-    cursor: pointer;
-    position: unset;
+  .rel {
     width: 40px;
     height: 40px;
+    position: relative;
+  }
+  .toggle-language {
+    cursor: pointer;
+    position: relative;
+    height: 40px;
+    width: 40px;
     /* top: calc(50% - (40px / 2));
     right: 20px; */
   }
@@ -353,15 +408,17 @@ export default {
     background: var(--secondary-bg);
     position: relative;
   }
-  .search-bar-template__home-link {
+  .search-bar-template__home-link-container {
     position: absolute;
     height: 40px;
+    width: 40px;
     top: calc(50% - (40px / 2));
     left: 20px;
   }
   .search-bar-template__discover-link {
     position: absolute;
     height: 40px;
+    width: 40px;
     top: calc(50% - (40px / 2));
     left: 70px;
   }
@@ -376,9 +433,7 @@ export default {
     background-color: transparent;
     background-image: var(--toggle-btn-img);
     background-size: contain;
-    position: absolute;
-    top: calc(50% - (40px / 2));
-    right: 70px;
+    
   }
   .toggle-language {
     cursor: pointer;
@@ -387,6 +442,14 @@ export default {
     height: 40px;
     top: calc(50% - (40px / 2));
     right: 20px;
+  }
+  .rel {
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    top: calc(50% - (40px / 2));
+    right: 70px;
+
   }
 }
 .search-bar-template__form-title-container,
@@ -481,11 +544,11 @@ export default {
   right: -100px;
 }
 
-/* Show the tooltip text when you mouse over the tooltip container */
-.search-bar-template__auth-tooltip-container:hover .search-bar-template__auth-tooltip {
-  visibility: visible;
-}
-.search-bar-template__auth-tooltip-container .search-bar-template__auth-tooltip::after {
+.search-bar-template__home-link-container .abs2::after,
+.search-bar-template__discover-link .abs2::after,
+.search-bar-template__auth-tooltip-container .abs2::after,
+.rel .abs2::after,
+.toggle-language .abs2::after {
   content: " ";
   position: absolute;
   bottom: 100%;  /* At the top of the tooltip */
@@ -505,5 +568,36 @@ export default {
   border-radius: 6px;
   color: var(--accent-color);
   min-height: 24px;
+}
+.abs {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+}
+.abs2 {
+  visibility: hidden;
+  position: absolute;
+  top: 50px;
+  left: 50%;
+  transform: translate(-50%, 0);
+  z-index: 1;
+  /* visibility: hidden; */
+  min-width: 50px;
+  background-color: var(--accent-color);
+  color: #fff;
+  /* text-align: center; */
+  padding: 10px;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.search-bar-template__home-link-container:hover .abs2,
+.search-bar-template__discover-link:hover .abs2,
+.search-bar-template__auth-tooltip-container:hover .abs2,
+.rel:hover .abs2,
+.toggle-language:hover .abs2 {
+  visibility: visible;
 }
 </style>

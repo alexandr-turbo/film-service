@@ -28,42 +28,62 @@
           />
           <div class="actor-cast-crew-template__film-description">
             <div v-if="arr.title || arr.name">
-              {{'actor-cast-crew-template-title' | localize}}: {{ arr.media_type === "movie" ? arr.title : arr.name }}
+              {{ "actor-cast-crew-template-title" | localize }}:
+              {{ arr.media_type === "movie" ? arr.title : arr.name }}
             </div>
             <div v-if="arr.original_title || arr.original_name">
-              {{'actor-cast-crew-template-original-title' | localize}}:
+              {{ "actor-cast-crew-template-original-title" | localize }}:
               {{ arr.original_title || arr.original_name }}
             </div>
-            <div v-if="arr.character">{{'actor-cast-crew-template-character' | localize}}: {{ arr.character }}</div>
-            <div v-if="arr.job">{{'actor-cast-crew-template-job' | localize}}: {{ arr.job }}</div>
-            <div class="actor-cast-crew-template__genres" v-if="arr.genre_ids && arr.genre_ids.length">
-              {{'actor-cast-crew-template-genres' | localize}}:
+            <div v-if="arr.character">
+              {{ "actor-cast-crew-template-character" | localize }}:
+              {{ arr.character }}
+            </div>
+            <div v-if="arr.job">
+              {{ "actor-cast-crew-template-job" | localize }}: {{ arr.job }}
+            </div>
+            <div
+              class="actor-cast-crew-template__genres"
+              v-if="arr.genre_ids && arr.genre_ids.length"
+            >
+              {{ "actor-cast-crew-template-genres" | localize }}:
               {{ getCurrentMediaTypeGenresNames(genres, arr.genre_ids) }}
             </div>
-            <div v-if="arr.department">{{'actor-cast-crew-template-department' | localize}}: {{ arr.department }}</div>
-            <div v-if="arr.media_type" class="actor-cast-crew-template__media-type">
-              {{'actor-cast-crew-template-mediatype' | localize}}:
-              <!-- <div
-                :class="
-                  arr.media_type === 'movie'
-                    ? 'actor-cast-crew-template__media-type--capitalize'
-                    : 'actor-cast-crew-template__media-type--uppercase'
-                "
-              > -->
-                {{ arr.media_type.includes('movie') ? 'actor-cast-crew-template-movie' : 'actor-cast-crew-template-tvshow' | localize}}
-              <!-- </div> -->
+            <div v-if="arr.department">
+              {{ "actor-cast-crew-template-department" | localize }}:
+              {{ arr.department }}
+            </div>
+            <div
+              v-if="arr.media_type"
+              class="actor-cast-crew-template__media-type"
+            >
+              {{ "actor-cast-crew-template-mediatype" | localize }}:
+              {{
+                arr.media_type.includes("movie")
+                  ? "actor-cast-crew-template-movie"
+                  : "actor-cast-crew-template-tvshow" | localize
+              }}
             </div>
             <div v-if="arr.release_date">
-              {{'actor-cast-crew-template-release-date' | localize}}: {{ arr.release_date }}
+              {{ "actor-cast-crew-template-release-date" | localize }}:
+              {{ arr.release_date }}
             </div>
             <div v-else-if="arr.first_air_date">
-              {{'actor-cast-crew-template-first-air-date' | localize}}: {{ arr.first_air_date }}
+              {{ "actor-cast-crew-template-first-air-date" | localize }}:
+              {{ arr.first_air_date }}
             </div>
-            <div v-if="arr.vote_average">{{'actor-cast-crew-template-rating' | localize}}: {{ arr.vote_average }}</div>
+            <div v-if="arr.vote_average">
+              {{ "actor-cast-crew-template-rating" | localize }}:
+              {{ arr.vote_average }}
+            </div>
           </div>
         </div>
-        <div v-if="arr.overview" class="actor-cast-crew-template__film-overview">
-          {{'actor-cast-crew-template-overview' | localize}}: {{ arr.overview }}
+        <div
+          v-if="arr.overview"
+          class="actor-cast-crew-template__film-overview"
+        >
+          {{ "actor-cast-crew-template-overview" | localize }}:
+          {{ arr.overview }}
         </div>
       </div>
     </router-link>
@@ -96,36 +116,30 @@ export default {
   .actor-cast-crew-template__bio {
     display: flex;
   }
-
   .actor-cast-crew-template__poster {
     border-radius: 5px;
     height: 240px;
     width: auto;
     margin-right: 16px;
   }
-
   .actor-cast-crew-template__film-description {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
-    /* color: green; */
   }
 }
-
 @media (max-width: 539px) {
   .actor-cast-crew-template__poster {
     border-radius: 5px;
     height: 240px;
     width: auto;
   }
-
   .actor-cast-crew-template__bio {
     display: flex;
     flex-direction: column;
     align-items: center;
   }
-
   .actor-cast-crew-template__film-description {
     display: flex;
     flex-direction: column;
@@ -133,16 +147,9 @@ export default {
     margin-top: 10px;
   }
 }
-
 .actor-cast-crew-template__media-type {
   display: flex;
 }
-/* .actor-cast-crew-template__media-type--capitalize {
-  text-transform: capitalize;
-}
-.actor-cast-crew-template__media-type--uppercase {
-  text-transform: uppercase;
-} */
 .actor-cast-crew-template__film-overview {
   text-align: justify;
   margin-top: 25px;

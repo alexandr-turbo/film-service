@@ -1,31 +1,31 @@
 <template>
   <div class="film">
-    <div v-if="currentfilm && cast && trailers">
+    <div v-if="currentFilm && cast && trailers">
       <div class="film__poster-container">
         <img
-          v-if="currentfilm.backdrop_path"
+          v-if="currentFilm.backdrop_path"
           class="film__poster"
-          :src="`${globalImgAddress}1280${currentfilm.backdrop_path}`"
+          :src="`${globalImgAddress}1280${currentFilm.backdrop_path}`"
         />
       </div>
       <div class="container">
         <div v-if="genres && genres.length">{{'film-genres' | localize}}: {{ genres }}</div>
-        <div v-if="currentfilm.overview">
+        <div v-if="currentFilm.overview">
           <div>{{'film-summary' | localize}}</div>
-          <div>{{ currentfilm.overview }}</div>
+          <div>{{ currentFilm.overview }}</div>
         </div>
         <div v-if="cast.length">
           <SlickTemplate :cast="cast" />
         </div>
         <div v-if="trailers.length">
           <div class="film-trailers-slick-template__title">{{'film-trailers-slick-template-trailers' | localize}}</div>
-          <div v-for="item in trailers" :key="item.id">
+          <div v-for="trailer in trailers" :key="trailer.id">
             <iframe
               :width="iFrameWidth"
               :height="iFrameWidth/16*9"
-              :src="`https://www.youtube.com/embed/${item.key}`"
+              :src="`https://www.youtube.com/embed/${trailer.key}`"
             ></iframe>
-            <div class="film-trailer-cover-template__trailer-title">{{ item.name }}</div>
+            <div class="film-trailer-cover-template__trailer-title">{{ trailer.name }}</div>
           </div>
         </div>
         <div class="film__title" v-if="reviews && reviews.length">
@@ -48,12 +48,11 @@ export default {
     return {
       key: process.env.VUE_APP_MOVIEDB,
       genres: '',
-      currentfilm: {},
+      currentFilm: {},
       cast: [],
       trailers: [],
       reviews: [],
-      isvisible: true,
-      loc: '',
+      locale: '',
       windowWidth: 0,
       iFrameWidth: 0
     };
@@ -66,8 +65,8 @@ export default {
   methods: {
     async changeLocale() {
       this.$root.loading = true
-      this.loc = this.$store.state.locale.locale
-      this.currentfilm = {}
+      this.locale = this.$store.getters.locale
+      this.currentFilm = {}
       let p1 = await this.getCurrentFilm()
       this.genres = ''
       this.getGenres()
@@ -82,26 +81,26 @@ export default {
     async getCurrentFilm() {
       await axios
         .get(
-          `${this.globalAPIMovieDBAddress}/3/${this.filmType}/${this.filmID}?api_key=${this.key}&language=${this.loc}`
+          `${this.globalAPIMovieDBAddress}/3/${this.filmType}/${this.filmID}?api_key=${this.key}&language=${this.locale}`
         )
         .then((response) => {
-          this.currentfilm = response.data;
+          this.currentFilm = response.data;
         });
     },
     getGenres() {
-      this.genres = this.currentfilm.genres.map((el) => el.name).join("/");
+      this.genres = this.currentFilm.genres.map((genre) => genre.name).join("/");
     },
     async getCast() {
       await axios
         .get(
-          `${this.globalAPIMovieDBAddress}/3/${this.filmType}/${this.filmID}/credits?api_key=${this.key}&language=${this.loc}`
+          `${this.globalAPIMovieDBAddress}/3/${this.filmType}/${this.filmID}/credits?api_key=${this.key}&language=${this.locale}`
         )
         .then((response) => {
           this.cast = response.data.cast;
           for (let i = 0; i < this.cast.length; i++) {
             axios
               .get(
-                `${this.globalAPIMovieDBAddress}/3/person/${this.cast[i].id}?api_key=${this.key}&language=${this.loc}`
+                `${this.globalAPIMovieDBAddress}/3/person/${this.cast[i].id}?api_key=${this.key}&language=${this.locale}`
               )
               .then((response) => {
                 this.$set(this.cast[i], 'bio', response.data.biography)
@@ -112,7 +111,7 @@ export default {
     async getTrailers() {
       await axios
         .get(
-          `${this.globalAPIMovieDBAddress}/3/${this.filmType}/${this.filmID}/videos?api_key=${this.key}&language=${this.loc}`
+          `${this.globalAPIMovieDBAddress}/3/${this.filmType}/${this.filmID}/videos?api_key=${this.key}&language=${this.locale}`
         )
         .then((response) => {
           this.trailers = response.data.results;
@@ -121,7 +120,7 @@ export default {
     async getReviews() {
       await axios
         .get(
-          `${this.globalAPIMovieDBAddress}/3/${this.filmType}/${this.filmID}/reviews?api_key=${this.key}&language=${this.loc}`
+          `${this.globalAPIMovieDBAddress}/3/${this.filmType}/${this.filmID}/reviews?api_key=${this.key}&language=${this.locale}`
         )
         .then((response) => {
           this.reviews = response.data.results;
@@ -137,13 +136,12 @@ export default {
     window.removeEventListener('resize', this.getWindowWidth);
   },
   watch: {
-    '$store.state.locale.locale'() {
-      // this.loc = this.$store.state.locale.locale
+    '$store.getters.locale'() {
       this.changeLocale()
     },
   },
   async mounted() {
-    this.loc = this.$store.state.locale.locale
+    this.locale = this.$store.getters.locale
     let p1 = await this.getCurrentFilm()
     this.getGenres()
     let p2 = await this.getCast()
@@ -152,8 +150,6 @@ export default {
     Promise.all([p1, p2, p3, p4]).then(this.$root.loading = false)
     this.$nextTick(function() {
       window.addEventListener('resize', this.getWindowWidth);
-
-      //Init
       this.getWindowWidth()
     })
   },
@@ -182,8 +178,6 @@ export default {
     text-align: center;
   }
 }
-
-
 .film-trailers-slick-template__title {
   margin-top: 50px;
   margin-bottom: 20px;
@@ -195,29 +189,8 @@ export default {
     margin-bottom: 20px;
   }
 }
-
-
-
-.film-trailer-cover-template__trailer-container {
-  display: flex;
-  justify-content: center;
-  margin: 20px auto 0;
-}
-@media (max-width: 539px) {
-  .film-trailer-cover-template__trailer {
-    width: 250px;
-    /* height: 240px; */
-  }
-}
-@media (min-width: 540px) {
-  .film-trailer-cover-template__trailer {
-    width: 320px;
-    /* height: 240px; */
-  }
-}
 .film-trailer-cover-template__trailer-title {
   text-align: center;
   margin: 10px auto 50px;
-  /* color: var(--main-text-color); */
 }
 </style>

@@ -156,7 +156,7 @@ export default {
       key: process.env.VUE_APP_MOVIEDB,
       a: "",
       preventOnCreatedUpdate: true,
-      loc: "",
+      locale: "",
       b: "",
       c: "",
       arr2: []
@@ -226,12 +226,12 @@ export default {
         this.$root.loading = false;
       }
     },
-    "$store.state.locale.locale"() {
+    "$store.getters.locale"() {
       this.changeLocale();
     },
   },
   async created() {
-    this.loc = this.$store.state.locale.locale;
+    this.locale = this.$store.getters.locale;
     this.yearPlaceholder = localize("discover-year");
     this.minAverageVotePlaceholder = localize("discover-min-average-vote");
     this.mediatypeOptions = [
@@ -308,8 +308,8 @@ export default {
         this.routePage
       );
 
-      this.movieGenres = this.$store.state.genres.MovieGenres;
-      this.tvshowGenres = this.$store.state.genres.TVShowGenres;
+      this.movieGenres = this.$store.getters.MovieGenres;
+      this.tvshowGenres = this.$store.getters.TVShowGenres;
       if (this.routeGenreID) {
         this.selectedGenre = this.genres.find(
           (name) => name.id === +this.routeGenreID
@@ -319,7 +319,7 @@ export default {
       if (this.routeActor) {
         await axios
           .get(
-            `${this.globalAPIMovieDBAddress}/3/person/${this.routeActor}?api_key=${this.key}&&language=${this.loc}`
+            `${this.globalAPIMovieDBAddress}/3/person/${this.routeActor}?api_key=${this.key}&&language=${this.locale}`
           )
           .then((response) => {
             this.a = response.data.name;
@@ -343,7 +343,7 @@ export default {
     },
 
     async changeLocale() {
-      this.loc = this.$store.state.locale.locale;
+      this.locale = this.$store.getters.locale;
       this.yearPlaceholder = localize("discover-year");
       this.minAverageVotePlaceholder = localize("discover-min-average-vote");
       this.mediatypeOptions = [
@@ -430,9 +430,9 @@ export default {
         this.routePage
       );
       await this.$store.dispatch("loadMovieGenres");
-      this.movieGenres = this.$store.state.genres.MovieGenres;
+      this.movieGenres = this.$store.getters.MovieGenres;
       await this.$store.dispatch("loadTVShowsGenres");
-      this.tvshowGenres = this.$store.state.genres.TVShowGenres;
+      this.tvshowGenres = this.$store.getters.TVShowGenres;
       if (this.routeGenreID) {
         this.selectedGenre = this.genres.find(
           (name) => name.id === +this.routeGenreID
@@ -442,7 +442,7 @@ export default {
       if (this.routeActor) {
         await axios
           .get(
-            `${this.globalAPIMovieDBAddress}/3/person/${this.routeActor}?api_key=${this.key}&&language=${this.loc}`
+            `${this.globalAPIMovieDBAddress}/3/person/${this.routeActor}?api_key=${this.key}&&language=${this.locale}`
           )
           .then((response) => {
             this.a = response.data.name;
@@ -497,7 +497,7 @@ export default {
       let a = [];
       await axios
         .get(
-          `${this.globalAPIMovieDBAddress}/3/search/person?api_key=${this.key}&language=${this.loc}&query=${input}&include_adult=false&page=1`
+          `${this.globalAPIMovieDBAddress}/3/search/person?api_key=${this.key}&language=${this.locale}&query=${input}&include_adult=false&page=1`
         )
         .then((response) => {
           a = response.data.results;
@@ -553,7 +553,7 @@ export default {
       if (routeMediatype === "movie") {
         await axios
           .get(
-            `${this.globalAPIMovieDBAddress}/3/discover/${routeMediatype}?api_key=${this.key}&language=${this.loc}&sort_by=${routeSortBy}&include_adult=false&include_video=false&vote_average.gte=${routeVote}&with_people=${routeActor}&with_genres=${routeGenreID}&year=${routeYear}&page=${routePage}`
+            `${this.globalAPIMovieDBAddress}/3/discover/${routeMediatype}?api_key=${this.key}&language=${this.locale}&sort_by=${routeSortBy}&include_adult=false&include_video=false&vote_average.gte=${routeVote}&with_people=${routeActor}&with_genres=${routeGenreID}&year=${routeYear}&page=${routePage}`
           )
           .then((response) => {
             this.searchResultPage = response.data;
@@ -570,7 +570,7 @@ export default {
       } else if (routeMediatype === "tv") {
         await axios
           .get(
-            `${this.globalAPIMovieDBAddress}/3/discover/${routeMediatype}?api_key=${this.key}&language=${this.loc}&sort_by=${routeSortBy}&include_adult=false&include_video=false&vote_average.gte=${routeVote}&with_genres=${routeGenreID}&first_air_date_year=${routeYear}&page=${routePage}`
+            `${this.globalAPIMovieDBAddress}/3/discover/${routeMediatype}?api_key=${this.key}&language=${this.locale}&sort_by=${routeSortBy}&include_adult=false&include_video=false&vote_average.gte=${routeVote}&with_genres=${routeGenreID}&first_air_date_year=${routeYear}&page=${routePage}`
           )
           .then((response) => {
             this.searchResultPage = response.data;

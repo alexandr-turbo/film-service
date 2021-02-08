@@ -9,7 +9,7 @@
         </div>
         <template v-if="cast">
           <div class="actor__title">{{'actor-cast' | localize}}</div>
-          <div v-for="(role, index) in lazyRoles" :key="index">
+          <div v-for="(role, index) in lazyRolesArray" :key="index">
             <ActorCastCrewTemplate
               v-if="role && role.media_type"
               :arr="role"
@@ -49,13 +49,13 @@ export default {
     tvshowGenres: null,
     roles: [],
     crews: [],
-    lazyRoles: [],
+    lazyRolesArray: [],
     lazyCrews: [],
     scrollHeight: 0,
     rolesLoadedCount: 0,
     crewsLoadedCount: 0,
     key: process.env.VUE_APP_MOVIEDB,
-    loc: ''
+    locale: ''
   }),
   components: {
     ActorInfoTemplate,
@@ -93,7 +93,7 @@ export default {
         this.cast === true
       ) {
         for (; this.rolesLoadedCount < this.roles.length; ) {
-          this.lazyRoles.push(this.roles[this.rolesLoadedCount]);
+          this.lazyRolesArray.push(this.roles[this.rolesLoadedCount]);
           this.rolesLoadedCount++;
           return;
         }
@@ -123,7 +123,7 @@ export default {
     async getCastCrew() {
       await axios
         .get(
-          `${this.globalAPIMovieDBAddress}/3${this.$route.path}/combined_credits?api_key=${this.key}&language=${this.loc}`
+          `${this.globalAPIMovieDBAddress}/3${this.$route.path}/combined_credits?api_key=${this.key}&language=${this.locale}`
         )
         .then((response) => {
           if (response.data.cast) {
@@ -133,7 +133,7 @@ export default {
             this.crews = response.data.crew;
           }
           for (; this.rolesLoadedCount < ROLES_ONLOAD_COUNT; ) {
-            this.lazyRoles.push(this.roles[this.rolesLoadedCount]);
+            this.lazyRolesArray.push(this.roles[this.rolesLoadedCount]);
             this.rolesLoadedCount++;
           }
           for (; this.crewsLoadedCount < CREWS_ONLOAD_COUNT; ) {
@@ -145,7 +145,7 @@ export default {
     async getActor() {
       await axios
         .get(
-          `${this.globalAPIMovieDBAddress}/3${this.$route.path}?api_key=${this.key}&language=${this.loc}`
+          `${this.globalAPIMovieDBAddress}/3${this.$route.path}?api_key=${this.key}&language=${this.locale}`
         )
         .then((response) => {
           this.actor = response.data;
@@ -153,10 +153,10 @@ export default {
     },
     async changeLocale() {
       this.$root.loading = true
-      this.loc = this.$store.state.locale.locale
+      this.locale = this.$store.getters.locale
       this.cast = []
       this.crew = []
-      this.lazyRoles = []
+      this.lazyRolesArray = []
       this.lazyCrews = []
       this.rolesLoadedCount = 0
       this.crewsLoadedCount = 0
@@ -164,23 +164,23 @@ export default {
       this.actor = {}
       let p2 = await this.getActor()
       await this.$store.dispatch('loadMovieGenres')
-      this.movieGenres = this.$store.state.genres.MovieGenres;
+      this.movieGenres = this.$store.getters.MovieGenres;
       await this.$store.dispatch('loadTVShowsGenres')
-      this.tvshowGenres = this.$store.state.genres.TVShowGenres;
+      this.tvshowGenres = this.$store.getters.TVShowGenres;
       Promise.all([p1, p2]).then(this.$root.loading = false)
     }
   },
   watch: {
-    '$store.state.locale.locale'() {
+    '$store.getters.locale'() {
       this.changeLocale()
     },
   },
   async created() {
-    this.loc = this.$store.state.locale.locale
+    this.locale = this.$store.getters.locale
     let p1 = await this.getCastCrew()
     let p2 = await this.getActor()
-    this.movieGenres = this.$store.state.genres.MovieGenres;
-    this.tvshowGenres = this.$store.state.genres.TVShowGenres;
+    this.movieGenres = this.$store.getters.MovieGenres;
+    this.tvshowGenres = this.$store.getters.TVShowGenres;
     Promise.all([p1, p2]).then(this.$root.loading = false)
   },
 };

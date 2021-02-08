@@ -2,7 +2,7 @@
   <div class="home">
     <HomeUpperSlickTemplate
       :genres="genres"
-      :popular="popular"
+      :popularMoviesArray="popularMoviesArray"
     />
     <div class="container">
       <div class="home__buttons">
@@ -13,10 +13,10 @@
           {{'home-tvshows' | localize}}
         </button>
       </div>
-      <div v-for="(filmSlick, index) in filmSlickArr" :key="filmSlick.id">
+      <div v-for="(filmSlickTitle, index) in filmSlickTitlesArray" :key="filmSlickTitle.id">
         <SlickTemplate
-          :type1="type1[index]"
-          :type="filmSlick"
+          :filmsArray="filmsArrays[index]"
+          :filmSlickTitle="filmSlickTitle"
           :genres="genres"
         />
       </div>
@@ -28,113 +28,102 @@
 import HomeUpperSlickTemplate from "../components/HomeUpperSlickTemplate.vue";
 import SlickTemplate from "../components/SlickTemplate.vue";
 import axios from "axios";
-// import { Bus } from '@/main'
 
 export default {
   data() {
     return {
-      type1: [],
-      popular: [],
       key: process.env.VUE_APP_MOVIEDB,
+      filmsArrays: [],
+      popularMoviesArray: [],
       filmType: "movie",
       genres: [],
       tvshowSlickArr: ["airing_today", "popular", "on_the_air", "top_rated"],
       movieSlickArr: ["upcoming", "popular", "now_playing", "top_rated"],
-      filmSlickArr: [],
+      filmSlickTitlesArray: [],
       temp: [],
-      loc: ''
+      locale: ''
     };
   },
   components: {
     HomeUpperSlickTemplate,
-    SlickTemplate,
+    SlickTemplate
   },
-  // async mounted() {
-  //   if (!Object.keys(this.$store.getters.info).length) {
-  //     await this.$store.dispatch('fetchInfo')
-  //   }
-  // },
   async created() {
-    this.loc = this.$store.state.locale.locale
-    if(this.$store.state.genres.MovieGenres.length) {
-      this.genres = this.$store.state.genres.MovieGenres;
+    this.locale = this.$store.getters.locale;
+    if(this.$store.getters.MovieGenres.length) {
+      this.genres = this.$store.getters.MovieGenres;
     }
-    this.filmSlickArr = this.movieSlickArr;
+    this.filmSlickTitlesArray = this.movieSlickArr;
     let p1 = await this.getPopularFilms();
     let p2 = await this.getFilms();
     Promise.all([p1, p2]).then((this.$root.loading = false));
   },
   watch: {
-    '$store.state.locale.locale'() {
+    '$store.getters.locale'() {
       this.changeLocale()
     },
     filmType() {
-      this.popular = [];
+      this.popularMoviesArray = [];
       this.getPopularFilms();
-      this.type1 = [];
+      this.filmsArrays = [];
       this.getFilms();
     },
   },
   methods: {
     async changeLocale() {
       this.$root.loading = true
-      this.loc = this.$store.state.locale.locale
+      this.locale = this.$store.getters.locale
       this.genres = []
-      this.popular = [];
+      this.popularMoviesArray = [];
       let p1 = await this.getPopularFilms();
-      this.type1 = [];
+      this.filmsArrays = [];
       let p2 = await this.getFilms();
       if(this.filmType === 'movie') {
         await this.$store.dispatch('loadMovieGenres')
-        this.filmSlickArr = this.movieSlickArr;
-        this.genres = this.$store.state.genres.MovieGenres;
+        this.filmSlickTitlesArray = this.movieSlickArr;
+        this.genres = this.$store.getters.MovieGenres;
       } else if(this.filmType === 'tv') {
         await this.$store.dispatch('loadTVShowsGenres')
-        this.filmSlickArr = this.tvshowSlickArr;
-        this.genres = this.$store.state.genres.TVShowGenres;
+        this.filmSlickTitlesArray = this.tvshowSlickArr;
+        this.genres = this.$store.getters.TVShowGenres;
       }
       Promise.all([p1, p2]).then((this.$root.loading = false));
     },
     async getPopularFilms() {
       await axios
         .get(
-          `${this.globalAPIMovieDBAddress}/3/${this.filmType}/popular?api_key=${this.key}&language=${this.loc}`
+          `${this.globalAPIMovieDBAddress}/3/${this.filmType}/popular?api_key=${this.key}&language=${this.locale}`
         )
         .then((response) => {
-          this.popular = response.data.results;
-          for (let i = 0; i < this.popular.length; i++) {
-              // this.searchResultPage.results[i].media_type = routeMediatype;
-              this.$set(this.popular[i], 'media_type', this.filmType)
-              // this.searchResultPage.results[i] = Object.assign({}, this.searchResultPage.results[i], { media_type: routeMediatype })
-            }
+          this.popularMoviesArray = response.data.results;
+          for (let i = 0; i < this.popularMoviesArray.length; i++) {
+            this.$set(this.popularMoviesArray[i], 'media_type', this.filmType)
+          }
         });
     },
     async getFilms() {
-      for (let i = 0; i < this.filmSlickArr.length; i++) {
+      for (let i = 0; i < this.filmSlickTitlesArray.length; i++) {
         await axios
           .get(
-            `${this.globalAPIMovieDBAddress}/3/${this.filmType}/${this.filmSlickArr[i]}?api_key=${this.key}&language=${this.loc}`
+            `${this.globalAPIMovieDBAddress}/3/${this.filmType}/${this.filmSlickTitlesArray[i]}?api_key=${this.key}&language=${this.locale}`
           )
           .then((response) => {
             this.temp = response.data.results
-            // this.type1.push(response.data.results);
             for (let i = 0; i < this.temp.length; i++) {
-              // this.searchResultPage.results[i].media_type = routeMediatype;
               this.$set(this.temp[i], 'media_type', this.filmType)
-              // this.searchResultPage.results[i] = Object.assign({}, this.searchResultPage.results[i], { media_type: routeMediatype })
             }
-            this.type1.push(this.temp);
+            this.filmsArrays.push(this.temp);
           });
       }
     },
     switchType(type) {
       this.filmType = type;
       if (type === "tv") {
-        this.genres = this.$store.state.genres.TVShowGenres;
-        this.filmSlickArr = this.tvshowSlickArr;
+        this.genres = this.$store.getters.TVShowGenres;
+        this.filmSlickTitlesArray = this.tvshowSlickArr;
       } else if (type === "movie") {
-        this.genres = this.$store.state.genres.MovieGenres;
-        this.filmSlickArr = this.movieSlickArr;
+        this.genres = this.$store.getters.MovieGenres;
+        this.filmSlickTitlesArray = this.movieSlickArr;
       }
     },
   },

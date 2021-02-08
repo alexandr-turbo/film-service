@@ -18,24 +18,28 @@ export default {
   },
   actions: {
     async loadMovieGenres ({ commit }) {
-    const loc = store.state.locale.locale
+    const locale = store.getters.locale
       await axios
         .get(
-          `https://api.themoviedb.org/3/genre/movie/list?api_key=${key}&language=${loc}`
+          `https://api.themoviedb.org/3/genre/movie/list?api_key=${key}&language=${locale}`
         )
         .then((response) => {
           commit('setMovieGenres', response.data.genres)
         });
     },
     async loadTVShowsGenres ({ commit }) {
-      const loc = store.state.locale.locale
+      const locale = store.getters.locale
       await axios
         .get(
-          `https://api.themoviedb.org/3/genre/tv/list?api_key=${key}&language=${loc}`
+          `https://api.themoviedb.org/3/genre/tv/list?api_key=${key}&language=${locale}`
         )
         .then((response) => {
           commit('setTVShowGenres', response.data.genres)
         });
     }
   },
+  getters: {
+    MovieGenres: state => state.MovieGenres,
+    TVShowGenres: state => state.TVShowGenres,
+  }
 }

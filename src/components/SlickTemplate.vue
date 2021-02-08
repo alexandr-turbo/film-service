@@ -10,12 +10,12 @@
         </div>
       </slick>
     </div>
-    <div v-else-if="type1 && type1.length">
+    <div v-else-if="filmsArray && filmsArray.length">
       <div class="slick-template__title">
         {{typeName}}
       </div>
       <slick class="slick" ref="slick" :options="slickOptions">
-        <div v-for="item in type1" :key="item.id">
+        <div v-for="item in filmsArray" :key="item.id">
           <CoverTemplate2 :item="item" :genres="genres" />
         </div>
       </slick>
@@ -81,10 +81,10 @@ export default {
     CoverTemplate2,
     Slick,
   },
-  props: ["cast", "type", "genres", "type1"],
+  props: ["cast", "filmSlickTitle", "genres", "filmsArray"],
   computed: {
     typeName() {
-      return localize('slick-template-' + this.type)
+      return localize('slick-template-' + this.filmSlickTitle)
     }
   }
 };

@@ -119,7 +119,7 @@ export default {
     }
   },
   watch: {
-    '$store.state.locale.locale'() {
+    '$store.getters.locale'() {
       this.explore = localize('footer-template-explore')
     },
   },

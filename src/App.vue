@@ -48,10 +48,6 @@ export default {
   async created() {
     await this.$store.dispatch('loadMovieGenres')
     await this.$store.dispatch('loadTVShowsGenres')
-    // if(!this.$store.state.locale.locale) {
-    //   console.log(1)
-    //   this.$store.commit('setLocale', 'en-US')
-    // }
   },
 };
 </script>

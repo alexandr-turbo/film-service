@@ -56,7 +56,7 @@ export default {
       searchQuery: "",
       pageNumber: "",
       key: process.env.VUE_APP_MOVIEDB,
-      loc: ''
+      locale: ''
     };
   },
   components: {
@@ -74,12 +74,12 @@ export default {
         this.$root.loading = false;
       }
     },
-    '$store.state.locale.locale'() {
+    '$store.getters.locale'() {
       this.changeLocale()
     },
   },
   created() {
-    this.loc = this.$store.state.locale.locale
+    this.locale = this.$store.getters.locale
     // if(Object.values(this.$route.query)[1] !== null) {
       if(Object.values(this.$route.query)[1] !== null && Object.keys(this.$route.query).length > 1) {
       this.getSearchQuery();
@@ -89,13 +89,13 @@ export default {
       this.searchResultPage = {}
       this.$root.loading = false;
     }
-    this.movieGenres = this.$store.state.genres.MovieGenres;
-    this.tvshowGenres = this.$store.state.genres.TVShowGenres;
+    this.movieGenres = this.$store.getters.MovieGenres;
+    this.tvshowGenres = this.$store.getters.TVShowGenres;
   },
   methods: {
     async changeLocale() {
       this.$root.loading = true
-      this.loc = this.$store.state.locale.locale
+      this.locale = this.$store.getters.locale
       if(Object.values(this.$route.query)[1] !== null) {
         this.getSearchQuery();
         this.getPageNumber();
@@ -104,9 +104,9 @@ export default {
         this.$root.loading = false
       }
       await this.$store.dispatch('loadMovieGenres')
-      this.movieGenres = this.$store.state.genres.MovieGenres;
+      this.movieGenres = this.$store.getters.MovieGenres;
       await this.$store.dispatch('loadTVShowsGenres')
-      this.tvshowGenres = this.$store.state.genres.TVShowGenres;
+      this.tvshowGenres = this.$store.getters.TVShowGenres;
     },
     getSearchQuery() {
       this.searchQuery = Object.keys(this.$route.query)[0]
@@ -133,7 +133,7 @@ export default {
       }
       await axios
         .get(
-          `${this.globalAPIMovieDBAddress}/3/${b}/${a}?api_key=${this.key}&page=${page}&include_adult=false&language=${this.loc}`
+          `${this.globalAPIMovieDBAddress}/3/${b}/${a}?api_key=${this.key}&page=${page}&include_adult=false&language=${this.locale}`
         )
         .then((response) => {
           this.searchResultPage = response.data;
@@ -145,14 +145,14 @@ export default {
     async getPopularPeopleList(page) {
       await axios
         .get(
-          `${this.globalAPIMovieDBAddress}/3/person/popular?api_key=${this.key}&language=${this.loc}&page=${page}`
+          `${this.globalAPIMovieDBAddress}/3/person/popular?api_key=${this.key}&language=${this.locale}&page=${page}`
         )
         .then((response) => {
           this.searchResultPage = response.data;
           for (let i = 0; i < this.searchResultPage.results.length; i++) {
           axios
             .get(
-              `${this.globalAPIMovieDBAddress}/3/person/${this.searchResultPage.results[i].id}?api_key=${this.key}&language=${this.loc}`
+              `${this.globalAPIMovieDBAddress}/3/person/${this.searchResultPage.results[i].id}?api_key=${this.key}&language=${this.locale}`
             )
             .then((response) => {
               this.$set(this.searchResultPage.results[i], 'bio', response.data.biography)
@@ -168,7 +168,7 @@ export default {
       } else {
         await axios
           .get(
-            `${this.globalAPIMovieDBAddress}/3/search/multi?api_key=${this.key}&query=${query}&page=${page}&include_adult=false&language=${this.loc}`
+            `${this.globalAPIMovieDBAddress}/3/search/multi?api_key=${this.key}&query=${query}&page=${page}&include_adult=false&language=${this.locale}`
           )
           .then((response) => {
             this.searchResultPage = response.data;

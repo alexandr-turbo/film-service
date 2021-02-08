@@ -1,7 +1,7 @@
 <template>
-  <div v-if="popular.length">
+  <div v-if="popularMoviesArray.length">
     <slick class="slick" ref="slick" :options="slickOptionsUpper">
-      <div v-for="item in popular" :key="item.id">
+      <div v-for="item in popularMoviesArray" :key="item.id">
         <div
           class="home-upper-slick-template"
           @mousedown="clickable = true"
@@ -42,7 +42,7 @@ export default {
       },
     };
   },
-  props: ["genres", "popular"],
+  props: ["genres", "popularMoviesArray"],
   components: {
     Slick,
   },

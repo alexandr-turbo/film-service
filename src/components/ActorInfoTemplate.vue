@@ -72,7 +72,12 @@ export default {
         localize("actor-info-template-november"),
         localize("actor-info-template-december"),
       ];
-      var prettyDate = months[+arr[1] - 1] + " " + arr[2] + ", " + arr[0];
+      let prettyDate = ''
+      if(this.$store.getters.locale === 'en-US') {
+        prettyDate = months[+arr[1] - 1] + " " + arr[2] + ", " + arr[0];
+      } else if(this.$store.getters.locale === 'ru-RU') {
+        prettyDate = arr[2] + " " + months[+arr[1] - 1] + ", " + arr[0];
+      }
       return prettyDate;
     },
   },
