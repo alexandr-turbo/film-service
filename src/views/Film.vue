@@ -136,7 +136,6 @@ export default {
     },
     getWindowWidth(event) {
       this.windowWidth = document.documentElement.clientWidth;
-      console.log(this.windowWidth);
       this.windowWidth > 479
         ? (this.iFrameWidth = this.windowWidth * 0.8)
         : (this.iFrameWidth = this.windowWidth * 0.9);
@@ -158,10 +157,10 @@ export default {
     let p3 = await this.getTrailers();
     let p4 = await this.getReviews();
     Promise.all([p1, p2, p3, p4]).then((this.$root.loading = false));
-    this.$nextTick(function() {
+    // this.$nextTick(function() {
       window.addEventListener("resize", this.getWindowWidth);
       this.getWindowWidth();
-    });
+    // });
   },
 };
 </script>

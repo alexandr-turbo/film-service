@@ -1,5 +1,5 @@
 <template>
-  <div class="search" :class="{ search1: !searchResultPage.total_results }">
+  <div class="search" :class="{ 'search__fixed-footer': !searchResultPage.total_results }">
     <div class="container">
       <div class="search__results-title" v-if="searchResultPage.total_results">
         {{ "search-results" | localize }} {{ searchQuery | replaceAllToSpace }}
@@ -41,7 +41,7 @@
 </template>
 <script>
 import axios from "axios";
-import CoverTemplate1 from "../components/CoverTemplate1.vue";
+import CoverTemplate1 from "@/components/CoverTemplate1.vue";
 
 export default {
   data() {
@@ -62,9 +62,10 @@ export default {
   },
   watch: {
     $route() {
-      // if (this.$route.fullPath.indexOf("?") !== -1) {
       if (
-        Object.values(this.$route.query)[1] !== null &&
+        this.$route.query.page &&
+        this.$route.query.page !== null &&
+        +this.$route.query.page !== 0 &&
         Object.keys(this.$route.query).length > 1
       ) {
         this.getSearchQuery();
@@ -81,7 +82,6 @@ export default {
   },
   created() {
     this.locale = this.$store.getters.locale;
-    // if(Object.values(this.$route.query)[1] !== null) {
     if (
       Object.values(this.$route.query)[1] !== null &&
       Object.keys(this.$route.query).length > 1
@@ -100,7 +100,10 @@ export default {
     async changeLocale() {
       this.$root.loading = true;
       this.locale = this.$store.getters.locale;
-      if (Object.values(this.$route.query)[1] !== null) {
+      // if (this.$route.query.page !== null || this.$route.query.page !== 0) {
+      if (this.$route.query.page !== null &&
+        +this.$route.query.page !== 0 &&
+        Object.keys(this.$route.query).length > 1) {
         this.getSearchQuery();
         this.getPageNumber();
         this.getPageSearchResults(this.searchQuery, this.pageNumber);
@@ -266,7 +269,7 @@ export default {
 .search__page-button--next::after {
   content: ">>";
 }
-.search1 {
+.search__fixed-footer {
   display: flex;
   justify-content: center;
   align-items: center;
