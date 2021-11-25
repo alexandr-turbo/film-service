@@ -11,7 +11,7 @@
       }"
     >
       <img
-        v-if="item.poster_path && item.poster_path !== ''"
+        v-if="item.poster_path"
         class="cover-template1__poster"
         :src="`${globalImgAddress}154${item.poster_path}`"
       />
@@ -34,7 +34,7 @@
       }"
     >
       <img
-        v-if="item.poster_path && item.poster_path !== ''"
+        v-if="item.poster_path"
         class="cover-template1__poster"
         :src="`${globalImgAddress}154${item.poster_path}`"
       />
@@ -53,7 +53,7 @@
         {{ "cover-template-1-db" | localize }}
       </div>
       <div
-        v-if="item.genre_ids && item.genre_ids !== '' && item.genre_ids.length"
+        v-if="item.genre_ids"
         class="cover-template1__film-title"
       >
         {{ getCurrentMediaTypeGenresNames(genres, item.genre_ids) }}
@@ -75,7 +75,7 @@
       }"
     >
       <img
-        v-if="item.profile_path && item.profile_path !== ''"
+        v-if="item.profile_path"
         class="cover-template1__poster"
         :src="`${globalImgAddress}154${item.profile_path}`"
       />

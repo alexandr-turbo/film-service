@@ -395,7 +395,7 @@ export default {
         localStorage.setItem("theme", "light");
       }
     });
-    if (localStorage.getItem("theme") !== null) {
+    if (localStorage.getItem("theme")) {
       el.setAttribute("data-theme", "light");
     }
   },

@@ -1,9 +1,9 @@
 <template>
   <div> 
-    <div class="actor-info-template" v-if="actor.profile_path && actor.profile_path !== '' || actor.name || actor.birthday || actor.place_of_birth || actor.gender || actor.known_for_department || actor.biography">
+    <div class="actor-info-template" v-if="actor.profile_path || actor.name || actor.birthday || actor.place_of_birth || actor.gender || actor.known_for_department || actor.biography">
       <div class="actor-info-template__bio">
         <img
-          v-if="actor.profile_path && actor.profile_path !== ''"
+          v-if="actor.profile_path"
           class="actor-info-template__actor-photo"
           :src="`${globalImgAddress}185${actor.profile_path}`"
         />
@@ -38,18 +38,18 @@ export default {
   props: ["actor"],
   methods: {
     getGender(gender) {
-      return gender === 1 ? localize('actor-info-template-female') : localize('actor-info-template-male');
+      return localize(gender === 1 ? 'actor-info-template-female': 'actor-info-template-male');
     },
     getAge(birthdayDate) {
-      var now = new Date();
-      var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-      var dateOfBirthday = new Date(birthdayDate);
-      var dateOfBirthdayThisYear = new Date(
+      let now = new Date();
+      let today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      let dateOfBirthday = new Date(birthdayDate);
+      let dateOfBirthdayThisYear = new Date(
         today.getFullYear(),
         dateOfBirthday.getMonth(),
         dateOfBirthday.getDate()
       );
-      var age;
+      let age;
       age = today.getFullYear() - dateOfBirthday.getFullYear();
       if (today < dateOfBirthdayThisYear) {
         age = age - 1;
@@ -59,24 +59,24 @@ export default {
     getPrettyDate(currentDate) {
       let arr = currentDate.split("-");
       let months = [
-        localize("actor-info-template-january"),
-        localize("actor-info-template-february"),
-        localize("actor-info-template-march"),
-        localize("actor-info-template-april"),
-        localize("actor-info-template-may"),
-        localize("actor-info-template-june"),
-        localize("actor-info-template-july"),
-        localize("actor-info-template-august"),
-        localize("actor-info-template-september"),
-        localize("actor-info-template-october"),
-        localize("actor-info-template-november"),
-        localize("actor-info-template-december"),
+        "actor-info-template-january",
+        "actor-info-template-february",
+        "actor-info-template-march",
+        "actor-info-template-april",
+        "actor-info-template-may",
+        "actor-info-template-june",
+        "actor-info-template-july",
+        "actor-info-template-august",
+        "actor-info-template-september",
+        "actor-info-template-october",
+        "actor-info-template-november",
+        "actor-info-template-december",
       ];
       let prettyDate = ''
       if(this.$store.getters.locale === 'en-US') {
-        prettyDate = months[+arr[1] - 1] + " " + arr[2] + ", " + arr[0];
+        prettyDate = localize(months[+arr[1] - 1]) + " " + arr[2] + ", " + arr[0];
       } else if(this.$store.getters.locale === 'ru-RU') {
-        prettyDate = arr[2] + " " + months[+arr[1] - 1] + ", " + arr[0];
+        prettyDate = arr[2] + " " + localize(months[+arr[1] - 1]) + ", " + arr[0];
       }
       return prettyDate;
     },

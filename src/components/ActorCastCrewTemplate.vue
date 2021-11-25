@@ -10,14 +10,14 @@
     >
       <div
         :class="
-          index % 2 === 0
+          index % 2
             ? 'actor-cast-crew-template__bio--right-border'
             : 'actor-cast-crew-template__bio--left-border'
         "
       >
         <div class="actor-cast-crew-template__bio">
           <img
-            v-if="arr.poster_path && arr.poster_path !== ''"
+            v-if="arr.poster_path"
             class="actor-cast-crew-template__poster"
             :src="`${globalImgAddress}154${arr.poster_path}`"
           />

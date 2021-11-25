@@ -333,8 +333,7 @@ export default {
           this.arr2.every((i) => arr.includes(i)) &&
           this.movieSortOptions.some(
             (i) => i.value === this.$route.query.sort_by
-          ) &&
-          this.$route.query.page && +this.$route.query.page !== 0
+          ) && +this.$route.query.page
         );
       } else if (
         this.$route.query.mediatype &&
@@ -352,8 +351,7 @@ export default {
           this.arr2.every((i) => arr.includes(i)) &&
           this.tvSortOptions.some(
             (i) => i.value === this.$route.query.sort_by
-          ) &&
-          this.$route.query.page && +this.$route.query.page !== 0
+          ) && +this.$route.query.page
         );
       }
     },
@@ -429,16 +427,6 @@ export default {
       this.locale = this.$store.getters.locale;
       this.getLocalizedSelectsValues()
       this.getRoutePaths();
-      // this.media_type = "";
-      // this.media_type = this.routeMediatype;
-      // this.vote = "";
-      // this.vote = this.routeVote;
-      // this.year = "";
-      // this.year = this.routeYear;
-      // this.sortType = "";
-      // this.sortType = this.routeSortBy;
-      // this.routeGenreID = "";
-      // this.routeActorID = "";
       if (this.isSearchQueryCorrect()) {
         this.getLocalizedSelectsValues()
         

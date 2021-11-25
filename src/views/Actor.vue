@@ -1,6 +1,6 @@
 <template>
   <div class="actor">
-    <div v-if="actor !== null">
+    <div v-if="actor">
       <div class="container">
         <ActorInfoTemplate :actor="actor" />
         <div class="actor__buttons">

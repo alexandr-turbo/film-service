@@ -9,7 +9,7 @@
       @mouseup="clickable ? $router.push(`/person/${item.id}`) : ''"
     >
       <img
-        v-if="item.profile_path && item.profile_path !== ''"
+        v-if="item.profile_path"
         class="cover-template2__poster"
         :src="`${globalImgAddress}154${item.profile_path}`"
       />
@@ -27,7 +27,7 @@
       "
     >
       <img
-        v-if="item.poster_path && item.poster_path !== ''"
+        v-if="item.poster_path"
         class="cover-template2__poster"
         :src="`${globalImgAddress}154${item.poster_path}`"
       />

@@ -1,8 +1,8 @@
 {
   "search-bar-template-home-btn": "Домой",
   "search-bar-template-discover-btn": "Открывай",
-  "search-bar-template-toggle-theme-btn": "Сменить тему",
-  "search-bar-template-toggle-locale-btn": "Сменить язык",
+  "search-bar-template-toggle-theme-btn": "Тема",
+  "search-bar-template-toggle-locale-btn": "Язык",
   "search-bar-template-search-films": "поиск фильмов",
   "search-bar-template-greating": "Привет",
   "search-bar-template-guest": "гость",

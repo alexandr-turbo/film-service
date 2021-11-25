@@ -1,7 +1,7 @@
 <template>
   <div
     :class="
-      index % 2 === 0
+      index % 2
         ? 'film-review-template__right-border'
         : 'film-review-template__left-border'
     "

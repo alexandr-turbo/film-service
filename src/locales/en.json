@@ -1,8 +1,8 @@
 {
   "search-bar-template-home-btn": "Home",
   "search-bar-template-discover-btn": "Discover",
-  "search-bar-template-toggle-theme-btn": "Toggle theme",
-  "search-bar-template-toggle-locale-btn": "Toggle locale",
+  "search-bar-template-toggle-theme-btn": "Theme",
+  "search-bar-template-toggle-locale-btn": "Locale",
   "search-bar-template-search-films": "search films",
   "search-bar-template-greating": "Hi",
   "search-bar-template-guest": "guest",

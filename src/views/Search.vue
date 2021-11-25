@@ -63,9 +63,7 @@ export default {
   watch: {
     $route() {
       if (
-        this.$route.query.page &&
-        this.$route.query.page !== null &&
-        +this.$route.query.page !== 0 &&
+        +this.$route.query.page &&
         Object.keys(this.$route.query).length > 1
       ) {
         this.getSearchQuery();
@@ -83,7 +81,7 @@ export default {
   created() {
     this.locale = this.$store.getters.locale;
     if (
-      Object.values(this.$route.query)[1] !== null &&
+      Object.values(this.$route.query)[1] &&
       Object.keys(this.$route.query).length > 1
     ) {
       this.getSearchQuery();
@@ -100,9 +98,7 @@ export default {
     async changeLocale() {
       this.$root.loading = true;
       this.locale = this.$store.getters.locale;
-      // if (this.$route.query.page !== null || this.$route.query.page !== 0) {
-      if (this.$route.query.page !== null &&
-        +this.$route.query.page !== 0 &&
+      if (+this.$route.query.page &&
         Object.keys(this.$route.query).length > 1) {
         this.getSearchQuery();
         this.getPageNumber();
