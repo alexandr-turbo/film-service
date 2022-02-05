@@ -15,6 +15,7 @@
     <FooterTemplate />
   </div>
 </template>
+
 <script>
 import SearchBarTemplate from "@/components/SearchBarTemplate.vue";
 import FooterTemplate from "@/components/FooterTemplate.vue";
