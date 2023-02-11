@@ -16,49 +16,56 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { Component, Vue } from "vue-property-decorator";
 import SearchBarTemplate from "@/components/SearchBarTemplate.vue";
 import FooterTemplate from "@/components/FooterTemplate.vue";
-export default {
+
+@Component({
   components: {
     SearchBarTemplate,
     FooterTemplate,
   },
+})
+
+export default class App extends Vue {
   async mounted() {
     if (!Object.keys(this.$store.getters.info).length) {
       await this.$store.dispatch("fetchInfo");
     }
     this.loading = false;
     window.addEventListener("scroll", this.onScroll);
-  },
+  }
+
   beforeDestroy() {
     window.removeEventListener("scroll", this.onScroll);
-  },
-  methods: {
-    onScroll() {
-      if (pageYOffset >= 100) {
-        document
-          .getElementById("backToTop")
-          .classList.add("app__go-to-top-button-visibility");
-      } else if (pageYOffset < 100) {
-        document
-          .getElementById("backToTop")
-          .classList.remove("app__go-to-top-button-visibility");
-      }
-    },
-    goToTop() {
-      document.getElementById("app").scrollIntoView({ behavior: "smooth" });
-    },
-    async changeLocale() {
-      this.$store.dispatch("loadMovieGenres");
-      this.$store.dispatch("loadTVShowsGenres");
-    },
-  },
+  }
+
+  onScroll() {
+    if (pageYOffset >= 100) {
+      document
+        .getElementById("backToTop")
+        .classList.add("app__go-to-top-button-visibility");
+    } else if (pageYOffset < 100) {
+      document
+        .getElementById("backToTop")
+        .classList.remove("app__go-to-top-button-visibility");
+    }
+  }
+
+  goToTop() {
+    document.getElementById("app").scrollIntoView({ behavior: "smooth" });
+  }
+
+  async changeLocale() {
+    this.$store.dispatch("loadMovieGenres");
+    this.$store.dispatch("loadTVShowsGenres");
+  }
   async created() {
     await this.$store.dispatch("loadMovieGenres");
     await this.$store.dispatch("loadTVShowsGenres");
-  },
-};
+  }
+}
 </script>
 <style>
 @import "css/style.css";
