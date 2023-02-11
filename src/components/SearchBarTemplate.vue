@@ -261,7 +261,7 @@
     </form>
   </div>
 </template>
-<script>
+<script lang="ts">
 import replaceAllToDash from "@/filters/replaceAllToDash";
 import localize from "@/filters/localize";
 import Modal from "@/components/Modal.vue";

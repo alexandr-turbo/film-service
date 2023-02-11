@@ -9,7 +9,7 @@
   </div>
 </template>
 
-<script></script>
+<script lang="ts"></script>
 
 <style scoped>
 .auth {

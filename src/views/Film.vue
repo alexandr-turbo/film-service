@@ -45,7 +45,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import axios from "axios";
 import SlickTemplate from "../components/SlickTemplate.vue";
 import FilmReviewTemplate from "../components/FilmReviewTemplate.vue";

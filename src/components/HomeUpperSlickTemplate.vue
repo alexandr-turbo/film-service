@@ -45,7 +45,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import Slick from "vue-slick";
 export default {
   data() {

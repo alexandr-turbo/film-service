@@ -31,8 +31,8 @@
     </div>
   </div>
 </template>
-<script>
 
+<script lang="ts">
 import localize from '@/filters/localize'
 export default {
   props: ["actor"],

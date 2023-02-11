@@ -23,7 +23,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import Slick from "vue-slick";
 import CoverTemplate2 from "../components/CoverTemplate2.vue";
 import localize from "@/filters/localize";

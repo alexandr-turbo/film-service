@@ -39,7 +39,7 @@
     </div>
   </div>
 </template>
-<script>
+<script lang="ts">
 import axios from "axios";
 import CoverTemplate1 from "@/components/CoverTemplate1.vue";
 

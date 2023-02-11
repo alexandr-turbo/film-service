@@ -46,7 +46,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import axios from "axios";
 import ActorInfoTemplate from "../components/ActorInfoTemplate.vue";
 import ActorCastCrewTemplate from "../components/ActorCastCrewTemplate.vue";

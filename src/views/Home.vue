@@ -27,7 +27,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import HomeUpperSlickTemplate from "../components/HomeUpperSlickTemplate.vue";
 import SlickTemplate from "../components/SlickTemplate.vue";
 import axios from "axios";

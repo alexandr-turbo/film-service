@@ -89,7 +89,7 @@
     </router-link>
   </div>
 </template>
-<script>
+<script lang="ts">
 export default {
   props: ["arr", "index", "genres"],
 };
