@@ -1,9 +1,9 @@
-import ru from '@/locales/ru.json'
+import uk from '@/locales/uk.json'
 import en from '@/locales/en.json'
 import store from '@/store'
 
 const locales = {
-  'ru-RU': ru,
+  'uk-UA': uk,
   'en-US': en
 }
 
