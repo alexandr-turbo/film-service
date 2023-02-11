@@ -366,9 +366,9 @@ export default {
     },
     changeLocale() {
       if (this.$store.getters.locale === "en-US") {
-        this.$store.commit("setLocale", "ru-RU");
-        this.locale = "ru";
-      } else if (this.$store.getters.locale === "ru-RU") {
+        this.$store.commit("setLocale", "uk-UA");
+        this.locale = "uk";
+      } else if (this.$store.getters.locale === "uk-UA") {
         this.$store.commit("setLocale", "en-US");
         this.locale = "en";
       }
@@ -377,8 +377,8 @@ export default {
   mounted() {
     this.guest = localize("search-bar-template-guest");
     this.searchBarPlaceholder = localize("search-bar-template-search-films");
-    if (this.$store.getters.locale === "ru-RU") {
-      this.locale = "ru";
+    if (this.$store.getters.locale === "uk-UA") {
+      this.locale = "uk";
     } else if (this.$store.getters.locale === "en-US") {
       this.locale = "en";
     }

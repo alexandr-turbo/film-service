@@ -94,7 +94,7 @@
             <div class="footer-template__title">Film cloud</div>
           </div>
           <div>
-            Code and design by Aleksandr Savostian
+            Code and design by Oleksandr Savostian
           </div>
           <div>
             {{ "footer-template-now" | localize }}

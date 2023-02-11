@@ -75,7 +75,7 @@ export default {
       let prettyDate = ''
       if(this.$store.getters.locale === 'en-US') {
         prettyDate = localize(months[+arr[1] - 1]) + " " + arr[2] + ", " + arr[0];
-      } else if(this.$store.getters.locale === 'ru-RU') {
+      } else if(this.$store.getters.locale === 'uk-UA') {
         prettyDate = arr[2] + " " + localize(months[+arr[1] - 1]) + ", " + arr[0];
       }
       return prettyDate;
