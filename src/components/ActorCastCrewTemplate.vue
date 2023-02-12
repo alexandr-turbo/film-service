@@ -89,11 +89,23 @@
     </router-link>
   </div>
 </template>
+
 <script lang="ts">
-export default {
-  props: ["arr", "index", "genres"],
-};
+import { Component, Prop, Vue } from "vue-property-decorator";
+
+@Component({})
+export default class ActorCastCrewTemplate extends Vue {
+  @Prop()
+  arr: any;
+
+  @Prop()
+  index: any;
+
+  @Prop()
+  genres: any;
+}
 </script>
+
 <style scoped>
 .actor-cast-crew-template {
   margin: 25px 0;

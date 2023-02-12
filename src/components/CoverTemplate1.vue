@@ -52,10 +52,7 @@
       <div v-else class="cover-template1__film-title">
         {{ "cover-template-1-db" | localize }}
       </div>
-      <div
-        v-if="item.genre_ids"
-        class="cover-template1__film-title"
-      >
+      <div v-if="item.genre_ids" class="cover-template1__film-title">
         {{ getCurrentMediaTypeGenresNames(genres, item.genre_ids) }}
       </div>
       <div v-else class="cover-template1__film-title">
@@ -84,11 +81,22 @@
     </router-link>
   </div>
 </template>
+
 <script lang="ts">
-export default {
-  props: ["item", "genres", "searchQuery"],
-};
+import { Component, Prop } from "vue-property-decorator";
+@Component({})
+export default class CoverTemplate1 extends Vue {
+  @Prop()
+  item: any;
+
+  @Prop()
+  genres: any;
+
+  @Prop()
+  searchQuery: any;
+}
 </script>
+
 <style scoped>
 .cover-template1 {
   display: flex;
