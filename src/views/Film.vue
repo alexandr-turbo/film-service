@@ -47,122 +47,136 @@
 
 <script lang="ts">
 import axios from "axios";
-import SlickTemplate from "../components/SlickTemplate.vue";
-import FilmReviewTemplate from "../components/FilmReviewTemplate.vue";
-export default {
-  data() {
-    return {
-      key: process.env.VUE_APP_MOVIEDB,
-      genres: "",
-      currentFilm: {},
-      cast: [],
-      trailers: [],
-      reviews: [],
-      locale: "",
-      windowWidth: 0,
-      iFrameWidth: 0,
-    };
-  },
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import FilmReviewTemplate from "@/components/FilmReviewTemplate.vue";
+import SlickTemplate from "@/components/SlickTemplate.vue";
+import { IFilm } from "@/interfaces/IFilm";
+
+@Component({
   components: {
-    SlickTemplate,
     FilmReviewTemplate,
+    SlickTemplate,
   },
-  props: ["filmID", "filmType"],
-  methods: {
-    async changeLocale() {
-      this.$root.loading = true;
-      this.locale = this.$store.getters.locale;
-      this.currentFilm = {};
-      let p1 = await this.getCurrentFilm();
-      this.genres = "";
-      this.getGenres();
-      this.cast = [];
-      let p2 = this.getCast();
-      this.trailers = [];
-      let p3 = this.getTrailers();
-      this.reviews = [];
-      let p4 = this.getReviews();
-      Promise.all([p1, p2, p3, p4]).then((this.$root.loading = false));
-    },
-    async getCurrentFilm() {
-      await axios
-        .get(
-          `${this.globalAPIMovieDBAddress}/3/${this.filmType}/${this.filmID}?api_key=${this.key}&language=${this.locale}`
-        )
-        .then((response) => {
-          this.currentFilm = response.data;
-        });
-    },
-    getGenres() {
-      this.genres = this.currentFilm.genres
-        .map((genre) => genre.name)
-        .join("/");
-    },
-    async getCast() {
-      await axios
-        .get(
-          `${this.globalAPIMovieDBAddress}/3/${this.filmType}/${this.filmID}/credits?api_key=${this.key}&language=${this.locale}`
-        )
-        .then((response) => {
-          this.cast = response.data.cast;
-          for (let i = 0; i < this.cast.length; i++) {
-            axios
-              .get(
-                `${this.globalAPIMovieDBAddress}/3/person/${this.cast[i].id}?api_key=${this.key}&language=${this.locale}`
-              )
-              .then((response) => {
-                this.$set(this.cast[i], "bio", response.data.biography);
-              });
-          }
-        });
-    },
-    async getTrailers() {
-      await axios
-        .get(
-          `${this.globalAPIMovieDBAddress}/3/${this.filmType}/${this.filmID}/videos?api_key=${this.key}&language=${this.locale}`
-        )
-        .then((response) => {
-          this.trailers = response.data.results;
-        });
-    },
-    async getReviews() {
-      await axios
-        .get(
-          `${this.globalAPIMovieDBAddress}/3/${this.filmType}/${this.filmID}/reviews?api_key=${this.key}&language=${this.locale}`
-        )
-        .then((response) => {
-          this.reviews = response.data.results;
-        });
-    },
-    getWindowWidth(event) {
-      this.windowWidth = document.documentElement.clientWidth;
-      this.windowWidth > 479
-        ? (this.iFrameWidth = this.windowWidth * 0.8)
-        : (this.iFrameWidth = this.windowWidth * 0.9);
-    },
-  },
+})
+export default class Film extends Vue {
+  key: string = process.env.VUE_APP_MOVIEDB;
+  genres: string = "";
+  currentFilm: IFilm | null = null;
+  cast = [];
+  trailers = [];
+  reviews = [];
+  locale: string = "";
+  windowWidth: number = 0;
+  iFrameWidth: number = 0;
+
+  @Prop()
+  filmID!: string;
+
+  @Prop()
+  filmType!: string;
+
+  @Watch("$store.getters.locale")
+  localeWatcher() {
+    this.changeLocale();
+  }
+
+  async changeLocale() {
+    this.$root.loading = true;
+    this.locale = this.$store.getters.locale;
+    this.currentFilm = null;
+    let p1 = await this.getCurrentFilm();
+    this.genres = "";
+    this.getGenres();
+    this.cast = [];
+    let p2 = this.getCast();
+    this.trailers = [];
+    let p3 = this.getTrailers();
+    this.reviews = [];
+    let p4 = this.getReviews();
+    Promise.all([p1, p2, p3, p4]).then((this.$root.loading = false));
+  }
+
+  async getCurrentFilm() {
+    await axios
+      .get(
+        `${this.globalAPIMovieDBAddress}/3/${this.filmType}/${this.filmID}?api_key=${this.key}&language=${this.locale}`
+      )
+      .then((response) => {
+        this.currentFilm = response.data;
+      });
+  }
+
+  getGenres() {
+    this.genres = this.currentFilm.genres.map((genre) => genre.name).join("/");
+  }
+
+  async getCast() {
+    await axios
+      .get(
+        `${this.globalAPIMovieDBAddress}/3/${this.filmType}/${this.filmID}/credits?api_key=${this.key}&language=${this.locale}`
+      )
+      .then((response) => {
+        this.cast = response.data.cast;
+        for (let i = 0; i < this.cast.length; i++) {
+          axios
+            .get(
+              `${this.globalAPIMovieDBAddress}/3/person/${this.cast[i].id}?api_key=${this.key}&language=${this.locale}`
+            )
+            .then((response) => {
+              this.$set(this.cast[i], "bio", response.data.biography);
+            });
+        }
+      });
+  }
+
+  async getTrailers() {
+    await axios
+      .get(
+        `${this.globalAPIMovieDBAddress}/3/${this.filmType}/${this.filmID}/videos?api_key=${this.key}&language=${this.locale}`
+      )
+      .then((response) => {
+        this.trailers = response.data.results;
+      });
+  }
+
+  async getReviews() {
+    await axios
+      .get(
+        `${this.globalAPIMovieDBAddress}/3/${this.filmType}/${this.filmID}/reviews?api_key=${this.key}&language=${this.locale}`
+      )
+      .then((response) => {
+        this.reviews = response.data.results;
+      });
+  }
+
+  getWindowWidth() {
+    this.windowWidth = document.documentElement.clientWidth;
+    this.windowWidth > 479
+      ? (this.iFrameWidth = this.windowWidth * 0.8)
+      : (this.iFrameWidth = this.windowWidth * 0.9);
+  }
+
   beforeDestroy() {
     window.removeEventListener("resize", this.getWindowWidth);
-  },
-  watch: {
-    "$store.getters.locale"() {
-      this.changeLocale();
-    },
-  },
+  }
+
   async mounted() {
     this.locale = this.$store.getters.locale;
     let p1 = await this.getCurrentFilm();
     this.getGenres();
     let p2 = await this.getCast();
+    console.log(p2);
     let p3 = await this.getTrailers();
+    console.log(p3);
     let p4 = await this.getReviews();
+    console.log(p4);
     Promise.all([p1, p2, p3, p4]).then((this.$root.loading = false));
     // this.$nextTick(function() {
-      window.addEventListener("resize", this.getWindowWidth);
-      this.getWindowWidth();
+    window.addEventListener("resize", this.getWindowWidth);
+    this.getWindowWidth();
     // });
-  },
-};
+  }
+}
 </script>
 
 <style scoped>

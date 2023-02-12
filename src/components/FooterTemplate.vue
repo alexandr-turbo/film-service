@@ -93,9 +93,7 @@
           <div class="footer-template__header">
             <div class="footer-template__title">Film cloud</div>
           </div>
-          <div>
-            Code and design by Oleksandr Savostian
-          </div>
+          <div>Code and design by Oleksandr Savostian</div>
           <div>
             {{ "footer-template-now" | localize }}
             {{ date | dateFilter("datetime") }}
@@ -106,31 +104,33 @@
     </div>
   </div>
 </template>
+
 <script lang="ts">
 import localize from "@/filters/localize";
-export default {
-  data() {
-    return {
-      explore: "",
-      date: new Date(),
-      inteval: null,
-    };
-  },
-  watch: {
-    "$store.getters.locale"() {
-      this.explore = localize("footer-template-explore");
-    },
-  },
+import { Component, Vue, Watch } from "vue-property-decorator";
+
+@Component({})
+export default class FooterTemplate extends Vue {
+  explore: string = "";
+  date: Date = new Date();
+  interval: any = null;
+
+  @Watch("$store.getters.locale")
+  localeWatcher() {
+    this.explore = localize("footer-template-explore");
+  }
+
   mounted() {
     this.explore = localize("footer-template-explore");
     this.interval = setInterval(() => {
       this.date = new Date();
     }, 1000);
-  },
+  }
+
   beforeDestroy() {
     clearInterval(this.interval);
-  },
-};
+  }
+}
 </script>
 <style scoped>
 .footer-template {

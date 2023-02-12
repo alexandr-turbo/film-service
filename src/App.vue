@@ -27,13 +27,11 @@ import FooterTemplate from "@/components/FooterTemplate.vue";
     FooterTemplate,
   },
 })
-
 export default class App extends Vue {
   async mounted() {
     if (!Object.keys(this.$store.getters.info).length) {
       await this.$store.dispatch("fetchInfo");
     }
-    this.loading = false;
     window.addEventListener("scroll", this.onScroll);
   }
 
@@ -42,19 +40,21 @@ export default class App extends Vue {
   }
 
   onScroll() {
-    if (pageYOffset >= 100) {
-      document
-        .getElementById("backToTop")
-        .classList.add("app__go-to-top-button-visibility");
-    } else if (pageYOffset < 100) {
-      document
-        .getElementById("backToTop")
-        .classList.remove("app__go-to-top-button-visibility");
+    const element = document.getElementById("backToTop");
+    if (element !== null) {
+      if (pageYOffset >= 100) {
+        element.classList.add("app__go-to-top-button-visibility");
+      } else if (pageYOffset < 100) {
+        element.classList.remove("app__go-to-top-button-visibility");
+      }
     }
   }
 
   goToTop() {
-    document.getElementById("app").scrollIntoView({ behavior: "smooth" });
+    const element = document.getElementById("app");
+    if (element !== null) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
   }
 
   async changeLocale() {

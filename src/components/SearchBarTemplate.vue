@@ -59,26 +59,26 @@
                 class="search-bar-template__form-validation-invalid"
                 v-if="$v.password.$dirty && !$v.password.required"
                 >{{
-                  "search-bar-template-form-auth-password-is-required"
-                    | localize
+                  "search-bar-template-form-auth-password-is-required" |
+                    localize
                 }}</small
               >
               <small
                 class="search-bar-template__form-validation-invalid"
                 v-else-if="$v.password.$dirty && !$v.password.minLength"
                 >{{
-                  "search-bar-template-form-auth-password-min-length1"
-                    | localize
+                  "search-bar-template-form-auth-password-min-length1" |
+                    localize
                 }}
                 {{ $v.password.$params.minLength.min }}
                 {{
-                  "search-bar-template-form-auth-password-min-length2"
-                    | localize
+                  "search-bar-template-form-auth-password-min-length2" |
+                    localize
                 }}
                 {{ password.length }}
                 {{
-                  "search-bar-template-form-auth-password-min-length3"
-                    | localize
+                  "search-bar-template-form-auth-password-min-length3" |
+                    localize
                 }}</small
               >
             </div>

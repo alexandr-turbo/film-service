@@ -19,14 +19,19 @@
 </template>
 
 <script lang="ts">
-export default {
-  props: ["review", "index"],
-  computed: {
-    splittedReviewContent() {
-      return this.review.content.substring(0, 255) + "...";
-    },
-  },
-};
+import { Component, Prop, Vue } from "vue-property-decorator";
+@Component({})
+export default class FilmReviewTemplate extends Vue {
+  @Prop()
+  review!: any;
+
+  @Prop()
+  index!: any;
+
+  get splittedReviewContent() {
+    return this.review.content.substring(0, 255) + "...";
+  }
+}
 </script>
 
 <style>
