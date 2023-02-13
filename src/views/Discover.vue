@@ -41,19 +41,16 @@
             class="discover__form-field-container"
           >
             <div>{{ 'discover-involved-actor' | localize }}</div>
-            <!-- <autocomplete
-              v-if="!actor.name"
-              :search="search"
-              :get-result-value="getResultValue"
-              @submit="onSubmit"
-              auto-select
-            />
-            <input
-              v-else-if="actor.name"
+            <Multiselect
+              v-model="actor"
+              :options="actorsOptions"
+              placeholder="Actor name"
               class="discover__form-field"
-              :value="actor.name"
-              @focus="actor.name = null"
-            /> -->
+              @search-change="search"
+              id="ajax"
+              label="name"
+              track-by="name"
+            />
           </div>
           <div class="discover__form-field-container">
             <div>{{ 'discover-genre' | localize }}</div>
@@ -129,7 +126,6 @@
 <script lang="ts">
 import axios from 'axios';
 import CoverTemplate1 from '../components/CoverTemplate1.vue';
-// import Autocomplete from "@trevoreyre/autocomplete-vue";
 import localize from '@/filters/localize';
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import { IOption } from '@/interfaces/IOption';
@@ -137,11 +133,12 @@ import { IGenre } from '@/interfaces/IGenre';
 import { ISearchActor } from '@/interfaces/ISearchActor';
 import { ISearchResult } from '@/interfaces/ISearchResult';
 import { globalAPIMovieDBAddress } from '@/main.ts';
+import Multiselect from 'vue-multiselect';
 
 @Component({
   components: {
     CoverTemplate1,
-    // Autocomplete,
+    Multiselect,
   },
 })
 export default class Discover extends Vue {
@@ -182,6 +179,7 @@ export default class Discover extends Vue {
   arr2: Array<string> = [];
   selectedActorID: string = '';
   selectedActorName: string = '';
+  actorsOptions: Array<ISearchActor> = [];
 
   get genres(): Array<IGenre> {
     return this.media_type === 'movie' ? this.movieGenres : this.tvshowGenres;
@@ -533,17 +531,7 @@ export default class Discover extends Vue {
         });
       });
     (this.$root.$emit as any)('isLoading', false);
-    return a;
-  }
-
-  getResultValue(result: ISearchActor) {
-    return result.name;
-  }
-
-  onSubmit(result: ISearchActor) {
-    if (result) {
-      this.selectedActorIDFromList = result.id;
-    }
+    this.actorsOptions = a;
   }
 
   searchRequest() {
@@ -553,7 +541,7 @@ export default class Discover extends Vue {
       ) as IGenre;
       this.selectedGenreID = this.selectedGenre.id;
     } else if (!this.genre) {
-      this.selectedGenreID = 0;
+      this.selectedGenreID = null;
     }
     if (this.media_type === 'tv') {
       this.selectedActor = null;
@@ -564,7 +552,13 @@ export default class Discover extends Vue {
     }
     if (this.media_type === 'movie') {
       this.$router.push(
-        `${this.$route.path}?mediatype=${this.media_type}&sort_by=${this.sortType}&vote_average=${this.vote}&with_people=${this.selectedActor}&with_genres=${this.selectedGenreID}&year=${this.year}&page=1`
+        `${this.$route.path}?mediatype=${this.media_type}&sort_by=${
+          this.sortType
+        }&vote_average=${this.vote ? this.vote : ''}&with_people=${
+          this.selectedActor ? this.selectedActor : ''
+        }&with_genres=${
+          this.selectedGenreID ? this.selectedGenreID : ''
+        }&year=${this.year ? this.year : ''}&page=1`
       );
     } else if (this.media_type === 'tv') {
       this.$router.push(
@@ -642,6 +636,18 @@ export default class Discover extends Vue {
 }
 </script>
 <style scoped>
+::v-deep .multiselect__content-wrapper {
+  max-height: 0 !important;
+}
+::v-deep .multiselect__content {
+  list-style: none !important;
+  padding-inline-start: 0 !important;
+  background-color: white !important;
+  position: sticky !important;
+}
+::v-deep .multiselect__element {
+  color: black !important;
+}
 .discover {
   background: var(--main-bg);
 }
@@ -670,11 +676,11 @@ export default class Discover extends Vue {
     width: 280px;
   }
 }
-.discover__form-field {
+/* .discover__form-field {
   outline: none;
   border: none;
   margin-top: 1px;
-}
+} */
 .discover__form-button-container {
   display: flex;
   justify-content: center;

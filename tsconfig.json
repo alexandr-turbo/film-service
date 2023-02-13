@@ -21,7 +21,8 @@
     "paths": {
       "@/*": [
         "src/*"
-      ]
+      ],
+      "*": [ "src/client/@custom_types/*"]
     },
     "lib": [
       "esnext",

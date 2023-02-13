@@ -7,7 +7,6 @@ import localize from '@/filters/localize'
 import replaceAllToSpace from '@/filters/replaceAllToSpace'
 import replaceAllToDash from '@/filters/replaceAllToDash'
 import filmGenresMixin from "@/mixins/filmGenresMixin";
-// import Autocomplete from '@trevoreyre/autocomplete-vue'
 import dateFilter from '@/filters/dateFilter'
 
 import firebase from 'firebase/app'
@@ -15,7 +14,6 @@ import 'firebase/auth'
 import 'firebase/database'
 
 Vue.use(Vuelidate)
-// Vue.use(Autocomplete)
 Vue.config.productionTip = false
 Vue.filter('replaceAllToSpace', replaceAllToSpace)
 Vue.filter('replaceAllToDash', replaceAllToDash)
