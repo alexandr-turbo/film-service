@@ -1,9 +1,12 @@
-export interface ISearchFilm {
+export interface IRole {
 	adult: boolean,
 	backdrop_path: string,
+	character: string,
+	credit_id: string,
 	genre_ids: Array<number>,
 	id: number,
 	media_type: string,
+	order: number,
 	original_language: string,
 	original_title: string,
 	overview: string,

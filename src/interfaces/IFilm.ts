@@ -2,11 +2,12 @@ import { IGenre } from "@/interfaces/IGenre";
 import { IProductionCompany } from "@/interfaces/IProductionCompany";
 import { IProductionCountry } from "@/interfaces/IProductionCountry";
 import { ISpokenLanguage } from "@/interfaces/ISpokenLanguage";
+import { ICollection } from "@/interfaces/ICollection";
 
 export interface IFilm {
 	adult: boolean,
 	backdrop_path: string,
-	belongs_to_collection: any,
+	belongs_to_collection: ICollection,
 	budget: number,
 	genres: Array<IGenre>,
 	homepage: string,

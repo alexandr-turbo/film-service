@@ -48,6 +48,7 @@ import CoverTemplate1 from '@/components/CoverTemplate1.vue';
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import { globalAPIMovieDBAddress } from '@/main.ts';
 import { IGenre } from '@/interfaces/IGenre';
+import { ISearchResult } from '@/interfaces/ISearchResult';
 
 @Component({
   components: {
@@ -56,8 +57,8 @@ import { IGenre } from '@/interfaces/IGenre';
 })
 export default class Search extends Vue {
   globalAPIMovieDBAddress = globalAPIMovieDBAddress;
-  searchResultPage: any = {};
-  filteredSearchResults: any = {};
+  searchResultPage: ISearchResult | null = null;
+  filteredSearchResults: ISearchResult | null = null;
   movieGenres: Array<IGenre> = [];
   tvshowGenres: Array<IGenre> = [];
   genres: Array<IGenre> = [];
@@ -73,7 +74,7 @@ export default class Search extends Vue {
       this.getPageNumber();
       this.getPageSearchResults(this.searchQuery, this.pageNumber);
     } else {
-      this.searchResultPage = {};
+      this.searchResultPage = null;
       (this.$root.$emit as any)('isLoading', false);
     }
   }
@@ -92,7 +93,7 @@ export default class Search extends Vue {
       this.getPageNumber();
       this.getPageSearchResults(this.searchQuery, this.pageNumber);
     } else {
-      this.searchResultPage = {};
+      this.searchResultPage = null;
       (this.$root.$emit as any)('isLoading', false);
     }
     this.movieGenres = this.$store.getters.MovieGenres;
@@ -134,8 +135,8 @@ export default class Search extends Vue {
   }
 
   async getFilmsList(query: string, page: number) {
-    let a: string = '';
-    let b: string = '';
+    let a,
+      b: string = '';
     if (query.includes('movies')) {
       a = query.slice(0, query.indexOf('movies') - 1);
       b = 'movie';
@@ -149,8 +150,12 @@ export default class Search extends Vue {
       )
       .then(response => {
         this.searchResultPage = response.data;
-        for (let i = 0; i < this.searchResultPage.results.length; i++) {
-          this.searchResultPage.results[i].media_type = b;
+        for (
+          let i = 0;
+          i < (this.searchResultPage as ISearchResult).results.length;
+          i++
+        ) {
+          (this.searchResultPage as ISearchResult).results[i].media_type = b;
         }
       });
   }
@@ -162,14 +167,20 @@ export default class Search extends Vue {
       )
       .then(response => {
         this.searchResultPage = response.data;
-        for (let i = 0; i < this.searchResultPage.results.length; i++) {
+        for (
+          let i = 0;
+          i < (this.searchResultPage as ISearchResult).results.length;
+          i++
+        ) {
           axios
             .get(
-              `${globalAPIMovieDBAddress}/3/person/${this.searchResultPage.results[i].id}?api_key=${this.key}&language=${this.locale}`
+              `${globalAPIMovieDBAddress}/3/person/${
+                (this.searchResultPage as ISearchResult).results[i].id
+              }?api_key=${this.key}&language=${this.locale}`
             )
             .then(response => {
               this.$set(
-                this.searchResultPage.results[i],
+                (this.searchResultPage as ISearchResult).results[i],
                 'bio',
                 response.data.biography
               );

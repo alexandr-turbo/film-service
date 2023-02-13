@@ -2,7 +2,7 @@
   <div>
     <div v-if="cast">
       <div class="slick-template__title">
-        {{ "slick-template-cast" | localize }}
+        {{ 'slick-template-cast' | localize }}
       </div>
       <slick class="slick" ref="slick" :options="slickOptions">
         <div v-for="item in cast" :key="item.cast_id">
@@ -24,10 +24,13 @@
 </template>
 
 <script lang="ts">
-import Slick from "vue-slick";
-import CoverTemplate2 from "../components/CoverTemplate2.vue";
-import localize from "@/filters/localize";
-import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import Slick from 'vue-slick';
+import CoverTemplate2 from '../components/CoverTemplate2.vue';
+import localize from '@/filters/localize';
+import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
+import { IGenre } from '@/interfaces/IGenre';
+import { ICast } from '@/interfaces/ICast';
+import { ISearchFilm } from '@/interfaces/ISearchFilm';
 
 @Component({
   components: {
@@ -40,7 +43,7 @@ export default class SlickTemplate extends Vue {
     slidesToShow: 7,
     infinite: true,
     draggable: true,
-    lazyLoad: "ondemand",
+    lazyLoad: 'ondemand',
     responsive: [
       {
         breakpoint: 1280,
@@ -82,19 +85,19 @@ export default class SlickTemplate extends Vue {
   };
 
   @Prop()
-  cast: any;
+  cast!: Array<ICast>;
 
   @Prop()
-  filmSlickTitle: any;
+  filmSlickTitle!: string;
 
   @Prop()
-  genres: any;
+  genres!: Array<IGenre>;
 
   @Prop()
-  filmsArray: any;
+  filmsArray!: Array<ISearchFilm>;
 
   get typeName() {
-    return localize("slick-template-" + this.filmSlickTitle);
+    return localize('slick-template-' + this.filmSlickTitle);
   }
 }
 </script>

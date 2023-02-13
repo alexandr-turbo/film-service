@@ -86,7 +86,10 @@
           </button>
         </div>
       </form>
-      <div class="discover__results" v-if="searchResultPage.total_results">
+      <div
+        class="discover__results"
+        v-if="searchResultPage && searchResultPage.total_results"
+      >
         <div
           class="discover__result"
           v-for="item in searchResultPage.results"
@@ -98,17 +101,23 @@
       <div class="discover__results-title" v-else>
         {{ 'discover-nothing-found' | localize }}
       </div>
-      <div v-if="searchResultPage.page" class="discover__page-buttons">
+      <div
+        v-if="searchResultPage && searchResultPage.page"
+        class="discover__page-buttons"
+      >
         <button
           class="discover__page-button discover__page-button--previous"
-          v-if="searchResultPage.page > 1"
+          v-if="searchResultPage && searchResultPage.page > 1"
           @click="getPreviousPageSearchResults()"
         >
           {{ 'discover-previous' | localize }}
         </button>
         <button
           class="discover__page-button discover__page-button--next"
-          v-if="searchResultPage.page < searchResultPage.total_pages"
+          v-if="
+            searchResultPage &&
+            searchResultPage.page < searchResultPage.total_pages
+          "
           @click="getNextPageSearchResults()"
         >
           {{ 'discover-next' | localize }}
@@ -126,6 +135,7 @@ import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import { IOption } from '@/interfaces/IOption';
 import { IGenre } from '@/interfaces/IGenre';
 import { ISearchActor } from '@/interfaces/ISearchActor';
+import { ISearchResult } from '@/interfaces/ISearchResult';
 import { globalAPIMovieDBAddress } from '@/main.ts';
 
 @Component({
@@ -147,14 +157,14 @@ export default class Discover extends Vue {
   vote: number | null = null;
   sortType: string = '';
   media_type: string = '';
-  searchResultPage: any = {};
+  searchResultPage: ISearchResult | null = null;
   movieGenres: Array<IGenre> = [];
   tvshowGenres: Array<IGenre> = [];
   searchQuery: string = '';
   pageNumber: number = 1;
   fullPath: string = '';
   selectedActorIDFromList: number | null = null;
-  selectedGenre: IGenre = new IGenre();
+  selectedGenre: IGenre | null = null;
   selectedGenreID: number | null = null;
   selectedActor: number | null = null;
   selectedVote: string = '';
@@ -166,7 +176,7 @@ export default class Discover extends Vue {
   routeYear: number | null = null;
   routePage: number | null = null;
   key: string = process.env.VUE_APP_MOVIEDB;
-  actor!: ISearchActor | null;
+  actor: ISearchActor | null = null;
   preventOnCreatedUpdate: boolean = true;
   locale: string = '';
   arr2: Array<string> = [];
@@ -258,7 +268,7 @@ export default class Discover extends Vue {
         this.routePage as number
       );
     } else {
-      this.searchResultPage = {};
+      this.searchResultPage = null;
       (this.$root.$emit as any)('isLoading', false);
     }
   }
@@ -322,7 +332,7 @@ export default class Discover extends Vue {
         this.routePage as number
       );
     } else {
-      this.searchResultPage = {};
+      this.searchResultPage = null;
       (this.$root.$emit as any)('isLoading', false);
     }
   }
@@ -455,7 +465,7 @@ export default class Discover extends Vue {
         this.routePage as number
       );
     } else {
-      this.searchResultPage = {};
+      this.searchResultPage = null;
       (this.$root.$emit as any)('isLoading', false);
     }
     await this.$store.dispatch('loadMovieGenres');
@@ -511,7 +521,7 @@ export default class Discover extends Vue {
       this.selectedActorIDFromList = null;
       return [];
     }
-    let a: Array<any> = [];
+    let a: Array<ISearchActor> = [];
     await axios
       .get(
         `${globalAPIMovieDBAddress}/3/search/person?api_key=${this.key}&language=${this.locale}&query=${input}&include_adult=false&page=1`
@@ -526,11 +536,11 @@ export default class Discover extends Vue {
     return a;
   }
 
-  getResultValue(result: any) {
+  getResultValue(result: ISearchActor) {
     return result.name;
   }
 
-  onSubmit(result: any) {
+  onSubmit(result: ISearchActor) {
     if (result) {
       this.selectedActorIDFromList = result.id;
     }
@@ -579,10 +589,14 @@ export default class Discover extends Vue {
         )
         .then(response => {
           this.searchResultPage = response.data;
-          if (this.searchResultPage.results.length) {
-            for (let i = 0; i < this.searchResultPage.results.length; i++) {
+          if ((this.searchResultPage as ISearchResult).results.length) {
+            for (
+              let i = 0;
+              i < (this.searchResultPage as ISearchResult).results.length;
+              i++
+            ) {
               this.$set(
-                this.searchResultPage.results[i],
+                (this.searchResultPage as ISearchResult).results[i],
                 'media_type',
                 routeMediatype
               );
@@ -596,10 +610,14 @@ export default class Discover extends Vue {
         )
         .then(response => {
           this.searchResultPage = response.data;
-          if (this.searchResultPage.results.length) {
-            for (let i = 0; i < this.searchResultPage.results.length; i++) {
+          if ((this.searchResultPage as ISearchResult).results.length) {
+            for (
+              let i = 0;
+              i < (this.searchResultPage as ISearchResult).results.length;
+              i++
+            ) {
               this.$set(
-                this.searchResultPage.results[i],
+                (this.searchResultPage as ISearchResult).results[i],
                 'media_type',
                 routeMediatype
               );

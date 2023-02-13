@@ -33,6 +33,8 @@ import SlickTemplate from '../components/SlickTemplate.vue';
 import axios from 'axios';
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import { globalAPIMovieDBAddress } from '@/main.ts';
+import { IGenre } from '@/interfaces/IGenre';
+import { ISearchFilm } from '@/interfaces/ISearchFilm';
 
 @Component({
   components: {
@@ -43,10 +45,10 @@ import { globalAPIMovieDBAddress } from '@/main.ts';
 export default class Home extends Vue {
   globalAPIMovieDBAddress = globalAPIMovieDBAddress;
   key: string = process.env.VUE_APP_MOVIEDB;
-  filmsArrays: any = [];
-  popularMoviesArray: any = [];
+  filmsArrays: Array<Array<ISearchFilm>> = [];
+  popularMoviesArray: Array<ISearchFilm> = [];
   filmType: string = 'movie';
-  genres: any = [];
+  genres: Array<IGenre> = [];
   tvshowSlickArr: Array<string> = [
     'airing_today',
     'popular',
@@ -59,8 +61,8 @@ export default class Home extends Vue {
     'now_playing',
     'top_rated',
   ];
-  filmSlickTitlesArray: any = [];
-  temp: any = [];
+  filmSlickTitlesArray: Array<string> = [];
+  temp: Array<ISearchFilm> = [];
   locale: string = '';
 
   async created() {
