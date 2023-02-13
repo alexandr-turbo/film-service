@@ -262,29 +262,34 @@
   </div>
 </template>
 <script lang="ts">
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import replaceAllToDash from "@/filters/replaceAllToDash";
 import localize from "@/filters/localize";
 import Modal from "@/components/Modal.vue";
 import Tooltip from "@/components/Tooltip.vue";
 import { email, required, minLength } from "vuelidate/lib/validators";
-export default {
-  data() {
-    return {
-      log: false,
-      sign: false,
-      clicked: false,
-      query: "",
-      imgSrc: "",
-      locale: "",
-      guest: "",
-      searchBarPlaceholder: "",
-      email: "",
-      password: "",
-      name: "",
-      routeName: "",
-      username: "",
-    };
+
+@Component({
+  components: {
+    Modal,
+    Tooltip,
   },
+})
+export default class SearchBarTemplate extends Vue {
+  log: boolean = false;
+  sign: boolean = false;
+  clicked: boolean = false;
+  query: string = "";
+  imgSrc: string = "";
+  locale: string = "";
+  guest: string = "";
+  searchBarPlaceholder: string = "";
+  email: string = "";
+  password: string = "";
+  name: string = "";
+  routeName: string = "";
+  username: string = "";
+
   validations() {
     if (this.log) {
       return {
@@ -298,82 +303,84 @@ export default {
         name: { required },
       };
     }
-  },
-  components: {
-    Modal,
-    Tooltip,
-  },
-  watch: {
-    "$store.getters.locale"() {
-      this.guest = localize("search-bar-template-guest");
-      this.searchBarPlaceholder = localize("search-bar-template-search-films");
-    },
-    "$store.getters.info.name"() {
-      this.username = this.$store.getters.info.name;
-    },
-  },
-  computed: {
-    getFirstLetter() {
-      return this.username.charAt(0).toUpperCase();
-    },
-  },
-  methods: {
-    hideForm() {
-      this.clicked = false;
-    },
-    clearForm() {
-      this.name = this.email = this.password = "";
-      this.$v.$reset();
-    },
-    async submit() {
-      if (this.$v.$invalid) {
-        this.$v.$touch();
-        return;
-      }
-      if (this.sign) {
-        const formData = {
-          email: this.email,
-          password: this.password,
-          name: this.name,
-        };
-        try {
-          await this.$store.dispatch("register", formData);
-        } catch (e) {}
-      } else if (this.log) {
-        const formData = {
-          email: this.email,
-          password: this.password,
-        };
-        try {
-          await this.$store.dispatch("login", formData);
-        } catch (e) {}
-      }
-      this.clearForm();
-      this.hideForm();
-      if (!Object.keys(this.$store.getters.info).length) {
-        await this.$store.dispatch("fetchInfo");
-      }
-    },
-    async logout() {
-      await this.$store.dispatch("logout");
-    },
-    sendSearchRequest(query) {
-      if (query.length < 2) {
-        return;
-      }
-      this.$router.push(`/search?${replaceAllToDash(query)}&page=1`);
-      this.query = "";
-    },
-    changeLocale() {
-      if (this.$store.getters.locale === "en-US") {
-        this.$store.commit("setLocale", "uk-UA");
-        this.locale = "uk";
-      } else if (this.$store.getters.locale === "uk-UA") {
-        this.$store.commit("setLocale", "en-US");
-        this.locale = "en";
-      }
-    },
-  },
+  }
+
+  @Watch("$store.getters.locale")
+  localeWatcher() {
+    this.guest = localize("search-bar-template-guest");
+    this.searchBarPlaceholder = localize("search-bar-template-search-films");
+  }
+
+  @Watch("$store.getters.info.name")
+  nameWatcher() {
+    this.username = this.$store.getters.info.name;
+  }
+
+  get getFirstLetter() {
+    return this.username.charAt(0).toUpperCase();
+  }
+
+  hideForm() {
+    this.clicked = false;
+  }
+
+  clearForm() {
+    this.name = this.email = this.password = "";
+    this.$v.$reset();
+  }
+
+  async submit() {
+    if (this.$v.$invalid) {
+      this.$v.$touch();
+      return;
+    }
+    if (this.sign) {
+      const formData = {
+        email: this.email,
+        password: this.password,
+        name: this.name,
+      };
+      try {
+        await this.$store.dispatch("register", formData);
+      } catch (e) {}
+    } else if (this.log) {
+      const formData = {
+        email: this.email,
+        password: this.password,
+      };
+      try {
+        await this.$store.dispatch("login", formData);
+      } catch (e) {}
+    }
+    this.clearForm();
+    this.hideForm();
+    if (!Object.keys(this.$store.getters.info).length) {
+      await this.$store.dispatch("fetchInfo");
+    }
+  }
+
+  async logout() {
+    await this.$store.dispatch("logout");
+  }
+
+  sendSearchRequest(query: string) {
+    if (query.length < 2) {
+      return;
+    }
+    this.$router.push(`/search?${replaceAllToDash(query)}&page=1`);
+    this.query = "";
+  }
+
+  changeLocale() {
+    if (this.$store.getters.locale === "en-US") {
+      this.$store.commit("setLocale", "uk-UA");
+      this.locale = "uk";
+    } else if (this.$store.getters.locale === "uk-UA") {
+      this.$store.commit("setLocale", "en-US");
+      this.locale = "en";
+    }
+  }
+
   mounted() {
     this.guest = localize("search-bar-template-guest");
     this.searchBarPlaceholder = localize("search-bar-template-search-films");
@@ -386,20 +393,22 @@ export default {
       ".search-bar-template__toggle-theme-button"
     );
     let el = document.documentElement;
-    toggleTheme.addEventListener("click", () => {
-      if (el.hasAttribute("data-theme")) {
-        el.removeAttribute("data-theme");
-        localStorage.removeItem("theme");
-      } else {
+    if (toggleTheme !== null && el !== null) {
+      toggleTheme.addEventListener("click", () => {
+        if (el.hasAttribute("data-theme")) {
+          el.removeAttribute("data-theme");
+          localStorage.removeItem("theme");
+        } else {
+          el.setAttribute("data-theme", "light");
+          localStorage.setItem("theme", "light");
+        }
+      });
+      if (localStorage.getItem("theme")) {
         el.setAttribute("data-theme", "light");
-        localStorage.setItem("theme", "light");
       }
-    });
-    if (localStorage.getItem("theme")) {
-      el.setAttribute("data-theme", "light");
     }
-  },
-};
+  }
+}
 </script>
 <style scoped>
 @media (max-width: 640px) {

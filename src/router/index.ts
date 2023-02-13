@@ -43,7 +43,10 @@ const router = new VueRouter({
   // mode: 'history',
   routes,
   scrollBehavior() {
-    document.getElementById('app').scrollIntoView({behavior: "smooth"});
+    const element = document.getElementById("app");
+    if (element !== null) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
 }
 })
 

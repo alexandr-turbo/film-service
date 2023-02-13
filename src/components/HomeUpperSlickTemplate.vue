@@ -23,16 +23,16 @@
             <div
               v-if="
                 item.title ||
-                  item.name ||
-                  item.original_title ||
-                  item.original_name
+                item.name ||
+                item.original_title ||
+                item.original_name
               "
             >
               {{
                 item.title ||
-                  item.name ||
-                  item.original_title ||
-                  item.original_name
+                item.name ||
+                item.original_title ||
+                item.original_name
               }}
             </div>
             <div class="home-upper-slick-template__genres">
@@ -46,27 +46,34 @@
 </template>
 
 <script lang="ts">
+import { Component, Prop } from "vue-property-decorator";
+import { mixins } from "vue-class-component";
 import Slick from "vue-slick";
-export default {
-  data() {
-    return {
-      clickable: undefined,
-      slickOptionsUpper: {
-        slidesToShow: 1,
-        infinite: true,
-        autoplay: true,
-        autoplaySpeed: 5000,
-        arrows: false,
-        draggable: true,
-        lazyLoad: "ondemand",
-      },
-    };
-  },
-  props: ["genres", "popularMoviesArray"],
+import filmGenresMixin from "@/mixins/filmGenresMixin";
+
+@Component({
   components: {
     Slick,
   },
-};
+})
+export default class HomeUpperSlickTemplate extends mixins(filmGenresMixin) {
+  clickable = undefined;
+  slickOptionsUpper = {
+    slidesToShow: 1,
+    infinite: true,
+    autoplay: true,
+    autoplaySpeed: 5000,
+    arrows: false,
+    draggable: true,
+    lazyLoad: "ondemand",
+  };
+
+  @Prop()
+  genres: any;
+
+  @Prop()
+  popularMoviesArray: any;
+}
 </script>
 <style scoped>
 .home-upper-slick-template {

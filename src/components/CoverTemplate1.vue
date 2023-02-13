@@ -83,9 +83,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop } from "vue-property-decorator";
+import { Component, Prop, Vue } from "vue-property-decorator";
+import { mixins } from "vue-class-component";
+import filmGenresMixin from "@/mixins/filmGenresMixin";
+
 @Component({})
-export default class CoverTemplate1 extends Vue {
+export default class CoverTemplate1 extends mixins(filmGenresMixin) {
   @Prop()
   item: any;
 

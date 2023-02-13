@@ -7,7 +7,7 @@ import localize from '@/filters/localize'
 import replaceAllToSpace from '@/filters/replaceAllToSpace'
 import replaceAllToDash from '@/filters/replaceAllToDash'
 import filmGenresMixin from "@/mixins/filmGenresMixin";
-import Autocomplete from '@trevoreyre/autocomplete-vue'
+// import Autocomplete from '@trevoreyre/autocomplete-vue'
 import dateFilter from '@/filters/dateFilter'
 
 import firebase from 'firebase/app'
@@ -15,7 +15,7 @@ import 'firebase/auth'
 import 'firebase/database'
 
 Vue.use(Vuelidate)
-Vue.use(Autocomplete)
+// Vue.use(Autocomplete)
 Vue.config.productionTip = false
 Vue.filter('replaceAllToSpace', replaceAllToSpace)
 Vue.filter('replaceAllToDash', replaceAllToDash)
@@ -34,21 +34,16 @@ firebase.initializeApp({
 
 export const Bus = new Vue();
 
-Vue.mixin({
-  data() {
-    return {
-      globalImgAddress: 'https://image.tmdb.org/t/p/w',
-      globalAPIMovieDBAddress: 'https://api.themoviedb.org'
-    }
-  }
-})
+export var globalAPIMovieDBAddress: 'https://api.themoviedb.org';
+export var globalImgAddress: 'https://image.tmdb.org/t/p/w';
+
 Vue.mixin(filmGenresMixin)
 
-let app
+let app: Vue
 firebase.auth().onAuthStateChanged(() => {
   if(!app) {
     app = new Vue({
-      data: { loading: false },
+      // data: { loading: false },
       router,
       store,
       render: h => h(App),
@@ -57,5 +52,6 @@ firebase.auth().onAuthStateChanged(() => {
 })
 
 router.afterEach(() => {
-  app.loading = true
+  // app.loading = true
+  app.$root.$emit('isLoading', true); // does not work
 })

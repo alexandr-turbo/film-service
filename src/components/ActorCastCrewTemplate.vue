@@ -92,9 +92,11 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
+import { mixins } from "vue-class-component";
+import filmGenresMixin from "@/mixins/filmGenresMixin";
 
-@Component({})
-export default class ActorCastCrewTemplate extends Vue {
+@Component
+export default class ActorCastCrewTemplate extends mixins(filmGenresMixin) {
   @Prop()
   arr: any;
 

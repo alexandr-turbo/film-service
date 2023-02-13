@@ -10,10 +10,10 @@
       </div>
       <div class="container">
         <div v-if="genres && genres.length">
-          {{ "film-genres" | localize }}: {{ genres }}
+          {{ 'film-genres' | localize }}: {{ genres }}
         </div>
         <div v-if="currentFilm.overview">
-          <div>{{ "film-summary" | localize }}</div>
+          <div>{{ 'film-summary' | localize }}</div>
           <div>{{ currentFilm.overview }}</div>
         </div>
         <div v-if="cast.length">
@@ -21,7 +21,7 @@
         </div>
         <div v-if="trailers.length">
           <div class="film-trailers-slick-template__title">
-            {{ "film-trailers-slick-template-trailers" | localize }}
+            {{ 'film-trailers-slick-template-trailers' | localize }}
           </div>
           <div v-for="trailer in trailers" :key="trailer.id">
             <iframe
@@ -35,7 +35,7 @@
           </div>
         </div>
         <div class="film__title" v-if="reviews && reviews.length">
-          {{ "film-reviews" | localize }}
+          {{ 'film-reviews' | localize }}
         </div>
         <div v-for="(review, index) in reviews" :key="review.id">
           <FilmReviewTemplate :review="review" :index="index" />
@@ -46,11 +46,15 @@
 </template>
 
 <script lang="ts">
-import axios from "axios";
-import { Component, Prop, Vue, Watch } from "vue-property-decorator";
-import FilmReviewTemplate from "@/components/FilmReviewTemplate.vue";
-import SlickTemplate from "@/components/SlickTemplate.vue";
-import { IFilm } from "@/interfaces/IFilm";
+import axios from 'axios';
+import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
+import FilmReviewTemplate from '@/components/FilmReviewTemplate.vue';
+import SlickTemplate from '@/components/SlickTemplate.vue';
+import { IFilm } from '@/interfaces/IFilm';
+import { ICast } from '@/interfaces/ICast';
+import { ITrailer } from '@/interfaces/ITrailer';
+import { IReview } from '@/interfaces/IReview';
+import { globalAPIMovieDBAddress } from '@/main.ts';
 
 @Component({
   components: {
@@ -60,12 +64,12 @@ import { IFilm } from "@/interfaces/IFilm";
 })
 export default class Film extends Vue {
   key: string = process.env.VUE_APP_MOVIEDB;
-  genres: string = "";
+  genres: string = '';
   currentFilm: IFilm | null = null;
-  cast = [];
-  trailers = [];
-  reviews = [];
-  locale: string = "";
+  cast: Array<ICast> = [];
+  trailers: Array<ITrailer> = [];
+  reviews: Array<IReview> = [];
+  locale: string = '';
   windowWidth: number = 0;
   iFrameWidth: number = 0;
 
@@ -75,17 +79,17 @@ export default class Film extends Vue {
   @Prop()
   filmType!: string;
 
-  @Watch("$store.getters.locale")
+  @Watch('$store.getters.locale')
   localeWatcher() {
     this.changeLocale();
   }
 
   async changeLocale() {
-    this.$root.loading = true;
+    (this.$root.$emit as any)('isLoading', true);
     this.locale = this.$store.getters.locale;
     this.currentFilm = null;
     let p1 = await this.getCurrentFilm();
-    this.genres = "";
+    this.genres = '';
     this.getGenres();
     this.cast = [];
     let p2 = this.getCast();
@@ -93,37 +97,41 @@ export default class Film extends Vue {
     let p3 = this.getTrailers();
     this.reviews = [];
     let p4 = this.getReviews();
-    Promise.all([p1, p2, p3, p4]).then((this.$root.loading = false));
+    Promise.all([p1, p2, p3, p4]).then(
+      (this.$root.$emit as any)('isLoading', false)
+    );
   }
 
   async getCurrentFilm() {
     await axios
       .get(
-        `${this.globalAPIMovieDBAddress}/3/${this.filmType}/${this.filmID}?api_key=${this.key}&language=${this.locale}`
+        `${globalAPIMovieDBAddress}/3/${this.filmType}/${this.filmID}?api_key=${this.key}&language=${this.locale}`
       )
-      .then((response) => {
+      .then(response => {
         this.currentFilm = response.data;
       });
   }
 
   getGenres() {
-    this.genres = this.currentFilm.genres.map((genre) => genre.name).join("/");
+    this.genres = (this.currentFilm as IFilm).genres
+      .map(genre => genre.name)
+      .join('/');
   }
 
   async getCast() {
     await axios
       .get(
-        `${this.globalAPIMovieDBAddress}/3/${this.filmType}/${this.filmID}/credits?api_key=${this.key}&language=${this.locale}`
+        `${globalAPIMovieDBAddress}/3/${this.filmType}/${this.filmID}/credits?api_key=${this.key}&language=${this.locale}`
       )
-      .then((response) => {
+      .then(response => {
         this.cast = response.data.cast;
         for (let i = 0; i < this.cast.length; i++) {
           axios
             .get(
-              `${this.globalAPIMovieDBAddress}/3/person/${this.cast[i].id}?api_key=${this.key}&language=${this.locale}`
+              `${globalAPIMovieDBAddress}/3/person/${this.cast[i].id}?api_key=${this.key}&language=${this.locale}`
             )
-            .then((response) => {
-              this.$set(this.cast[i], "bio", response.data.biography);
+            .then(response => {
+              this.$set(this.cast[i], 'bio', response.data.biography);
             });
         }
       });
@@ -132,9 +140,9 @@ export default class Film extends Vue {
   async getTrailers() {
     await axios
       .get(
-        `${this.globalAPIMovieDBAddress}/3/${this.filmType}/${this.filmID}/videos?api_key=${this.key}&language=${this.locale}`
+        `${globalAPIMovieDBAddress}/3/${this.filmType}/${this.filmID}/videos?api_key=${this.key}&language=${this.locale}`
       )
-      .then((response) => {
+      .then(response => {
         this.trailers = response.data.results;
       });
   }
@@ -142,9 +150,9 @@ export default class Film extends Vue {
   async getReviews() {
     await axios
       .get(
-        `${this.globalAPIMovieDBAddress}/3/${this.filmType}/${this.filmID}/reviews?api_key=${this.key}&language=${this.locale}`
+        `${globalAPIMovieDBAddress}/3/${this.filmType}/${this.filmID}/reviews?api_key=${this.key}&language=${this.locale}`
       )
-      .then((response) => {
+      .then(response => {
         this.reviews = response.data.results;
       });
   }
@@ -157,7 +165,7 @@ export default class Film extends Vue {
   }
 
   beforeDestroy() {
-    window.removeEventListener("resize", this.getWindowWidth);
+    window.removeEventListener('resize', this.getWindowWidth);
   }
 
   async mounted() {
@@ -165,14 +173,13 @@ export default class Film extends Vue {
     let p1 = await this.getCurrentFilm();
     this.getGenres();
     let p2 = await this.getCast();
-    console.log(p2);
     let p3 = await this.getTrailers();
-    console.log(p3);
     let p4 = await this.getReviews();
-    console.log(p4);
-    Promise.all([p1, p2, p3, p4]).then((this.$root.loading = false));
+    Promise.all([p1, p2, p3, p4]).then(
+      (this.$root.$emit as any)('isLoading', false)
+    );
     // this.$nextTick(function() {
-    window.addEventListener("resize", this.getWindowWidth);
+    window.addEventListener('resize', this.getWindowWidth);
     this.getWindowWidth();
     // });
   }

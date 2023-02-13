@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div id="page-preloader" class="preloader" v-if="$root.loading">
+    <div id="page-preloader" class="preloader" v-if="isLoading">
       <div class="loader"></div>
     </div>
     <SearchBarTemplate />
@@ -28,11 +28,16 @@ import FooterTemplate from "@/components/FooterTemplate.vue";
   },
 })
 export default class App extends Vue {
+  isLoading: boolean = false;
   async mounted() {
     if (!Object.keys(this.$store.getters.info).length) {
       await this.$store.dispatch("fetchInfo");
     }
     window.addEventListener("scroll", this.onScroll);
+    this.$on("isLoading", (val: boolean) => {
+      console.log(val);
+      this.isLoading = val;
+    });
   }
 
   beforeDestroy() {

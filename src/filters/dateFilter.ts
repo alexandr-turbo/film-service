@@ -1,7 +1,7 @@
 import store from '@/store'
-export default function dateFilter(value, format = 'date') {
-  let loc = store.state.locale.locale || 'en-US'
-  const options = {}
+export default function dateFilter(value: Date, format = 'date') {
+  let { locale } = store.state.locale || 'en-US'
+  const options: Intl.DateTimeFormatOptions | undefined = {}
   if (format.includes('date')) {
     options.day = '2-digit'
     options.month = 'long'
@@ -12,5 +12,5 @@ export default function dateFilter(value, format = 'date') {
     options.minute = '2-digit'
     options.second = '2-digit'
   }
-  return new Intl.DateTimeFormat(loc, options).format(new Date(value))
+  return new Intl.DateTimeFormat(locale, options).format(new Date(value))
 }

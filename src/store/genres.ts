@@ -1,7 +1,13 @@
 import axios from "axios"
 import store from '@/store'
+import { IGenre } from '@/interfaces/IGenre'
 
-const key = process.env.VUE_APP_MOVIEDB
+const key: string = process.env.VUE_APP_MOVIEDB;
+
+export interface GenresState {
+  MovieGenres: Array<IGenre>,
+  TVShowGenres: Array<IGenre>,
+}
 
 export default {
   state: {
@@ -9,15 +15,16 @@ export default {
     TVShowGenres: []
   },
   mutations: {
-    setMovieGenres (state, genres) {
+    setMovieGenres (state: GenresState, genres: Array<IGenre>) {
       state.MovieGenres = genres
+      
     },
-    setTVShowGenres (state, genres) {
+    setTVShowGenres (state: GenresState, genres: Array<IGenre>) {
       state.TVShowGenres = genres
     },
   },
   actions: {
-    async loadMovieGenres ({ commit }) {
+    async loadMovieGenres({commit}: {commit: any}) {
     const locale = store.getters.locale
       await axios
         .get(
@@ -27,7 +34,7 @@ export default {
           commit('setMovieGenres', response.data.genres)
         });
     },
-    async loadTVShowsGenres ({ commit }) {
+    async loadTVShowsGenres({commit}: {commit: any}) {
       const locale = store.getters.locale
       await axios
         .get(
@@ -39,7 +46,7 @@ export default {
     }
   },
   getters: {
-    MovieGenres: state => state.MovieGenres,
-    TVShowGenres: state => state.TVShowGenres,
+    MovieGenres: (state: GenresState) => state.MovieGenres,
+    TVShowGenres: (state: GenresState) => state.TVShowGenres,
   }
 }

@@ -7,10 +7,10 @@
     <div class="container">
       <div class="home__buttons">
         <button class="home__switch-button" @click="switchType('movie')">
-          {{ "home-movies" | localize }}
+          {{ 'home-movies' | localize }}
         </button>
         <button class="home__switch-button" @click="switchType('tv')">
-          {{ "home-tvshows" | localize }}
+          {{ 'home-tvshows' | localize }}
         </button>
       </div>
       <div
@@ -28,29 +28,40 @@
 </template>
 
 <script lang="ts">
-import HomeUpperSlickTemplate from "../components/HomeUpperSlickTemplate.vue";
-import SlickTemplate from "../components/SlickTemplate.vue";
-import axios from "axios";
+import HomeUpperSlickTemplate from '../components/HomeUpperSlickTemplate.vue';
+import SlickTemplate from '../components/SlickTemplate.vue';
+import axios from 'axios';
+import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
+import { globalAPIMovieDBAddress } from '@/main.ts';
 
-export default {
-  data() {
-    return {
-      key: process.env.VUE_APP_MOVIEDB,
-      filmsArrays: [],
-      popularMoviesArray: [],
-      filmType: "movie",
-      genres: [],
-      tvshowSlickArr: ["airing_today", "popular", "on_the_air", "top_rated"],
-      movieSlickArr: ["upcoming", "popular", "now_playing", "top_rated"],
-      filmSlickTitlesArray: [],
-      temp: [],
-      locale: "",
-    };
-  },
+@Component({
   components: {
     HomeUpperSlickTemplate,
     SlickTemplate,
   },
+})
+export default class Home extends Vue {
+  key: string = process.env.VUE_APP_MOVIEDB;
+  filmsArrays: any = [];
+  popularMoviesArray: any = [];
+  filmType: string = 'movie';
+  genres: any = [];
+  tvshowSlickArr: Array<string> = [
+    'airing_today',
+    'popular',
+    'on_the_air',
+    'top_rated',
+  ];
+  movieSlickArr: Array<string> = [
+    'upcoming',
+    'popular',
+    'now_playing',
+    'top_rated',
+  ];
+  filmSlickTitlesArray: any = [];
+  temp: any = [];
+  locale: string = '';
+
   async created() {
     this.locale = this.$store.getters.locale;
     if (this.$store.getters.MovieGenres.length) {
@@ -59,78 +70,80 @@ export default {
     this.filmSlickTitlesArray = this.movieSlickArr;
     let p1 = await this.getPopularFilms();
     let p2 = await this.getFilms();
-    Promise.all([p1, p2]).then((this.$root.loading = false));
-  },
-  watch: {
-    "$store.getters.locale"() {
-      this.changeLocale();
-    },
-    filmType() {
-      this.popularMoviesArray = [];
-      this.getPopularFilms();
-      this.filmsArrays = [];
-      this.getFilms();
-    },
-  },
-  methods: {
-    async changeLocale() {
-      this.$root.loading = true;
-      this.locale = this.$store.getters.locale;
-      this.genres = [];
-      this.popularMoviesArray = [];
-      let p1 = await this.getPopularFilms();
-      this.filmsArrays = [];
-      let p2 = await this.getFilms();
-      if (this.filmType === "movie") {
-        await this.$store.dispatch("loadMovieGenres");
-        this.filmSlickTitlesArray = this.movieSlickArr;
-        this.genres = this.$store.getters.MovieGenres;
-      } else if (this.filmType === "tv") {
-        await this.$store.dispatch("loadTVShowsGenres");
-        this.filmSlickTitlesArray = this.tvshowSlickArr;
-        this.genres = this.$store.getters.TVShowGenres;
-      }
-      Promise.all([p1, p2]).then((this.$root.loading = false));
-    },
-    async getPopularFilms() {
+    Promise.all([p1, p2]).then((this.$root.$emit as any)('isLoading', false));
+  }
+  @Watch('$store.getters.locale')
+  localeWatcher() {
+    this.changeLocale();
+  }
+
+  @Watch('filmType')
+  filmTypeWatcher() {
+    this.popularMoviesArray = [];
+    this.getPopularFilms();
+    this.filmsArrays = [];
+    this.getFilms();
+  }
+  async changeLocale() {
+    (this.$root.$emit as any)('isLoading', true);
+    this.locale = this.$store.getters.locale;
+    this.genres = [];
+    this.popularMoviesArray = [];
+    let p1 = await this.getPopularFilms();
+    this.filmsArrays = [];
+    let p2 = await this.getFilms();
+    if (this.filmType === 'movie') {
+      await this.$store.dispatch('loadMovieGenres');
+      this.filmSlickTitlesArray = this.movieSlickArr;
+      this.genres = this.$store.getters.MovieGenres;
+    } else if (this.filmType === 'tv') {
+      await this.$store.dispatch('loadTVShowsGenres');
+      this.filmSlickTitlesArray = this.tvshowSlickArr;
+      this.genres = this.$store.getters.TVShowGenres;
+    }
+    Promise.all([p1, p2]).then((this.$root.$emit as any)('isLoading', false));
+  }
+
+  async getPopularFilms() {
+    await axios
+      .get(
+        `${globalAPIMovieDBAddress}/3/${this.filmType}/popular?api_key=${this.key}&language=${this.locale}`
+      )
+      .then(response => {
+        this.popularMoviesArray = response.data.results;
+        for (let i = 0; i < this.popularMoviesArray.length; i++) {
+          this.$set(this.popularMoviesArray[i], 'media_type', this.filmType);
+        }
+      });
+  }
+
+  async getFilms() {
+    for (let i = 0; i < this.filmSlickTitlesArray.length; i++) {
       await axios
         .get(
-          `${this.globalAPIMovieDBAddress}/3/${this.filmType}/popular?api_key=${this.key}&language=${this.locale}`
+          `${globalAPIMovieDBAddress}/3/${this.filmType}/${this.filmSlickTitlesArray[i]}?api_key=${this.key}&language=${this.locale}`
         )
-        .then((response) => {
-          this.popularMoviesArray = response.data.results;
-          for (let i = 0; i < this.popularMoviesArray.length; i++) {
-            this.$set(this.popularMoviesArray[i], "media_type", this.filmType);
+        .then(response => {
+          this.temp = response.data.results;
+          for (let i = 0; i < this.temp.length; i++) {
+            this.$set(this.temp[i], 'media_type', this.filmType);
           }
+          this.filmsArrays.push(this.temp);
         });
-    },
-    async getFilms() {
-      for (let i = 0; i < this.filmSlickTitlesArray.length; i++) {
-        await axios
-          .get(
-            `${this.globalAPIMovieDBAddress}/3/${this.filmType}/${this.filmSlickTitlesArray[i]}?api_key=${this.key}&language=${this.locale}`
-          )
-          .then((response) => {
-            this.temp = response.data.results;
-            for (let i = 0; i < this.temp.length; i++) {
-              this.$set(this.temp[i], "media_type", this.filmType);
-            }
-            this.filmsArrays.push(this.temp);
-          });
-      }
-    },
-    switchType(type) {
-      this.filmType = type;
-      if (type === "tv") {
-        this.genres = this.$store.getters.TVShowGenres;
-        this.filmSlickTitlesArray = this.tvshowSlickArr;
-      } else if (type === "movie") {
-        this.genres = this.$store.getters.MovieGenres;
-        this.filmSlickTitlesArray = this.movieSlickArr;
-      }
-    },
-  },
-};
+    }
+  }
+
+  switchType(type: string) {
+    this.filmType = type;
+    if (type === 'tv') {
+      this.genres = this.$store.getters.TVShowGenres;
+      this.filmSlickTitlesArray = this.tvshowSlickArr;
+    } else if (type === 'movie') {
+      this.genres = this.$store.getters.MovieGenres;
+      this.filmSlickTitlesArray = this.movieSlickArr;
+    }
+  }
+}
 </script>
 
 <style scoped>
@@ -190,7 +203,7 @@ export default {
   background-size: 100% 3px;
   cursor: pointer;
   display: block;
-  font-family: "Alegreya Sans", sans-serif;
+  font-family: 'Alegreya Sans', sans-serif;
   font-weight: bold;
   letter-spacing: 0.4rem;
   outline: none;

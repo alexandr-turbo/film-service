@@ -1,16 +1,20 @@
+export interface LocaleState {
+  locale: string
+}
+
 export default {
-  state: {
-    locale: localStorage.getItem('locale') || 'en-US'
-  },
+  state: (): LocaleState => ({
+    locale: localStorage.getItem('locale') || 'en-US',
+  }),
   mutations: {
-    setLocale(state, locale) {
-      state.locale = locale
-      localStorage.setItem('locale', locale)
+    setLocale(state: LocaleState, locale: string) {
+      state.locale = locale;
+      localStorage.setItem('locale', locale);
     },
   },
   actions: {
   },
   getters: {
-    locale: state => state.locale
+    locale: (state: LocaleState) => state.locale,
   }
 }

@@ -1,17 +1,20 @@
 <template>
   <div class="not-found__container">
     <div class="not-found">
-      {{ "page-not-found" | localize }}
+      {{ 'page-not-found' | localize }}
     </div>
   </div>
 </template>
 
 <script lang="ts">
-export default {
+import { Component, Vue } from 'vue-property-decorator';
+
+@Component({})
+export default class NotFound extends Vue {
   created() {
-    this.$root.loading = false;
-  },
-};
+    (this.$root.$emit as any)('isLoading', false);
+  }
+}
 </script>
 
 <style scoped>

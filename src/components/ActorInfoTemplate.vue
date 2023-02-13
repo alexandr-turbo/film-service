@@ -100,7 +100,7 @@ export default class ActorInfoTemplate extends Vue {
       "actor-info-template-november",
       "actor-info-template-december",
     ];
-    let prettyDate = "";
+    let prettyDate = '';
     if (this.$store.getters.locale === "en-US") {
       prettyDate = localize(months[+arr[1] - 1]) + " " + arr[2] + ", " + arr[0];
     } else if (this.$store.getters.locale === "uk-UA") {
