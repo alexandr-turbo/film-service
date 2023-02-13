@@ -125,6 +125,7 @@ import localize from '@/filters/localize';
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import { IOption } from '@/interfaces/IOption';
 import { IGenre } from '@/interfaces/IGenre';
+import { ISearchActor } from '@/interfaces/ISearchActor';
 import { globalAPIMovieDBAddress } from '@/main.ts';
 
 @Component({
@@ -134,15 +135,16 @@ import { globalAPIMovieDBAddress } from '@/main.ts';
   },
 })
 export default class Discover extends Vue {
+  globalAPIMovieDBAddress = globalAPIMovieDBAddress;
   movieSortOptions: Array<IOption> = [];
   tvSortOptions: Array<IOption> = [];
   mediatypeOptions: Array<IOption> = [];
   minAverageVotePlaceholder: string = '';
   yearPlaceholder: string = '';
-  year: number = 0;
+  year: number | null = null;
   genre: string = '';
   people: string = '';
-  vote: number = 0;
+  vote: number | null = null;
   sortType: string = '';
   media_type: string = '';
   searchResultPage: any = {};
@@ -151,20 +153,20 @@ export default class Discover extends Vue {
   searchQuery: string = '';
   pageNumber: number = 1;
   fullPath: string = '';
-  selectedActorIDFromList: string = '';
+  selectedActorIDFromList: number | null = null;
   selectedGenre: IGenre = new IGenre();
-  selectedGenreID: string = '';
-  selectedActor: string = '';
+  selectedGenreID: number | null = null;
+  selectedActor: number | null = null;
   selectedVote: string = '';
   routeMediatype: string = '';
   routeSortBy: string = '';
-  routeVote: number = 0;
-  routeActorID: string = '';
-  routeGenreID: string = '';
-  routeYear: number = 0;
-  routePage: number = 0;
+  routeVote: number | null = null;
+  routeActorID: number | null = null;
+  routeGenreID: number | null = null;
+  routeYear: number | null = null;
+  routePage: number | null = null;
   key: string = process.env.VUE_APP_MOVIEDB;
-  actor: any = {};
+  actor!: ISearchActor | null;
   preventOnCreatedUpdate: boolean = true;
   locale: string = '';
   arr2: Array<string> = [];
@@ -187,9 +189,13 @@ export default class Discover extends Vue {
       this.preventOnCreatedUpdate = false;
       return;
     }
-    this.genre = this.routeGenreID = this.selectedGenreID = '';
-    this.selectedActorIDFromList = this.routeActorID = '';
-    this.actor = {};
+    this.genre = '';
+    this.routeGenreID =
+      this.selectedGenreID =
+      this.selectedActorIDFromList =
+      this.routeActorID =
+        null;
+    this.actor = null;
     this.routeSortBy = this.sortType = 'popularity.desc';
   }
 
@@ -201,16 +207,16 @@ export default class Discover extends Vue {
       this.media_type = this.routeMediatype;
     }
     if (this.routeVote) {
-      this.vote = 0;
+      this.vote = null;
       this.vote = this.routeVote;
     } else if (!this.routeVote) {
-      this.vote = 0;
+      this.vote = null;
     }
     if (this.routeYear) {
-      this.year = 0;
+      this.year = null;
       this.year = this.routeYear;
     } else if (!this.routeYear) {
-      this.year = 0;
+      this.year = null;
     }
     if (this.routeSortBy) {
       this.sortType = '';
@@ -226,7 +232,7 @@ export default class Discover extends Vue {
       this.genre = '';
     }
     if (this.routeActorID) {
-      this.actor = {};
+      this.actor = null;
       axios
         .get(
           `${globalAPIMovieDBAddress}/3/person/${this.routeActorID}?api_key=${this.key}&&language=${this.locale}`
@@ -235,7 +241,7 @@ export default class Discover extends Vue {
           this.actor = response.data;
         });
     } else if (!this.routeActorID) {
-      this.actor = {};
+      this.actor = null;
     }
     // this.routeGenreID = '';
     // this.routeActorID = '';
@@ -245,11 +251,11 @@ export default class Discover extends Vue {
       this.getPageSearchResults(
         this.routeMediatype,
         this.routeSortBy,
-        this.routeVote,
-        this.routeActorID,
-        this.routeGenreID,
-        this.routeYear,
-        this.routePage
+        this.routeVote as number,
+        this.routeActorID as number,
+        this.routeGenreID as number,
+        this.routeYear as number,
+        this.routePage as number
       );
     } else {
       this.searchResultPage = {};
@@ -270,11 +276,11 @@ export default class Discover extends Vue {
       this.media_type = this.routeMediatype;
     }
     if (this.routeVote) {
-      this.vote = 0;
+      this.vote = null;
       this.vote = this.routeVote;
     }
     if (this.routeYear) {
-      this.year = 0;
+      this.year = null;
       this.year = this.routeYear;
     }
     if (this.routeSortBy) {
@@ -291,7 +297,7 @@ export default class Discover extends Vue {
       this.genre = this.selectedGenre.name;
     }
     if (this.routeActorID) {
-      this.actor = {};
+      this.actor = null;
       await axios
         .get(
           `${globalAPIMovieDBAddress}/3/person/${this.routeActorID}?api_key=${this.key}&&language=${this.locale}`
@@ -309,11 +315,11 @@ export default class Discover extends Vue {
       this.getPageSearchResults(
         this.routeMediatype,
         this.routeSortBy,
-        this.routeVote,
-        this.routeActorID,
-        this.routeGenreID,
-        this.routeYear,
-        this.routePage
+        this.routeVote as number,
+        this.routeActorID as number,
+        this.routeGenreID as number,
+        this.routeYear as number,
+        this.routePage as number
       );
     } else {
       this.searchResultPage = {};
@@ -442,11 +448,11 @@ export default class Discover extends Vue {
       this.getPageSearchResults(
         this.routeMediatype,
         this.routeSortBy,
-        this.routeVote,
-        this.routeActorID,
-        this.routeGenreID,
-        this.routeYear,
-        this.routePage
+        this.routeVote as number,
+        this.routeActorID as number,
+        this.routeGenreID as number,
+        this.routeYear as number,
+        this.routePage as number
       );
     } else {
       this.searchResultPage = {};
@@ -502,7 +508,7 @@ export default class Discover extends Vue {
 
   async search(input: string) {
     if (input.length < 1) {
-      this.selectedActorIDFromList = '';
+      this.selectedActorIDFromList = null;
       return [];
     }
     let a: Array<any> = [];
@@ -537,13 +543,14 @@ export default class Discover extends Vue {
       ) as IGenre;
       this.selectedGenreID = this.selectedGenre.id;
     } else if (!this.genre) {
-      this.selectedGenreID = '';
+      this.selectedGenreID = 0;
     }
     if (this.media_type === 'tv') {
-      this.selectedActor = '';
+      this.selectedActor = null;
     }
-    if (this.selectedActorIDFromList || this.actor.id) {
-      this.selectedActor = this.selectedActorIDFromList || this.actor.id;
+    if (this.selectedActorIDFromList || (this.actor as ISearchActor).id) {
+      this.selectedActor =
+        this.selectedActorIDFromList || (this.actor as ISearchActor).id;
     }
     if (this.media_type === 'movie') {
       this.$router.push(
@@ -560,8 +567,8 @@ export default class Discover extends Vue {
     routeMediatype: string,
     routeSortBy: string,
     routeVote: number,
-    routeActorID: string,
-    routeGenreID: string,
+    routeActorID: number,
+    routeGenreID: number,
     routeYear: number,
     routePage: number
   ) {

@@ -63,6 +63,7 @@ const CREWS_ONLOAD_COUNT = 5;
   },
 })
 export default class Film extends Vue {
+  globalAPIMovieDBAddress = globalAPIMovieDBAddress;
   cast: boolean = true;
   actor: any = null;
   movieGenres: any = null;

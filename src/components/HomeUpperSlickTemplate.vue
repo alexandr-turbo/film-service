@@ -18,7 +18,7 @@
           />
           <div class="home-upper-slick-template__bio">
             <div class="home-upper-slick-template__title">
-              {{ "home-upper-slick-template-title" | localize }}
+              {{ 'home-upper-slick-template-title' | localize }}
             </div>
             <div
               v-if="
@@ -46,10 +46,13 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop } from "vue-property-decorator";
-import { mixins } from "vue-class-component";
-import Slick from "vue-slick";
-import filmGenresMixin from "@/mixins/filmGenresMixin";
+import { Component, Prop } from 'vue-property-decorator';
+import { mixins } from 'vue-class-component';
+import Slick from 'vue-slick';
+import filmGenresMixin from '@/mixins/filmGenresMixin';
+import { globalImgAddress } from '@/main.ts';
+import { IGenre } from '@/interfaces/IGenre';
+import { ISearchFilm } from '@/interfaces/ISearchFilm';
 
 @Component({
   components: {
@@ -57,6 +60,7 @@ import filmGenresMixin from "@/mixins/filmGenresMixin";
   },
 })
 export default class HomeUpperSlickTemplate extends mixins(filmGenresMixin) {
+  globalImgAddress = globalImgAddress;
   clickable = undefined;
   slickOptionsUpper = {
     slidesToShow: 1,
@@ -65,14 +69,14 @@ export default class HomeUpperSlickTemplate extends mixins(filmGenresMixin) {
     autoplaySpeed: 5000,
     arrows: false,
     draggable: true,
-    lazyLoad: "ondemand",
+    lazyLoad: 'ondemand',
   };
 
   @Prop()
-  genres: any;
+  genres!: Array<IGenre>;
 
   @Prop()
-  popularMoviesArray: any;
+  popularMoviesArray!: Array<ISearchFilm>;
 }
 </script>
 <style scoped>

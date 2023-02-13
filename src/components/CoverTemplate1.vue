@@ -20,7 +20,7 @@
         {{ item.title || item.name }}
       </div>
       <div v-else class="cover-template1__film-title">
-        {{ "cover-template-1-db" | localize }}
+        {{ 'cover-template-1-db' | localize }}
       </div>
     </router-link>
     <router-link
@@ -50,13 +50,13 @@
         }}
       </div>
       <div v-else class="cover-template1__film-title">
-        {{ "cover-template-1-db" | localize }}
+        {{ 'cover-template-1-db' | localize }}
       </div>
       <div v-if="item.genre_ids" class="cover-template1__film-title">
-        {{ getCurrentMediaTypeGenresNames(genres, item.genre_ids) }}
+        {{ genresNames }}
       </div>
       <div v-else class="cover-template1__film-title">
-        {{ "cover-template-1-genres-are-not-provided" | localize }}
+        {{ 'cover-template-1-genres-are-not-provided' | localize }}
       </div>
     </router-link>
     <router-link
@@ -83,20 +83,33 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
-import { mixins } from "vue-class-component";
-import filmGenresMixin from "@/mixins/filmGenresMixin";
+import { Component, Prop, Vue } from 'vue-property-decorator';
+import { mixins } from 'vue-class-component';
+import filmGenresMixin from '@/mixins/filmGenresMixin';
+import { globalImgAddress } from '@/main.ts';
+import { ISearchFilm } from '@/interfaces/ISearchFilm';
+import { ISearchActor } from '@/interfaces/ISearchActor';
+import { IGenre } from '@/interfaces/IGenre';
 
 @Component({})
 export default class CoverTemplate1 extends mixins(filmGenresMixin) {
-  @Prop()
-  item: any;
+  globalImgAddress = globalImgAddress;
+
+  get genresNames() {
+    return this.getCurrentMediaTypeGenresNames(
+      this.genres,
+      (this.item as ISearchFilm).genre_ids
+    );
+  }
 
   @Prop()
-  genres: any;
+  item!: ISearchFilm | ISearchActor;
 
   @Prop()
-  searchQuery: any;
+  genres!: Array<IGenre>;
+
+  @Prop()
+  searchQuery!: string;
 }
 </script>
 

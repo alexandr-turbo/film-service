@@ -43,25 +43,37 @@
         }}
       </div>
       <div class="cover-template2__genres">
-        {{ getCurrentMediaTypeGenresNames(genres, item.genre_ids) }}
+        {{ genresNames }}
       </div>
     </div>
   </div>
 </template>
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
-import { mixins } from "vue-class-component";
-import filmGenresMixin from "@/mixins/filmGenresMixin";
+import { Component, Prop, Vue } from 'vue-property-decorator';
+import { mixins } from 'vue-class-component';
+import filmGenresMixin from '@/mixins/filmGenresMixin';
+import { globalImgAddress } from '@/main.ts';
+import { IGenre } from '@/interfaces/IGenre';
+import { ISearchFilm } from '@/interfaces/ISearchFilm';
 
 @Component({})
 export default class CoverTemplate2 extends mixins(filmGenresMixin) {
+  globalImgAddress = globalImgAddress;
+
   clickable: boolean = true;
 
-  @Prop()
-  item: any;
+  get genresNames() {
+    return this.getCurrentMediaTypeGenresNames(
+      this.genres,
+      this.item.genre_ids
+    );
+  }
 
   @Prop()
-  genres: any;
+  item!: ISearchFilm;
+
+  @Prop()
+  genres!: Array<IGenre>;
 }
 </script>
 <style scoped>

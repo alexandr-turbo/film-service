@@ -54,7 +54,7 @@ import { IFilm } from '@/interfaces/IFilm';
 import { ICast } from '@/interfaces/ICast';
 import { ITrailer } from '@/interfaces/ITrailer';
 import { IReview } from '@/interfaces/IReview';
-import { globalAPIMovieDBAddress } from '@/main.ts';
+import { globalAPIMovieDBAddress, globalImgAddress } from '@/main.ts';
 
 @Component({
   components: {
@@ -63,6 +63,8 @@ import { globalAPIMovieDBAddress } from '@/main.ts';
   },
 })
 export default class Film extends Vue {
+  globalImgAddress = globalImgAddress;
+  globalAPIMovieDBAddress = globalAPIMovieDBAddress;
   key: string = process.env.VUE_APP_MOVIEDB;
   genres: string = '';
   currentFilm: IFilm | null = null;

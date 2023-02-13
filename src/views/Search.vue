@@ -47,6 +47,7 @@ import axios from 'axios';
 import CoverTemplate1 from '@/components/CoverTemplate1.vue';
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import { globalAPIMovieDBAddress } from '@/main.ts';
+import { IGenre } from '@/interfaces/IGenre';
 
 @Component({
   components: {
@@ -54,11 +55,12 @@ import { globalAPIMovieDBAddress } from '@/main.ts';
   },
 })
 export default class Search extends Vue {
+  globalAPIMovieDBAddress = globalAPIMovieDBAddress;
   searchResultPage: any = {};
   filteredSearchResults: any = {};
-  movieGenres: any = null;
-  tvshowGenres: any = null;
-  genres: any = [];
+  movieGenres: Array<IGenre> = [];
+  tvshowGenres: Array<IGenre> = [];
+  genres: Array<IGenre> = [];
   searchQuery: string = '';
   pageNumber: number = 1;
   key: string = process.env.VUE_APP_MOVIEDB;

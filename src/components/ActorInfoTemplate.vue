@@ -27,13 +27,13 @@
           <div>{{ actor.name }}</div>
           <div v-if="actor.birthday">
             {{ getPrettyDate(actor.birthday) }} ({{ getAge(actor.birthday) }}
-            {{ "actor-info-template-years-old" | localize }}),
+            {{ 'actor-info-template-years-old' | localize }}),
           </div>
           <div v-if="actor.place_of_birth">
             {{
               actor.gender === 1
-                ? "actor-info-template-female-born"
-                : "actor-info-template-male-born" | localize
+                ? 'actor-info-template-female-born'
+                : 'actor-info-template-male-born' | localize
             }}
             {{ actor.place_of_birth }}
           </div>
@@ -48,27 +48,30 @@
     </div>
     <div class="actor-info-template" v-else>
       <div class="actor-info-template__bio">
-        {{ "actor-info-template-no-info" | localize }}
+        {{ 'actor-info-template-no-info' | localize }}
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import localize from "@/filters/localize";
-import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import localize from '@/filters/localize';
+import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
+import { globalImgAddress } from '@/main.ts';
+import { IActor } from '@/interfaces/IActor';
 
 @Component({})
 export default class ActorInfoTemplate extends Vue {
+  globalImgAddress = globalImgAddress;
   @Prop()
-  actor!: any;
+  actor!: IActor;
 
   getGender(gender: number) {
     return localize(
-      gender === 1 ? "actor-info-template-female" : "actor-info-template-male"
+      gender === 1 ? 'actor-info-template-female' : 'actor-info-template-male'
     );
   }
-  getAge(birthdayDate: any) {
+  getAge(birthdayDate: string) {
     let now = new Date();
     let today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     let dateOfBirthday = new Date(birthdayDate);
@@ -85,26 +88,26 @@ export default class ActorInfoTemplate extends Vue {
     return age;
   }
   getPrettyDate(currentDate: string) {
-    let arr = currentDate.split("-");
+    let arr = currentDate.split('-');
     let months = [
-      "actor-info-template-january",
-      "actor-info-template-february",
-      "actor-info-template-march",
-      "actor-info-template-april",
-      "actor-info-template-may",
-      "actor-info-template-june",
-      "actor-info-template-july",
-      "actor-info-template-august",
-      "actor-info-template-september",
-      "actor-info-template-october",
-      "actor-info-template-november",
-      "actor-info-template-december",
+      'actor-info-template-january',
+      'actor-info-template-february',
+      'actor-info-template-march',
+      'actor-info-template-april',
+      'actor-info-template-may',
+      'actor-info-template-june',
+      'actor-info-template-july',
+      'actor-info-template-august',
+      'actor-info-template-september',
+      'actor-info-template-october',
+      'actor-info-template-november',
+      'actor-info-template-december',
     ];
     let prettyDate = '';
-    if (this.$store.getters.locale === "en-US") {
-      prettyDate = localize(months[+arr[1] - 1]) + " " + arr[2] + ", " + arr[0];
-    } else if (this.$store.getters.locale === "uk-UA") {
-      prettyDate = arr[2] + " " + localize(months[+arr[1] - 1]) + ", " + arr[0];
+    if (this.$store.getters.locale === 'en-US') {
+      prettyDate = localize(months[+arr[1] - 1]) + ' ' + arr[2] + ', ' + arr[0];
+    } else if (this.$store.getters.locale === 'uk-UA') {
+      prettyDate = arr[2] + ' ' + localize(months[+arr[1] - 1]) + ', ' + arr[0];
     }
     return prettyDate;
   }

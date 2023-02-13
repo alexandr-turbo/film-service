@@ -41,6 +41,7 @@ import { globalAPIMovieDBAddress } from '@/main.ts';
   },
 })
 export default class Home extends Vue {
+  globalAPIMovieDBAddress = globalAPIMovieDBAddress;
   key: string = process.env.VUE_APP_MOVIEDB;
   filmsArrays: any = [];
   popularMoviesArray: any = [];

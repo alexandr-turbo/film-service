@@ -12,24 +12,26 @@
       <a
         class="film-review-template__full-review"
         :href="`//www.themoviedb.org/review/${review.id}`"
-        >{{ "film-review-template-see-full-review" | localize }} >></a
+        >{{ 'film-review-template-see-full-review' | localize }} >></a
       >
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Prop, Vue } from 'vue-property-decorator';
+import { IReview } from '@/interfaces/IReview';
+
 @Component({})
 export default class FilmReviewTemplate extends Vue {
   @Prop()
-  review!: any;
+  review!: IReview;
 
   @Prop()
-  index!: any;
+  index!: number;
 
   get splittedReviewContent() {
-    return this.review.content.substring(0, 255) + "...";
+    return this.review.content.substring(0, 255) + '...';
   }
 }
 </script>

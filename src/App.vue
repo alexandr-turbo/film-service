@@ -17,9 +17,9 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import SearchBarTemplate from "@/components/SearchBarTemplate.vue";
-import FooterTemplate from "@/components/FooterTemplate.vue";
+import { Component, Vue } from 'vue-property-decorator';
+import SearchBarTemplate from '@/components/SearchBarTemplate.vue';
+import FooterTemplate from '@/components/FooterTemplate.vue';
 
 @Component({
   components: {
@@ -31,49 +31,48 @@ export default class App extends Vue {
   isLoading: boolean = false;
   async mounted() {
     if (!Object.keys(this.$store.getters.info).length) {
-      await this.$store.dispatch("fetchInfo");
+      await this.$store.dispatch('fetchInfo');
     }
-    window.addEventListener("scroll", this.onScroll);
-    this.$on("isLoading", (val: boolean) => {
-      console.log(val);
-      this.isLoading = val;
+    window.addEventListener('scroll', this.onScroll);
+    this.$root.$on('isLoading', (isLoading: boolean) => {
+      this.isLoading = isLoading;
     });
   }
 
   beforeDestroy() {
-    window.removeEventListener("scroll", this.onScroll);
+    window.removeEventListener('scroll', this.onScroll);
   }
 
   onScroll() {
-    const element = document.getElementById("backToTop");
+    const element = document.getElementById('backToTop');
     if (element !== null) {
       if (pageYOffset >= 100) {
-        element.classList.add("app__go-to-top-button-visibility");
+        element.classList.add('app__go-to-top-button-visibility');
       } else if (pageYOffset < 100) {
-        element.classList.remove("app__go-to-top-button-visibility");
+        element.classList.remove('app__go-to-top-button-visibility');
       }
     }
   }
 
   goToTop() {
-    const element = document.getElementById("app");
+    const element = document.getElementById('app');
     if (element !== null) {
-      element.scrollIntoView({ behavior: "smooth" });
+      element.scrollIntoView({ behavior: 'smooth' });
     }
   }
 
   async changeLocale() {
-    this.$store.dispatch("loadMovieGenres");
-    this.$store.dispatch("loadTVShowsGenres");
+    this.$store.dispatch('loadMovieGenres');
+    this.$store.dispatch('loadTVShowsGenres');
   }
   async created() {
-    await this.$store.dispatch("loadMovieGenres");
-    await this.$store.dispatch("loadTVShowsGenres");
+    await this.$store.dispatch('loadMovieGenres');
+    await this.$store.dispatch('loadTVShowsGenres');
   }
 }
 </script>
 <style>
-@import "css/style.css";
+@import 'css/style.css';
 #app {
   margin-top: 0 !important;
 }

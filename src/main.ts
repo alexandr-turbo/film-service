@@ -34,8 +34,8 @@ firebase.initializeApp({
 
 export const Bus = new Vue();
 
-export var globalAPIMovieDBAddress: 'https://api.themoviedb.org';
-export var globalImgAddress: 'https://image.tmdb.org/t/p/w';
+export var globalAPIMovieDBAddress = 'https://api.themoviedb.org';
+export var globalImgAddress = 'https://image.tmdb.org/t/p/w';
 
 Vue.mixin(filmGenresMixin)
 
@@ -43,7 +43,9 @@ let app: Vue
 firebase.auth().onAuthStateChanged(() => {
   if(!app) {
     app = new Vue({
-      // data: { loading: false },
+      // data: {
+      //   loading: false
+      // },
       router,
       store,
       render: h => h(App),
