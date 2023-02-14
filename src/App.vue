@@ -79,7 +79,7 @@ export default class App extends Vue {
 body {
   margin: 0 !important;
   font-family: sans-serif;
-  color: var(--main-text-color);
+  color: var(--main-text-color) !important;
 }
 .preloader {
   position: fixed;

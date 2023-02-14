@@ -4,15 +4,21 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import localize from '@/filters/localize'
+import BootstrapVue from 'bootstrap-vue';
 import replaceAllToSpace from '@/filters/replaceAllToSpace'
 import replaceAllToDash from '@/filters/replaceAllToDash'
 import filmGenresMixin from "@/mixins/filmGenresMixin";
 import dateFilter from '@/filters/dateFilter'
+import components from './components';
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 import firebase from 'firebase/app'
 import 'firebase/auth'
 import 'firebase/database'
 
+Vue.use(components);
+Vue.use(BootstrapVue);
 Vue.use(Vuelidate)
 Vue.config.productionTip = false
 Vue.filter('replaceAllToSpace', replaceAllToSpace)

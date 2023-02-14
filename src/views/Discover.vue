@@ -5,74 +5,76 @@
         <div class="discover__form">
           <div class="discover__form-field-container">
             <div>{{ 'discover-mediatype' | localize }}</div>
-            <select class="discover__form-field" v-model="media_type">
-              <option
-                v-for="mediatype in mediatypeOptions"
-                :value="mediatype.value"
-                :key="mediatype.value"
-              >
-                {{ mediatype.title }}
-              </option>
-            </select>
+            <CSelect
+              v-model="media_type"
+              :options="mediatypeOptions"
+              class="discover__form-field"
+              id="media_type"
+              label="title"
+              track-by="value"
+            />
           </div>
           <div class="discover__form-field-container">
             <div>{{ 'discover-sort' | localize }}</div>
-            <select class="discover__form-field" v-model="sortType">
-              <option
-                v-for="sort in sortOptions"
-                :value="sort.value"
-                :key="sort.value"
-              >
-                {{ sort.title }}
-              </option>
-            </select>
+            <CSelect
+              v-model="sortType"
+              :options="sortOptions"
+              class="discover__form-field"
+              id="sortType"
+              label="title"
+              track-by="value"
+            />
           </div>
           <div class="discover__form-field-container">
             <div>{{ 'discover-min-average-vote' | localize }}</div>
-            <input
+            <text-input
+              id="vote"
+              v-model="vote"
               class="discover__form-field"
               type="number"
-              v-model="vote"
               :placeholder="minAverageVotePlaceholder"
             />
           </div>
           <div
-            v-if="media_type === 'movie'"
+            v-if="media_type.value === 'movie'"
             class="discover__form-field-container"
           >
             <div>{{ 'discover-involved-actor' | localize }}</div>
-            <Multiselect
+            <CSelect
               v-model="actor"
               :options="actorsOptions"
-              placeholder="Actor name"
               class="discover__form-field"
               @search-change="search"
               id="ajax"
               label="name"
               track-by="name"
+              :searchable="true"
             />
           </div>
           <div class="discover__form-field-container">
             <div>{{ 'discover-genre' | localize }}</div>
-            <select class="discover__form-field" v-model="genre">
-              <option value=""></option>
-              <option v-for="genre in genres" :key="genre.id">
-                {{ genre.name }}
-              </option>
-            </select>
+            <CSelect
+              v-model="genre"
+              :options="genres"
+              class="discover__form-field"
+              id="sortType"
+              label="name"
+              track-by="id"
+            />
           </div>
           <div class="discover__form-field-container">
             <div>
               {{
-                media_type === 'movie'
+                media_type.value === 'movie'
                   ? 'discover-year'
                   : 'discover-first-airing-date' | localize
               }}
             </div>
-            <input
+            <text-input
+              id="year"
+              v-model="year"
               class="discover__form-field"
               type="number"
-              v-model="year"
               :placeholder="yearPlaceholder"
             />
           </div>
@@ -133,12 +135,14 @@ import { IGenre } from '@/interfaces/IGenre';
 import { ISearchActor } from '@/interfaces/ISearchActor';
 import { ISearchResult } from '@/interfaces/ISearchResult';
 import { globalAPIMovieDBAddress } from '@/main.ts';
-import Multiselect from 'vue-multiselect';
+import TextInput from '@/components/controls/form/TextInput.vue';
+// import Multiselect from 'vue-multiselect';
 
 @Component({
   components: {
     CoverTemplate1,
-    Multiselect,
+    TextInput,
+    // Multiselect,
   },
 })
 export default class Discover extends Vue {
@@ -149,11 +153,17 @@ export default class Discover extends Vue {
   minAverageVotePlaceholder: string = '';
   yearPlaceholder: string = '';
   year: number | null = null;
-  genre: string = '';
+  genre: IGenre | null = null;
   people: string = '';
   vote: number | null = null;
-  sortType: string = '';
-  media_type: string = '';
+  sortType: IOption = {
+    title: localize('discover-popularity-descending'),
+    value: 'popularity.desc',
+  };
+  media_type: IOption = {
+    title: localize('discover-mediatype-movie'),
+    value: 'movie',
+  };
   searchResultPage: ISearchResult | null = null;
   movieGenres: Array<IGenre> = [];
   tvshowGenres: Array<IGenre> = [];
@@ -182,11 +192,13 @@ export default class Discover extends Vue {
   actorsOptions: Array<ISearchActor> = [];
 
   get genres(): Array<IGenre> {
-    return this.media_type === 'movie' ? this.movieGenres : this.tvshowGenres;
+    return this.media_type.value === 'movie'
+      ? this.movieGenres
+      : this.tvshowGenres;
   }
 
   get sortOptions() {
-    return this.media_type === 'movie'
+    return this.media_type.value === 'movie'
       ? this.movieSortOptions
       : this.tvSortOptions;
   }
@@ -197,22 +209,26 @@ export default class Discover extends Vue {
       this.preventOnCreatedUpdate = false;
       return;
     }
-    this.genre = '';
+    this.genre = null;
     this.routeGenreID =
       this.selectedGenreID =
       this.selectedActorIDFromList =
       this.routeActorID =
         null;
     this.actor = null;
-    this.routeSortBy = this.sortType = 'popularity.desc';
+    this.routeSortBy = this.sortType.value = 'popularity.desc';
   }
 
   @Watch('$route')
   routeWatcher() {
     this.getRoutePaths();
     if (this.routeMediatype) {
-      this.media_type = '';
-      this.media_type = this.routeMediatype;
+      this.media_type = this.mediatypeOptions.find(
+        media_type => media_type.value === this.routeMediatype
+      ) || {
+        title: localize('discover-mediatype-movie'),
+        value: 'movie',
+      };
     }
     if (this.routeVote) {
       this.vote = null;
@@ -227,17 +243,20 @@ export default class Discover extends Vue {
       this.year = null;
     }
     if (this.routeSortBy) {
-      this.sortType = '';
-      this.sortType = this.routeSortBy;
+      this.sortType = this.sortOptions.find(
+        sortType => sortType.value === this.routeSortBy
+      ) || {
+        title: localize('discover-popularity-descending'),
+        value: 'popularity.desc',
+      };
     }
     if (this.routeGenreID) {
-      this.genre = '';
       this.selectedGenre = this.genres.find(
-        name => name.id === this.routeGenreID
+        genre => genre.id === this.routeGenreID
       ) as IGenre;
-      this.genre = this.selectedGenre.name;
+      this.genre = this.selectedGenre;
     } else if (!this.routeGenreID) {
-      this.genre = '';
+      this.genre = null;
     }
     if (this.routeActorID) {
       this.actor = null;
@@ -280,8 +299,12 @@ export default class Discover extends Vue {
     this.locale = this.$store.getters.locale;
     this.getRoutePaths();
     if (this.routeMediatype) {
-      this.media_type = '';
-      this.media_type = this.routeMediatype;
+      this.media_type = this.mediatypeOptions.find(
+        media_type => media_type.value === this.routeMediatype
+      ) || {
+        title: localize('discover-mediatype-movie'),
+        value: 'movie',
+      };
     }
     if (this.routeVote) {
       this.vote = null;
@@ -292,17 +315,20 @@ export default class Discover extends Vue {
       this.year = this.routeYear;
     }
     if (this.routeSortBy) {
-      this.sortType = '';
-      this.sortType = this.routeSortBy;
+      this.sortType = this.sortOptions.find(
+        sortType => sortType.value === this.routeSortBy
+      ) || {
+        title: localize('discover-popularity-descending'),
+        value: 'popularity.desc',
+      };
     }
     this.movieGenres = this.$store.getters.MovieGenres;
     this.tvshowGenres = this.$store.getters.TVShowGenres;
     if (this.routeGenreID) {
-      this.genre = '';
       this.selectedGenre = this.genres.find(
-        name => name.id === this.routeGenreID
+        genre => genre.id === this.routeGenreID
       ) as IGenre;
-      this.genre = this.selectedGenre.name;
+      this.genre = this.selectedGenre;
     }
     if (this.routeActorID) {
       this.actor = null;
@@ -472,9 +498,9 @@ export default class Discover extends Vue {
     this.tvshowGenres = this.$store.getters.TVShowGenres;
     if (this.routeGenreID) {
       this.selectedGenre = this.genres.find(
-        name => name.id === this.routeGenreID
+        genre => genre.id === this.routeGenreID
       ) as IGenre;
-      this.genre = this.selectedGenre.name;
+      this.genre = this.selectedGenre;
     }
     if (this.routeActorID) {
       await axios
@@ -504,65 +530,66 @@ export default class Discover extends Vue {
   getRoutePaths() {
     this.routeMediatype = this.$route.query.mediatype;
     this.routeSortBy = this.$route.query.sort_by;
-    this.routeVote = this.$route.query.vote_average;
+    this.routeVote = +this.$route.query.vote_average;
     this.routeActorID = this.$route.query.with_people;
-    this.routeGenreID = this.$route.query.with_genres;
+    this.routeGenreID = +this.$route.query.with_genres;
     this.routeYear =
       this.routeMediatype === 'movie'
-        ? this.$route.query.year
-        : this.$route.query.first_air_date_year;
+        ? +this.$route.query.year
+        : +this.$route.query.first_air_date_year;
     this.routePage = this.$route.query.page;
   }
 
   async search(input: string) {
-    if (input.length < 1) {
-      this.selectedActorIDFromList = null;
-      return [];
-    }
-    let a: Array<ISearchActor> = [];
-    await axios
+    // if (input.length < 1) {
+    //   this.selectedActorIDFromList = null;
+    //   return [];
+    // }
+    this.actorsOptions = await axios
       .get(
         `${globalAPIMovieDBAddress}/3/search/person?api_key=${this.key}&language=${this.locale}&query=${input}&include_adult=false&page=1`
       )
       .then(response => {
-        a = response.data.results;
-        a.filter(actor => {
+        const { results } = response.data;
+        return results.filter((actor: ISearchActor) => {
           return actor.name.toLowerCase().includes(input.toLowerCase());
         });
       });
     (this.$root.$emit as any)('isLoading', false);
-    this.actorsOptions = a;
   }
 
   searchRequest() {
     if (this.genre) {
       this.selectedGenre = this.genres.find(
-        name => name.name === this.genre
+        genre => genre.id === (this.genre as IGenre).id
       ) as IGenre;
-      this.selectedGenreID = this.selectedGenre.id;
+      this.selectedGenreID = (this.selectedGenre as IGenre).id;
     } else if (!this.genre) {
       this.selectedGenreID = null;
     }
-    if (this.media_type === 'tv') {
+    if (this.media_type.value === 'tv') {
       this.selectedActor = null;
     }
-    if (this.selectedActorIDFromList || (this.actor as ISearchActor).id) {
+    if (
+      this.selectedActorIDFromList ||
+      (this.actor && (this.actor as ISearchActor).id)
+    ) {
       this.selectedActor =
         this.selectedActorIDFromList || (this.actor as ISearchActor).id;
     }
-    if (this.media_type === 'movie') {
+    if (this.media_type.value === 'movie') {
       this.$router.push(
-        `${this.$route.path}?mediatype=${this.media_type}&sort_by=${
-          this.sortType
+        `${this.$route.path}?mediatype=${this.media_type.value}&sort_by=${
+          this.sortType.value
         }&vote_average=${this.vote ? this.vote : ''}&with_people=${
           this.selectedActor ? this.selectedActor : ''
         }&with_genres=${
           this.selectedGenreID ? this.selectedGenreID : ''
         }&year=${this.year ? this.year : ''}&page=1`
       );
-    } else if (this.media_type === 'tv') {
+    } else if (this.media_type.value === 'tv') {
       this.$router.push(
-        `${this.$route.path}?mediatype=${this.media_type}&sort_by=${this.sortType}&vote_average=${this.vote}&with_genres=${this.selectedGenreID}&first_air_date_year=${this.year}&page=1`
+        `${this.$route.path}?mediatype=${this.media_type.value}&sort_by=${this.sortType.value}&vote_average=${this.vote}&with_genres=${this.selectedGenreID}&first_air_date_year=${this.year}&page=1`
       );
     }
   }
@@ -579,7 +606,15 @@ export default class Discover extends Vue {
     if (routeMediatype === 'movie') {
       await axios
         .get(
-          `${globalAPIMovieDBAddress}/3/discover/${routeMediatype}?api_key=${this.key}&language=${this.locale}&sort_by=${routeSortBy}&include_adult=false&include_video=false&vote_average.gte=${routeVote}&with_people=${routeActorID}&with_genres=${routeGenreID}&year=${routeYear}&page=${routePage}`
+          `${globalAPIMovieDBAddress}/3/discover/${routeMediatype}?api_key=${
+            this.key
+          }&language=${
+            this.locale
+          }&sort_by=${routeSortBy}&include_adult=false&include_video=false&vote_average.gte=${
+            routeVote ? routeVote : ''
+          }&with_people=${routeActorID ? routeActorID : ''}&with_genres=${
+            routeGenreID ? routeGenreID : ''
+          }&year=${routeYear ? routeYear : ''}&page=${routePage}`
         )
         .then(response => {
           this.searchResultPage = response.data;
@@ -635,19 +670,7 @@ export default class Discover extends Vue {
   }
 }
 </script>
-<style scoped>
-::v-deep .multiselect__content-wrapper {
-  max-height: 0 !important;
-}
-::v-deep .multiselect__content {
-  list-style: none !important;
-  padding-inline-start: 0 !important;
-  background-color: white !important;
-  position: sticky !important;
-}
-::v-deep .multiselect__element {
-  color: black !important;
-}
+<style lang="scss" scoped>
 .discover {
   background: var(--main-bg);
 }
@@ -663,24 +686,21 @@ export default class Discover extends Vue {
 }
 @media (min-width: 640px) {
   .discover__form-field-container {
-    width: 150px;
+    width: 350px;
   }
 }
-@media (min-width: 480px) and (max-width: 639px) {
-  .discover__form-field-container {
-    width: 170px;
-  }
-}
-@media (max-width: 479px) {
+@media (max-width: 639px) {
   .discover__form-field-container {
     width: 280px;
   }
 }
-/* .discover__form-field {
-  outline: none;
-  border: none;
-  margin-top: 1px;
-} */
+
+::v-deep .form-control {
+  height: 35px;
+  border: 1px solid #ced4da;
+  box-shadow: none;
+}
+
 .discover__form-button-container {
   display: flex;
   justify-content: center;

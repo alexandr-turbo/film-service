@@ -25,7 +25,7 @@
           </div>
           <div v-for="trailer in trailers" :key="trailer.id">
             <iframe
-              :width="iFrameWidth"
+              width="100%"
               :height="(iFrameWidth / 16) * 9"
               :src="`https://www.youtube.com/embed/${trailer.key}`"
             ></iframe>
@@ -72,8 +72,8 @@ export default class Film extends Vue {
   trailers: Array<ITrailer> = [];
   reviews: Array<IReview> = [];
   locale: string = '';
-  windowWidth: number = 0;
-  iFrameWidth: number = 0;
+  windowWidth: number | null = null;
+  iFrameWidth: number | null = null;
 
   @Prop()
   filmID!: string;

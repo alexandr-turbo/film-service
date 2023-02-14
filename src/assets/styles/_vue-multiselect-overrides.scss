@@ -1,0 +1,81 @@
+@import 'variables';
+
+.multiselect,
+.multiselect__input,
+.multiselect__single {
+  font-size: 0.875rem;
+}
+
+.multiselect {
+  color: #fff;
+
+  .multiselect__content-wrapper {
+    background-color: $bootstrap-form-control-grey;
+    border: 1px solid $bootstrap-form-control-border;
+    color: #e4e7ea;
+    z-index: 2;
+
+    .multiselect__option {
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+
+    .multiselect__option--highlight {
+      background: $bootstrap-primary;
+
+      &:after {
+        background: $bootstrap-primary;
+      }
+    }
+  }
+
+  .multiselect__tags {
+    min-height: 35px;
+    padding: 6px 40px 0 12px;
+    background: $bootstrap-form-control-grey;
+    border: 1px solid $bootstrap-form-control-border;
+
+    .multiselect__tag {
+      background: $bootstrap-primary;
+
+      .multiselect__tag-icon:hover {
+        &:hover {
+          background: $bootstrap-primary-hover;
+        }
+      }
+    }
+
+    .multiselect__spinner {
+      background: $bootstrap-form-control-grey;
+      height: 32px;
+      border-radius: 5px;
+    }
+
+    .multiselect__placeholder {
+      opacity: 1;
+      margin-bottom: 0;
+      padding-top: 0;
+    }
+  }
+
+  .multiselect__select {
+    height: calc(1.5em + 0.75rem - 1px);
+    padding: 0;
+  }
+
+  .multiselect__input {
+    background: $bootstrap-form-control-grey;
+    color: $white;
+
+    &::placeholder {
+      opacity: 0;
+    }
+  }
+
+  .multiselect__single {
+    background: $bootstrap-form-control-grey;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+}

@@ -1,5 +1,6 @@
 <template>
   <div
+    v-if="searchResultPage"
     class="search"
     :class="{ 'search__fixed-footer': !searchResultPage.total_results }"
   >
