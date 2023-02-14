@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div id="page-preloader" class="preloader" v-if="$root.loading">
+    <div id="page-preloader" class="preloader" v-if="isLoading">
       <div class="loader"></div>
     </div>
     <SearchBarTemplate />
@@ -16,59 +16,70 @@
   </div>
 </template>
 
-<script>
-import SearchBarTemplate from "@/components/SearchBarTemplate.vue";
-import FooterTemplate from "@/components/FooterTemplate.vue";
-export default {
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
+import SearchBarTemplate from '@/components/SearchBarTemplate.vue';
+import FooterTemplate from '@/components/FooterTemplate.vue';
+
+@Component({
   components: {
     SearchBarTemplate,
     FooterTemplate,
   },
+})
+export default class App extends Vue {
+  isLoading: boolean = false;
   async mounted() {
     if (!Object.keys(this.$store.getters.info).length) {
-      await this.$store.dispatch("fetchInfo");
+      await this.$store.dispatch('fetchInfo');
     }
-    this.loading = false;
-    window.addEventListener("scroll", this.onScroll);
-  },
+    window.addEventListener('scroll', this.onScroll);
+    this.$root.$on('isLoading', (isLoading: boolean) => {
+      this.isLoading = isLoading;
+    });
+  }
+
   beforeDestroy() {
-    window.removeEventListener("scroll", this.onScroll);
-  },
-  methods: {
-    onScroll() {
+    window.removeEventListener('scroll', this.onScroll);
+  }
+
+  onScroll() {
+    const element = document.getElementById('backToTop');
+    if (element !== null) {
       if (pageYOffset >= 100) {
-        document
-          .getElementById("backToTop")
-          .classList.add("app__go-to-top-button-visibility");
+        element.classList.add('app__go-to-top-button-visibility');
       } else if (pageYOffset < 100) {
-        document
-          .getElementById("backToTop")
-          .classList.remove("app__go-to-top-button-visibility");
+        element.classList.remove('app__go-to-top-button-visibility');
       }
-    },
-    goToTop() {
-      document.getElementById("app").scrollIntoView({ behavior: "smooth" });
-    },
-    async changeLocale() {
-      this.$store.dispatch("loadMovieGenres");
-      this.$store.dispatch("loadTVShowsGenres");
-    },
-  },
+    }
+  }
+
+  goToTop() {
+    const element = document.getElementById('app');
+    if (element !== null) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+
+  async changeLocale() {
+    this.$store.dispatch('loadMovieGenres');
+    this.$store.dispatch('loadTVShowsGenres');
+  }
   async created() {
-    await this.$store.dispatch("loadMovieGenres");
-    await this.$store.dispatch("loadTVShowsGenres");
-  },
-};
+    await this.$store.dispatch('loadMovieGenres');
+    await this.$store.dispatch('loadTVShowsGenres');
+  }
+}
 </script>
 <style>
-@import "css/style.css";
+@import 'css/style.css';
 #app {
   margin-top: 0 !important;
 }
 body {
   margin: 0 !important;
   font-family: sans-serif;
-  color: var(--main-text-color);
+  color: var(--main-text-color) !important;
 }
 .preloader {
   position: fixed;

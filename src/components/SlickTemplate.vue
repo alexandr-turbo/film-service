@@ -2,7 +2,7 @@
   <div>
     <div v-if="cast">
       <div class="slick-template__title">
-        {{ "slick-template-cast" | localize }}
+        {{ 'slick-template-cast' | localize }}
       </div>
       <slick class="slick" ref="slick" :options="slickOptions">
         <div v-for="item in cast" :key="item.cast_id">
@@ -23,71 +23,83 @@
   </div>
 </template>
 
-<script>
-import Slick from "vue-slick";
-import CoverTemplate2 from "../components/CoverTemplate2.vue";
-import localize from "@/filters/localize";
+<script lang="ts">
+import Slick from 'vue-slick';
+import CoverTemplate2 from '../components/CoverTemplate2.vue';
+import localize from '@/filters/localize';
+import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
+import { IGenre } from '@/interfaces/IGenre';
+import { ICast } from '@/interfaces/ICast';
+import { ISearchFilm } from '@/interfaces/ISearchFilm';
 
-export default {
-  data() {
-    return {
-      slickOptions: {
-        slidesToShow: 7,
-        infinite: true,
-        draggable: true,
-        lazyLoad: "ondemand",
-        responsive: [
-          {
-            breakpoint: 1280,
-            settings: {
-              slidesToShow: 6,
-            },
-          },
-          {
-            breakpoint: 1024,
-            settings: {
-              slidesToShow: 5,
-            },
-          },
-          {
-            breakpoint: 850,
-            settings: {
-              slidesToShow: 4,
-            },
-          },
-          {
-            breakpoint: 684,
-            settings: {
-              slidesToShow: 3,
-            },
-          },
-          {
-            breakpoint: 540,
-            settings: {
-              slidesToShow: 2,
-            },
-          },
-          {
-            breakpoint: 400,
-            settings: {
-              slidesToShow: 1,
-            },
-          },
-        ],
-      },
-    };
-  },
+@Component({
   components: {
     CoverTemplate2,
     Slick,
   },
-  props: ["cast", "filmSlickTitle", "genres", "filmsArray"],
-  computed: {
-    typeName() {
-      return localize("slick-template-" + this.filmSlickTitle);
-    },
-  },
-};
+})
+export default class SlickTemplate extends Vue {
+  slickOptions = {
+    slidesToShow: 7,
+    infinite: true,
+    draggable: true,
+    lazyLoad: 'ondemand',
+    responsive: [
+      {
+        breakpoint: 1280,
+        settings: {
+          slidesToShow: 6,
+        },
+      },
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 5,
+        },
+      },
+      {
+        breakpoint: 850,
+        settings: {
+          slidesToShow: 4,
+        },
+      },
+      {
+        breakpoint: 684,
+        settings: {
+          slidesToShow: 3,
+        },
+      },
+      {
+        breakpoint: 540,
+        settings: {
+          slidesToShow: 2,
+        },
+      },
+      {
+        breakpoint: 400,
+        settings: {
+          slidesToShow: 1,
+        },
+      },
+    ],
+  };
+
+  @Prop()
+  cast!: Array<ICast>;
+
+  @Prop()
+  filmSlickTitle!: string;
+
+  @Prop()
+  genres!: Array<IGenre>;
+
+  @Prop()
+  filmsArray!: Array<ISearchFilm>;
+
+  get typeName() {
+    return localize('slick-template-' + this.filmSlickTitle);
+  }
+}
 </script>
 <style scoped>
 .slick-template__title {

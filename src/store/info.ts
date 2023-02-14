@@ -1,19 +1,23 @@
 import firebase from 'firebase/app'
 
+export interface InfoState {
+  info: object
+}
+
 export default {
-  state: {
+  state: (): InfoState => ({
     info: {}
-  },
+  }),
   mutations: {
-    setInfo(state, info) {
+    setInfo(state: InfoState, info: object) {
       state.info = info
     },
-    clearInfo(state) {
+    clearInfo(state: InfoState) {
       state.info = {}
     }
   },
   actions: {
-    async fetchInfo({dispatch, commit}) {
+    async fetchInfo({dispatch, commit}: {dispatch: any, commit: any}) {
       try {
         const uid = await dispatch('getUid')
         const info = (await firebase.database().ref(`/users/${uid}/info`).once('value')).val()
@@ -24,6 +28,6 @@ export default {
     }
   },
   getters: {
-    info: state => state.info
+    info: (state: InfoState) => state.info
   }
 }
