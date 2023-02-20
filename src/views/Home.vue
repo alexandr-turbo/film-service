@@ -31,8 +31,8 @@
 import HomeUpperSlickTemplate from '../components/HomeUpperSlickTemplate.vue';
 import SlickTemplate from '../components/SlickTemplate.vue';
 import axios from 'axios';
-import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
-import { globalAPIMovieDBAddress } from '@/main.ts';
+import { Component, Vue, Watch } from 'vue-property-decorator';
+import { globalAPIMovieDBAddress } from '@/main';
 import { IGenre } from '@/interfaces/IGenre';
 import { ISearchFilm } from '@/interfaces/ISearchFilm';
 
@@ -96,11 +96,11 @@ export default class Home extends Vue {
     this.filmsArrays = [];
     let p2 = await this.getFilms();
     if (this.filmType === 'movie') {
-      await this.$store.dispatch('loadMovieGenres');
+      await this.$store.dispatch('fetchMovieGenres');
       this.filmSlickTitlesArray = this.movieSlickArr;
       this.genres = this.$store.getters.MovieGenres;
     } else if (this.filmType === 'tv') {
-      await this.$store.dispatch('loadTVShowsGenres');
+      await this.$store.dispatch('fetchTVShowsGenres');
       this.filmSlickTitlesArray = this.tvshowSlickArr;
       this.genres = this.$store.getters.TVShowGenres;
     }

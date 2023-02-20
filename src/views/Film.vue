@@ -54,7 +54,7 @@ import { IFilm } from '@/interfaces/IFilm';
 import { ICast } from '@/interfaces/ICast';
 import { ITrailer } from '@/interfaces/ITrailer';
 import { IReview } from '@/interfaces/IReview';
-import { globalAPIMovieDBAddress, globalImgAddress } from '@/main.ts';
+import { globalAPIMovieDBAddress, globalImgAddress } from '@/main';
 
 @Component({
   components: {

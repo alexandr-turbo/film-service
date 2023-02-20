@@ -48,14 +48,14 @@
 
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator';
-import axios from 'axios';
 import ActorInfoTemplate from '../components/ActorInfoTemplate.vue';
 import ActorCastCrewTemplate from '../components/ActorCastCrewTemplate.vue';
-import { globalAPIMovieDBAddress } from '@/main.ts';
+import { globalAPIMovieDBAddress } from '@/main';
 import { IActor } from '@/interfaces/IActor';
 import { IGenre } from '@/interfaces/IGenre';
 import { IRole } from '@/interfaces/IRole';
 import { ICrew } from '@/interfaces/ICrew';
+import ActorService from '@/services/ActorService';
 
 const ROLES_ONLOAD_COUNT = 5;
 const CREWS_ONLOAD_COUNT = 5;
@@ -155,17 +155,15 @@ export default class Film extends Vue {
       }
     }
   }
+
   async getCastCrew() {
-    await axios
-      .get(
-        `${globalAPIMovieDBAddress}/3${this.$route.path}/combined_credits?api_key=${this.key}&language=${this.locale}`
-      )
-      .then(response => {
-        if (response.data.cast) {
-          this.roles = response.data.cast;
+    await ActorService.fetchActorsCastCrew(this.$route.params.actorID).then(
+      response => {
+        if (response.cast) {
+          this.roles = response.cast;
         }
-        if (response.data.crew) {
-          this.crews = response.data.crew;
+        if (response.crew) {
+          this.crews = response.crew;
         }
         for (; this.rolesLoadedCount < ROLES_ONLOAD_COUNT; ) {
           this.lazyRolesArray.push(this.roles[this.rolesLoadedCount]);
@@ -175,23 +173,20 @@ export default class Film extends Vue {
           this.lazyCrews.push(this.crews[this.crewsLoadedCount]);
           this.crewsLoadedCount++;
         }
-      });
+      }
+    );
   }
   async getActor() {
-    await axios
-      .get(
-        `${globalAPIMovieDBAddress}/3${this.$route.path}?api_key=${this.key}&language=${this.locale}`
-      )
-      .then(response => {
-        this.actor = response.data;
-      });
+    console.log(this.$route);
+
+    await ActorService.fetchActor(this.$route.params.actorID).then(response => {
+      this.actor = response;
+    });
   }
 
   async changeLocale() {
     (this.$root.$emit as any)('isLoading', true);
     this.locale = this.$store.getters.locale;
-    // this.cast = [];
-    // this.crew = [];
     this.lazyRolesArray = [];
     this.lazyCrews = [];
     this.rolesLoadedCount = 0;
@@ -199,9 +194,9 @@ export default class Film extends Vue {
     let p1 = await this.getCastCrew();
     this.actor = null;
     let p2 = await this.getActor();
-    await this.$store.dispatch('loadMovieGenres');
+    await this.$store.dispatch('fetchMovieGenres');
     this.movieGenres = this.$store.getters.MovieGenres;
-    await this.$store.dispatch('loadTVShowsGenres');
+    await this.$store.dispatch('fetchTVShowsGenres');
     this.tvshowGenres = this.$store.getters.TVShowGenres;
     Promise.all([p1, p2]).then((this.$root.$emit as any)('isLoading', false));
   }

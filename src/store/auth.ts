@@ -2,7 +2,7 @@ import firebase from 'firebase/app'
 
 export default {
   actions: {
-    async login({email, password}: {email: string, password: string}) {
+    async login({dispatch}: {dispatch: any}, {email, password}: {email: string, password: string}) {
       try {
         await firebase.auth().signInWithEmailAndPassword(email, password)
       } catch (e) {

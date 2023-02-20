@@ -46,8 +46,8 @@
 <script lang="ts">
 import axios from 'axios';
 import CoverTemplate1 from '@/components/CoverTemplate1.vue';
-import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
-import { globalAPIMovieDBAddress } from '@/main.ts';
+import { Component, Vue, Watch } from 'vue-property-decorator';
+import { globalAPIMovieDBAddress } from '@/main';
 import { IGenre } from '@/interfaces/IGenre';
 import { ISearchResult } from '@/interfaces/ISearchResult';
 
@@ -111,9 +111,9 @@ export default class Search extends Vue {
     } else {
       (this.$root.$emit as any)('isLoading', false);
     }
-    await this.$store.dispatch('loadMovieGenres');
+    await this.$store.dispatch('fetchMovieGenres');
     this.movieGenres = this.$store.getters.MovieGenres;
-    await this.$store.dispatch('loadTVShowsGenres');
+    await this.$store.dispatch('fetchTVShowsGenres');
     this.tvshowGenres = this.$store.getters.TVShowGenres;
   }
 
@@ -122,16 +122,16 @@ export default class Search extends Vue {
   }
 
   getPageNumber() {
-    this.pageNumber = this.$route.query.page;
+    this.pageNumber = +this.$route.query.page;
   }
 
   increasePageNumber() {
-    this.pageNumber = this.$route.query.page;
+    this.pageNumber = +this.$route.query.page;
     this.pageNumber++;
   }
 
   decreasePageNumber() {
-    this.pageNumber = this.$route.query.page;
+    this.pageNumber = +this.$route.query.page;
     this.pageNumber--;
   }
 

@@ -134,15 +134,13 @@ import { IOption } from '@/interfaces/IOption';
 import { IGenre } from '@/interfaces/IGenre';
 import { ISearchActor } from '@/interfaces/ISearchActor';
 import { ISearchResult } from '@/interfaces/ISearchResult';
-import { globalAPIMovieDBAddress } from '@/main.ts';
+import { globalAPIMovieDBAddress } from '@/main';
 import TextInput from '@/components/controls/form/TextInput.vue';
-// import Multiselect from 'vue-multiselect';
 
 @Component({
   components: {
     CoverTemplate1,
     TextInput,
-    // Multiselect,
   },
 })
 export default class Discover extends Vue {
@@ -494,7 +492,7 @@ export default class Discover extends Vue {
     }
     await this.$store.dispatch('loadMovieGenres');
     this.movieGenres = this.$store.getters.MovieGenres;
-    await this.$store.dispatch('loadTVShowsGenres');
+    await this.$store.dispatch('fetchTVShowsGenres');
     this.tvshowGenres = this.$store.getters.TVShowGenres;
     if (this.routeGenreID) {
       this.selectedGenre = this.genres.find(
@@ -518,26 +516,26 @@ export default class Discover extends Vue {
   }
 
   increasePageNumber() {
-    this.pageNumber = this.$route.query.page;
+    this.pageNumber = +this.$route.query.page;
     this.pageNumber++;
   }
 
   decreasePageNumber() {
-    this.pageNumber = this.$route.query.page;
+    this.pageNumber = +this.$route.query.page;
     this.pageNumber--;
   }
 
   getRoutePaths() {
-    this.routeMediatype = this.$route.query.mediatype;
-    this.routeSortBy = this.$route.query.sort_by;
+    this.routeMediatype = this.$route.query.mediatype as string;
+    this.routeSortBy = this.$route.query.sort_by as string;
     this.routeVote = +this.$route.query.vote_average;
-    this.routeActorID = this.$route.query.with_people;
+    this.routeActorID = +this.$route.query.with_people;
     this.routeGenreID = +this.$route.query.with_genres;
     this.routeYear =
       this.routeMediatype === 'movie'
         ? +this.$route.query.year
         : +this.$route.query.first_air_date_year;
-    this.routePage = this.$route.query.page;
+    this.routePage = +this.$route.query.page;
   }
 
   async search(input: string) {
