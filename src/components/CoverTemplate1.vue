@@ -52,7 +52,10 @@
       <div v-else class="cover-template1__film-title">
         {{ 'cover-template-1-db' | localize }}
       </div>
-      <div v-if="item.genre_ids" class="cover-template1__film-title">
+      <div
+        v-if="item.genre_ids && item.genre_ids.length"
+        class="cover-template1__film-title"
+      >
         {{ genresNames }}
       </div>
       <div v-else class="cover-template1__film-title">
@@ -83,10 +86,10 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component, Prop } from 'vue-property-decorator';
 import { mixins } from 'vue-class-component';
 import filmGenresMixin from '@/mixins/filmGenresMixin';
-import { globalImgAddress } from '@/main.ts';
+import { globalImgAddress } from '@/main';
 import { ISearchFilm } from '@/interfaces/ISearchFilm';
 import { ISearchActor } from '@/interfaces/ISearchActor';
 import { IGenre } from '@/interfaces/IGenre';

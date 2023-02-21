@@ -94,7 +94,7 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { mixins } from 'vue-class-component';
 import filmGenresMixin from '@/mixins/filmGenresMixin';
-import { globalImgAddress } from '@/main.ts';
+import { globalImgAddress } from '@/main';
 import { IGenre } from '@/interfaces/IGenre';
 import { ISearchFilm } from '@/interfaces/ISearchFilm';
 

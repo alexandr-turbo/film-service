@@ -4,9 +4,8 @@
       v-if="!item.media_type"
       class="cover-template2"
       :title="item.bio"
-      @mousedown="clickable = true"
-      @mousemove="clickable = false"
-      @mouseup="clickable ? $router.push(`/person/${item.id}`) : ''"
+      @mousedown="onMouseDown"
+      @mouseup="onMouseUp"
     >
       <img
         v-if="item.profile_path"
@@ -20,11 +19,8 @@
       v-else-if="item.media_type"
       class="cover-template2"
       :title="item.overview"
-      @mousedown="clickable = true"
-      @mousemove="clickable = false"
-      @mouseup="
-        clickable ? $router.push(`details/${item.media_type}/${item.id}`) : ''
-      "
+      @mousedown="onMouseDown"
+      @mouseup="onMouseUp"
     >
       <img
         v-if="item.poster_path"
@@ -49,18 +45,39 @@
   </div>
 </template>
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component, Prop } from 'vue-property-decorator';
 import { mixins } from 'vue-class-component';
 import filmGenresMixin from '@/mixins/filmGenresMixin';
-import { globalImgAddress } from '@/main.ts';
+import { globalImgAddress } from '@/main';
 import { IGenre } from '@/interfaces/IGenre';
 import { ISearchFilm } from '@/interfaces/ISearchFilm';
+import { ICoords } from '@/interfaces/ICoords';
 
 @Component({})
 export default class CoverTemplate2 extends mixins(filmGenresMixin) {
   globalImgAddress = globalImgAddress;
 
-  clickable: boolean = true;
+  mouseDown: ICoords = {
+    x: 0,
+    y: 0,
+  };
+
+  onMouseDown(e: MouseEvent): void {
+    this.mouseDown = {
+      x: e.clientX,
+      y: e.clientY,
+    };
+  }
+
+  onMouseUp(e: MouseEvent): void {
+    if (e.clientX === this.mouseDown.x && e.clientY === this.mouseDown.y) {
+      if (!this.item.media_type) {
+        this.$router.push(`/person/${this.item.id}`);
+      } else {
+        this.$router.push(`details/${this.item.media_type}/${this.item.id}`);
+      }
+    }
+  }
 
   get genresNames() {
     return this.getCurrentMediaTypeGenresNames(

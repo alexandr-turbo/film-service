@@ -62,12 +62,12 @@ export default class App extends Vue {
   }
 
   async changeLocale() {
-    this.$store.dispatch('loadMovieGenres');
-    this.$store.dispatch('loadTVShowsGenres');
+    this.$store.dispatch('fetchMovieGenres');
+    this.$store.dispatch('fetchTVShowsGenres');
   }
   async created() {
-    await this.$store.dispatch('loadMovieGenres');
-    await this.$store.dispatch('loadTVShowsGenres');
+    await this.$store.dispatch('fetchMovieGenres');
+    await this.$store.dispatch('fetchTVShowsGenres');
   }
 }
 </script>

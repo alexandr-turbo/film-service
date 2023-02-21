@@ -44,12 +44,13 @@
   </div>
 </template>
 <script lang="ts">
-import axios from 'axios';
 import CoverTemplate1 from '@/components/CoverTemplate1.vue';
-import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
-import { globalAPIMovieDBAddress } from '@/main.ts';
+import { Component, Vue, Watch } from 'vue-property-decorator';
+import { globalAPIMovieDBAddress } from '@/main';
 import { IGenre } from '@/interfaces/IGenre';
 import { ISearchResult } from '@/interfaces/ISearchResult';
+import FilmService from '@/services/FilmService';
+import ActorService from '@/services/ActorService';
 
 @Component({
   components: {
@@ -111,9 +112,9 @@ export default class Search extends Vue {
     } else {
       (this.$root.$emit as any)('isLoading', false);
     }
-    await this.$store.dispatch('loadMovieGenres');
+    await this.$store.dispatch('fetchMovieGenres');
     this.movieGenres = this.$store.getters.MovieGenres;
-    await this.$store.dispatch('loadTVShowsGenres');
+    await this.$store.dispatch('fetchTVShowsGenres');
     this.tvshowGenres = this.$store.getters.TVShowGenres;
   }
 
@@ -122,72 +123,66 @@ export default class Search extends Vue {
   }
 
   getPageNumber() {
-    this.pageNumber = this.$route.query.page;
+    this.pageNumber = +this.$route.query.page;
   }
 
   increasePageNumber() {
-    this.pageNumber = this.$route.query.page;
+    this.pageNumber = +this.$route.query.page;
     this.pageNumber++;
   }
 
   decreasePageNumber() {
-    this.pageNumber = this.$route.query.page;
+    this.pageNumber = +this.$route.query.page;
     this.pageNumber--;
   }
 
   async getFilmsList(query: string, page: number) {
-    let a,
-      b: string = '';
+    let mediaTypeType,
+      mediaType: string = '';
     if (query.includes('movies')) {
-      a = query.slice(0, query.indexOf('movies') - 1);
-      b = 'movie';
+      mediaTypeType = query.slice(0, query.indexOf('movies') - 1);
+      mediaType = 'movie';
     } else if (query.includes('tv_shows')) {
-      a = query.slice(0, query.indexOf('tv_shows') - 1);
-      b = 'tv';
+      mediaTypeType = query.slice(0, query.indexOf('tv_shows') - 1);
+      mediaType = 'tv';
     }
-    await axios
-      .get(
-        `${globalAPIMovieDBAddress}/3/${b}/${a}?api_key=${this.key}&page=${page}&include_adult=false&language=${this.locale}`
-      )
-      .then(response => {
-        this.searchResultPage = response.data;
-        for (
-          let i = 0;
-          i < (this.searchResultPage as ISearchResult).results.length;
-          i++
-        ) {
-          (this.searchResultPage as ISearchResult).results[i].media_type = b;
-        }
-      });
+    await FilmService.searchFilms(
+      mediaType,
+      mediaTypeType as string,
+      page
+    ).then(response => {
+      this.searchResultPage = response;
+      for (
+        let i = 0;
+        i < (this.searchResultPage as ISearchResult).results.length;
+        i++
+      ) {
+        (this.searchResultPage as ISearchResult).results[i].media_type =
+          mediaType;
+      }
+      console.log(this.searchResultPage);
+    });
   }
 
   async getPopularPeopleList(page: number) {
-    await axios
-      .get(
-        `${globalAPIMovieDBAddress}/3/person/popular?api_key=${this.key}&language=${this.locale}&page=${page}`
-      )
-      .then(response => {
-        this.searchResultPage = response.data;
-        for (
-          let i = 0;
-          i < (this.searchResultPage as ISearchResult).results.length;
-          i++
-        ) {
-          axios
-            .get(
-              `${globalAPIMovieDBAddress}/3/person/${
-                (this.searchResultPage as ISearchResult).results[i].id
-              }?api_key=${this.key}&language=${this.locale}`
-            )
-            .then(response => {
-              this.$set(
-                (this.searchResultPage as ISearchResult).results[i],
-                'bio',
-                response.data.biography
-              );
-            });
-        }
-      });
+    await ActorService.fetchPopularPeople(page).then(response => {
+      this.searchResultPage = response;
+      for (
+        let i = 0;
+        i < (this.searchResultPage as ISearchResult).results.length;
+        i++
+      ) {
+        ActorService.fetchActor(
+          (this.searchResultPage as ISearchResult).results[i].id
+        ).then(response => {
+          this.$set(
+            (this.searchResultPage as ISearchResult).results[i],
+            'bio',
+            response.biography
+          );
+        });
+      }
+    });
   }
 
   async getPageSearchResults(query: string, page: number) {
@@ -196,13 +191,9 @@ export default class Search extends Vue {
     } else if (query.includes('popular_people')) {
       this.getPopularPeopleList(page);
     } else {
-      await axios
-        .get(
-          `${globalAPIMovieDBAddress}/3/search/multi?api_key=${this.key}&query=${query}&page=${page}&include_adult=false&language=${this.locale}`
-        )
-        .then(response => {
-          this.searchResultPage = response.data;
-        });
+      await FilmService.searchFilmsByName(query, page).then(response => {
+        this.searchResultPage = response;
+      });
     }
     (this.$root.$emit as any)('isLoading', false);
   }

@@ -30,11 +30,11 @@
 <script lang="ts">
 import HomeUpperSlickTemplate from '../components/HomeUpperSlickTemplate.vue';
 import SlickTemplate from '../components/SlickTemplate.vue';
-import axios from 'axios';
-import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
-import { globalAPIMovieDBAddress } from '@/main.ts';
+import { Component, Vue, Watch } from 'vue-property-decorator';
+import { globalAPIMovieDBAddress } from '@/main';
 import { IGenre } from '@/interfaces/IGenre';
 import { ISearchFilm } from '@/interfaces/ISearchFilm';
+import FilmService from '@/services/FilmService';
 
 @Component({
   components: {
@@ -96,11 +96,11 @@ export default class Home extends Vue {
     this.filmsArrays = [];
     let p2 = await this.getFilms();
     if (this.filmType === 'movie') {
-      await this.$store.dispatch('loadMovieGenres');
+      await this.$store.dispatch('fetchMovieGenres');
       this.filmSlickTitlesArray = this.movieSlickArr;
       this.genres = this.$store.getters.MovieGenres;
     } else if (this.filmType === 'tv') {
-      await this.$store.dispatch('loadTVShowsGenres');
+      await this.$store.dispatch('fetchTVShowsGenres');
       this.filmSlickTitlesArray = this.tvshowSlickArr;
       this.genres = this.$store.getters.TVShowGenres;
     }
@@ -108,31 +108,26 @@ export default class Home extends Vue {
   }
 
   async getPopularFilms() {
-    await axios
-      .get(
-        `${globalAPIMovieDBAddress}/3/${this.filmType}/popular?api_key=${this.key}&language=${this.locale}`
-      )
-      .then(response => {
-        this.popularMoviesArray = response.data.results;
-        for (let i = 0; i < this.popularMoviesArray.length; i++) {
-          this.$set(this.popularMoviesArray[i], 'media_type', this.filmType);
-        }
-      });
+    await FilmService.fetchFilms(this.filmType, 'popular').then(response => {
+      this.popularMoviesArray = response;
+      for (let i = 0; i < this.popularMoviesArray.length; i++) {
+        this.$set(this.popularMoviesArray[i], 'media_type', this.filmType);
+      }
+    });
   }
 
   async getFilms() {
     for (let i = 0; i < this.filmSlickTitlesArray.length; i++) {
-      await axios
-        .get(
-          `${globalAPIMovieDBAddress}/3/${this.filmType}/${this.filmSlickTitlesArray[i]}?api_key=${this.key}&language=${this.locale}`
-        )
-        .then(response => {
-          this.temp = response.data.results;
-          for (let i = 0; i < this.temp.length; i++) {
-            this.$set(this.temp[i], 'media_type', this.filmType);
-          }
-          this.filmsArrays.push(this.temp);
-        });
+      await FilmService.fetchFilms(
+        this.filmType,
+        this.filmSlickTitlesArray[i]
+      ).then(response => {
+        this.temp = response;
+        for (let i = 0; i < this.temp.length; i++) {
+          this.$set(this.temp[i], 'media_type', this.filmType);
+        }
+        this.filmsArrays.push(this.temp);
+      });
     }
   }
 

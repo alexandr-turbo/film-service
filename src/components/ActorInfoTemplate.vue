@@ -56,8 +56,8 @@
 
 <script lang="ts">
 import localize from '@/filters/localize';
-import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
-import { globalImgAddress } from '@/main.ts';
+import { Component, Prop, Vue } from 'vue-property-decorator';
+import { globalImgAddress } from '@/main';
 import { IActor } from '@/interfaces/IActor';
 
 @Component({})

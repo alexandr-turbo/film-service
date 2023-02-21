@@ -1,8 +1,5 @@
-import axios from "axios"
-import store from '@/store'
 import { IGenre } from '@/interfaces/IGenre'
-
-const key: string = process.env.VUE_APP_MOVIEDB;
+import GenresService from "@/services/GenresService";
 
 export interface GenresState {
   MovieGenres: Array<IGenre>,
@@ -24,24 +21,16 @@ export default {
     },
   },
   actions: {
-    async loadMovieGenres({commit}: {commit: any}) {
-    const locale = store.getters.locale
-      await axios
-        .get(
-          `https://api.themoviedb.org/3/genre/movie/list?api_key=${key}&language=${locale}`
-        )
+    async fetchMovieGenres({commit}: {commit: any}) {
+      await GenresService.fetchMovieGenres()
         .then((response) => {
-          commit('setMovieGenres', response.data.genres)
+          commit('setMovieGenres', response)
         });
     },
-    async loadTVShowsGenres({commit}: {commit: any}) {
-      const locale = store.getters.locale
-      await axios
-        .get(
-          `https://api.themoviedb.org/3/genre/tv/list?api_key=${key}&language=${locale}`
-        )
+    async fetchTVShowsGenres({commit}: {commit: any}) {
+      await GenresService.fetchTVShowsGenres()
         .then((response) => {
-          commit('setTVShowGenres', response.data.genres)
+          commit('setTVShowGenres', response)
         });
     }
   },

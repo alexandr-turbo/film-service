@@ -50,7 +50,7 @@ import { Component, Prop } from 'vue-property-decorator';
 import { mixins } from 'vue-class-component';
 import Slick from 'vue-slick';
 import filmGenresMixin from '@/mixins/filmGenresMixin';
-import { globalImgAddress } from '@/main.ts';
+import { globalImgAddress } from '@/main';
 import { IGenre } from '@/interfaces/IGenre';
 import { ISearchFilm } from '@/interfaces/ISearchFilm';
 

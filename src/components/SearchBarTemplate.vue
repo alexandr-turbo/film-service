@@ -262,7 +262,7 @@
   </div>
 </template>
 <script lang="ts">
-import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
+import { Component, Vue, Watch } from 'vue-property-decorator';
 import replaceAllToDash from '@/filters/replaceAllToDash';
 import localize from '@/filters/localize';
 import Modal from '@/components/Modal.vue';
@@ -273,6 +273,18 @@ import { email, required, minLength } from 'vuelidate/lib/validators';
   components: {
     Modal,
     Tooltip,
+  },
+  validations() {
+    const validations: any = {
+      email: { email, required },
+      password: { required, minLength: minLength(6) },
+      name: { required },
+    };
+    if ((this as SearchBarTemplate).log) {
+      validations.name = {};
+      return validations;
+    }
+    return validations;
   },
 })
 export default class SearchBarTemplate extends Vue {
@@ -289,21 +301,6 @@ export default class SearchBarTemplate extends Vue {
   name: string = '';
   routeName: string = '';
   username: string = '';
-
-  validations() {
-    if (this.log) {
-      return {
-        email: { email, required },
-        password: { required, minLength: minLength(6) },
-      };
-    } else if (this.sign) {
-      return {
-        email: { email, required },
-        password: { required, minLength: minLength(6) },
-        name: { required },
-      };
-    }
-  }
 
   @Watch('$store.getters.locale')
   localeWatcher() {
@@ -330,6 +327,7 @@ export default class SearchBarTemplate extends Vue {
   }
 
   async submit() {
+    console.log(this.log, this.sign);
     if (this.$v.$invalid) {
       this.$v.$touch();
       return;

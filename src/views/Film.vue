@@ -28,7 +28,7 @@
               width="100%"
               :height="(iFrameWidth / 16) * 9"
               :src="`https://www.youtube.com/embed/${trailer.key}`"
-            ></iframe>
+            />
             <div class="film-trailer-cover-template__trailer-title">
               {{ trailer.name }}
             </div>
@@ -46,7 +46,6 @@
 </template>
 
 <script lang="ts">
-import axios from 'axios';
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import FilmReviewTemplate from '@/components/FilmReviewTemplate.vue';
 import SlickTemplate from '@/components/SlickTemplate.vue';
@@ -54,7 +53,9 @@ import { IFilm } from '@/interfaces/IFilm';
 import { ICast } from '@/interfaces/ICast';
 import { ITrailer } from '@/interfaces/ITrailer';
 import { IReview } from '@/interfaces/IReview';
-import { globalAPIMovieDBAddress, globalImgAddress } from '@/main.ts';
+import { globalAPIMovieDBAddress, globalImgAddress } from '@/main';
+import FilmService from '@/services/FilmService';
+import ActorService from '@/services/ActorService';
 
 @Component({
   components: {
@@ -105,13 +106,11 @@ export default class Film extends Vue {
   }
 
   async getCurrentFilm() {
-    await axios
-      .get(
-        `${globalAPIMovieDBAddress}/3/${this.filmType}/${this.filmID}?api_key=${this.key}&language=${this.locale}`
-      )
-      .then(response => {
-        this.currentFilm = response.data;
-      });
+    await FilmService.fetchFilmByID(this.filmType, this.filmID).then(
+      response => {
+        this.currentFilm = response;
+      }
+    );
   }
 
   getGenres() {
@@ -121,42 +120,32 @@ export default class Film extends Vue {
   }
 
   async getCast() {
-    await axios
-      .get(
-        `${globalAPIMovieDBAddress}/3/${this.filmType}/${this.filmID}/credits?api_key=${this.key}&language=${this.locale}`
-      )
-      .then(response => {
-        this.cast = response.data.cast;
+    await FilmService.fetchCastByFilmID(this.filmType, this.filmID).then(
+      response => {
+        this.cast = response;
         for (let i = 0; i < this.cast.length; i++) {
-          axios
-            .get(
-              `${globalAPIMovieDBAddress}/3/person/${this.cast[i].id}?api_key=${this.key}&language=${this.locale}`
-            )
-            .then(response => {
-              this.$set(this.cast[i], 'bio', response.data.biography);
-            });
+          ActorService.fetchActor(this.cast[i].id).then(response => {
+            this.$set(this.cast[i], 'bio', response.biography);
+          });
         }
-      });
+      }
+    );
   }
 
   async getTrailers() {
-    await axios
-      .get(
-        `${globalAPIMovieDBAddress}/3/${this.filmType}/${this.filmID}/videos?api_key=${this.key}&language=${this.locale}`
-      )
-      .then(response => {
-        this.trailers = response.data.results;
-      });
+    await FilmService.fetchTrailersByFilmID(this.filmType, this.filmID).then(
+      response => {
+        this.trailers = response;
+      }
+    );
   }
 
   async getReviews() {
-    await axios
-      .get(
-        `${globalAPIMovieDBAddress}/3/${this.filmType}/${this.filmID}/reviews?api_key=${this.key}&language=${this.locale}`
-      )
-      .then(response => {
-        this.reviews = response.data.results;
-      });
+    await FilmService.fetchReviewsByFilmID(this.filmType, this.filmID).then(
+      response => {
+        this.reviews = response;
+      }
+    );
   }
 
   getWindowWidth() {
