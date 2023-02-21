@@ -7,7 +7,7 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "deploymac": "git push origin --delete gh-pages && npm run build && git add . && git commit -m 'publish' && git subtree push --prefix dist origin gh-pages",
-    "deploywin": "git push origin --delete gh-pages && npm run build && git add . && git subtree push --prefix dist origin gh-pages"
+    "deploywin": "npm run build && git add . && git subtree push --prefix dist origin gh-pages"
   },
   "dependencies": {
     "axios": "^0.19.0",
