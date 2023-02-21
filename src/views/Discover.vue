@@ -126,7 +126,6 @@
   </div>
 </template>
 <script lang="ts">
-import axios from 'axios';
 import CoverTemplate1 from '../components/CoverTemplate1.vue';
 import localize from '@/filters/localize';
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
@@ -136,6 +135,8 @@ import { ISearchActor } from '@/interfaces/ISearchActor';
 import { ISearchResult } from '@/interfaces/ISearchResult';
 import { globalAPIMovieDBAddress } from '@/main';
 import TextInput from '@/components/controls/form/TextInput.vue';
+import ActorService from '@/services/ActorService';
+import DiscoverService from '@/services/DiscoverService';
 
 @Component({
   components: {
@@ -258,13 +259,9 @@ export default class Discover extends Vue {
     }
     if (this.routeActorID) {
       this.actor = null;
-      axios
-        .get(
-          `${globalAPIMovieDBAddress}/3/person/${this.routeActorID}?api_key=${this.key}&&language=${this.locale}`
-        )
-        .then(response => {
-          this.actor = response.data;
-        });
+      ActorService.fetchSearchActor(this.routeActorID).then(response => {
+        this.actor = response;
+      });
     } else if (!this.routeActorID) {
       this.actor = null;
     }
@@ -330,13 +327,9 @@ export default class Discover extends Vue {
     }
     if (this.routeActorID) {
       this.actor = null;
-      await axios
-        .get(
-          `${globalAPIMovieDBAddress}/3/person/${this.routeActorID}?api_key=${this.key}&&language=${this.locale}`
-        )
-        .then(response => {
-          this.actor = response.data;
-        });
+      await ActorService.fetchSearchActor(this.routeActorID).then(response => {
+        this.actor = response;
+      });
     }
     this.getLocalizedSelectsValues();
     if (this.isSearchQueryCorrect()) {
@@ -501,13 +494,9 @@ export default class Discover extends Vue {
       this.genre = this.selectedGenre;
     }
     if (this.routeActorID) {
-      await axios
-        .get(
-          `${globalAPIMovieDBAddress}/3/person/${this.routeActorID}?api_key=${this.key}&&language=${this.locale}`
-        )
-        .then(response => {
-          this.actor = response.data;
-        });
+      await ActorService.fetchSearchActor(this.routeActorID).then(response => {
+        this.actor = response;
+      });
     }
   }
 
@@ -539,20 +528,14 @@ export default class Discover extends Vue {
   }
 
   async search(input: string) {
-    // if (input.length < 1) {
-    //   this.selectedActorIDFromList = null;
-    //   return [];
-    // }
-    this.actorsOptions = await axios
-      .get(
-        `${globalAPIMovieDBAddress}/3/search/person?api_key=${this.key}&language=${this.locale}&query=${input}&include_adult=false&page=1`
-      )
-      .then(response => {
-        const { results } = response.data;
+    this.actorsOptions = await ActorService.searchActor(input).then(
+      response => {
+        const results = response;
         return results.filter((actor: ISearchActor) => {
           return actor.name.toLowerCase().includes(input.toLowerCase());
         });
-      });
+      }
+    );
     (this.$root.$emit as any)('isLoading', false);
   }
 
@@ -602,55 +585,54 @@ export default class Discover extends Vue {
     routePage: number
   ) {
     if (routeMediatype === 'movie') {
-      await axios
-        .get(
-          `${globalAPIMovieDBAddress}/3/discover/${routeMediatype}?api_key=${
-            this.key
-          }&language=${
-            this.locale
-          }&sort_by=${routeSortBy}&include_adult=false&include_video=false&vote_average.gte=${
-            routeVote ? routeVote : ''
-          }&with_people=${routeActorID ? routeActorID : ''}&with_genres=${
-            routeGenreID ? routeGenreID : ''
-          }&year=${routeYear ? routeYear : ''}&page=${routePage}`
-        )
-        .then(response => {
-          this.searchResultPage = response.data;
-          if ((this.searchResultPage as ISearchResult).results.length) {
-            for (
-              let i = 0;
-              i < (this.searchResultPage as ISearchResult).results.length;
-              i++
-            ) {
-              this.$set(
-                (this.searchResultPage as ISearchResult).results[i],
-                'media_type',
-                routeMediatype
-              );
-            }
+      await DiscoverService.fetchDiscoverMovies(
+        routeMediatype,
+        routeSortBy,
+        routeVote,
+        routeActorID,
+        routeGenreID,
+        routeYear,
+        routePage
+      ).then(response => {
+        this.searchResultPage = response;
+        if ((this.searchResultPage as ISearchResult).results.length) {
+          for (
+            let i = 0;
+            i < (this.searchResultPage as ISearchResult).results.length;
+            i++
+          ) {
+            this.$set(
+              (this.searchResultPage as ISearchResult).results[i],
+              'media_type',
+              routeMediatype
+            );
           }
-        });
+        }
+      });
     } else if (routeMediatype === 'tv') {
-      await axios
-        .get(
-          `${globalAPIMovieDBAddress}/3/discover/${routeMediatype}?api_key=${this.key}&language=${this.locale}&sort_by=${routeSortBy}&include_adult=false&include_video=false&vote_average.gte=${routeVote}&with_genres=${routeGenreID}&first_air_date_year=${routeYear}&page=${routePage}`
-        )
-        .then(response => {
-          this.searchResultPage = response.data;
-          if ((this.searchResultPage as ISearchResult).results.length) {
-            for (
-              let i = 0;
-              i < (this.searchResultPage as ISearchResult).results.length;
-              i++
-            ) {
-              this.$set(
-                (this.searchResultPage as ISearchResult).results[i],
-                'media_type',
-                routeMediatype
-              );
-            }
+      await DiscoverService.fetchDiscoverTVShows(
+        routeMediatype,
+        routeSortBy,
+        routeVote,
+        routeGenreID,
+        routeYear,
+        routePage
+      ).then(response => {
+        this.searchResultPage = response;
+        if ((this.searchResultPage as ISearchResult).results.length) {
+          for (
+            let i = 0;
+            i < (this.searchResultPage as ISearchResult).results.length;
+            i++
+          ) {
+            this.$set(
+              (this.searchResultPage as ISearchResult).results[i],
+              'media_type',
+              routeMediatype
+            );
           }
-        });
+        }
+      });
     }
     (this.$root.$emit as any)('isLoading', false);
   }

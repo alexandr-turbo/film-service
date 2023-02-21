@@ -52,7 +52,10 @@
       <div v-else class="cover-template1__film-title">
         {{ 'cover-template-1-db' | localize }}
       </div>
-      <div v-if="item.genre_ids" class="cover-template1__film-title">
+      <div
+        v-if="item.genre_ids && item.genre_ids.length"
+        class="cover-template1__film-title"
+      >
         {{ genresNames }}
       </div>
       <div v-else class="cover-template1__film-title">
