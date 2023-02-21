@@ -51,6 +51,8 @@ import { IGenre } from '@/interfaces/IGenre';
 import { ISearchResult } from '@/interfaces/ISearchResult';
 import FilmService from '@/services/FilmService';
 import ActorService from '@/services/ActorService';
+import { ISearchFilm } from '@/interfaces/ISearchFilm';
+import { ISearchTVShow } from '@/interfaces/ISearchTVShow';
 
 @Component({
   components: {
@@ -152,15 +154,11 @@ export default class Search extends Vue {
       page
     ).then(response => {
       this.searchResultPage = response;
-      for (
-        let i = 0;
-        i < (this.searchResultPage as ISearchResult).results.length;
-        i++
-      ) {
-        (this.searchResultPage as ISearchResult).results[i].media_type =
-          mediaType;
-      }
-      console.log(this.searchResultPage);
+      (
+        (this.searchResultPage as ISearchResult).results as Array<
+          ISearchFilm | ISearchTVShow
+        >
+      ).forEach(result => (result.media_type = mediaType));
     });
   }
 

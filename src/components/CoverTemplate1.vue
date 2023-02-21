@@ -92,6 +92,7 @@ import filmGenresMixin from '@/mixins/filmGenresMixin';
 import { globalImgAddress } from '@/main';
 import { ISearchFilm } from '@/interfaces/ISearchFilm';
 import { ISearchActor } from '@/interfaces/ISearchActor';
+import { ISearchTVShow } from '@/interfaces/ISearchTVShow';
 import { IGenre } from '@/interfaces/IGenre';
 
 @Component({})
@@ -101,12 +102,12 @@ export default class CoverTemplate1 extends mixins(filmGenresMixin) {
   get genresNames() {
     return this.getCurrentMediaTypeGenresNames(
       this.genres,
-      (this.item as ISearchFilm).genre_ids
+      (this.item as ISearchFilm | ISearchTVShow).genre_ids
     );
   }
 
   @Prop()
-  item!: ISearchFilm | ISearchActor;
+  item!: ISearchFilm | ISearchTVShow | ISearchActor;
 
   @Prop()
   genres!: Array<IGenre>;
