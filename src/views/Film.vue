@@ -28,7 +28,7 @@
               width="100%"
               :height="(iFrameWidth / 16) * 9"
               :src="`https://www.youtube.com/embed/${trailer.key}`"
-            ></iframe>
+            />
             <div class="film-trailer-cover-template__trailer-title">
               {{ trailer.name }}
             </div>

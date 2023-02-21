@@ -39,7 +39,7 @@ export default class FilmService {
 		const locale = store.getters.locale
 		return axios
 			.get(
-        `${globalAPIMovieDBAddress}/3/${filmType}/${filmID}/reviews?api_key=${key}&language=${locale}`
+        `${globalAPIMovieDBAddress}/3/${filmType}/${filmID}/videos?api_key=${key}&language=${locale}`
 			)
 			.then((res: AxiosResponse) => res.data.results)
       .catch((error: AxiosError) => {
